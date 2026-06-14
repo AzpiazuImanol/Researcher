@@ -10,6 +10,7 @@
       --blue: #1a56db;
       --sky:  #74c0fc;
       --red:  #e63946;
+      --green: #4ade80;
       --dark: #0a0a0f;
       --card: #111118;
       --border: rgba(255,255,255,.08);
@@ -21,7 +22,7 @@
 
     /* ---- HERO ---- */
     .hero{
-      position:relative;min-height:92vh;
+      position:relative;min-height:90vh;
       display:flex;flex-direction:column;
       align-items:center;justify-content:center;
       text-align:center;padding:2rem;overflow:hidden;
@@ -37,49 +38,67 @@
       position:absolute;inset:0;opacity:.03;
       background:repeating-linear-gradient(135deg,#fff 0,#fff 1px,transparent 1px,transparent 40px);
     }
-    .hero-inner{position:relative;z-index:1;max-width:800px;}
+    .hero-inner{position:relative;z-index:1;max-width:820px;}
+
+    .family-banner{
+      display:inline-flex;align-items:center;gap:.6rem;
+      background:rgba(245,200,66,.10);border:1px solid rgba(245,200,66,.3);
+      color:var(--gold);font-size:.8rem;font-weight:700;letter-spacing:.08em;
+      padding:.45rem 1.2rem;border-radius:100px;margin-bottom:1.4rem;
+    }
 
     .urgency{
       display:inline-flex;align-items:center;gap:.5rem;
       background:rgba(230,57,70,.12);border:1px solid rgba(230,57,70,.4);
       color:#ff7070;font-size:.75rem;font-weight:700;letter-spacing:.12em;
       text-transform:uppercase;padding:.35rem 1rem;border-radius:100px;
-      margin-bottom:1.4rem;
+      margin-bottom:.8rem;
     }
     .dot{width:7px;height:7px;border-radius:50%;background:#ff6b6b;
          animation:blink 1.3s ease-in-out infinite;}
     @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.5)}}
 
-    .hero h1{font-size:clamp(2rem,6.5vw,4.8rem);font-weight:900;line-height:1.06;
-             letter-spacing:-.025em;color:var(--white);}
+    .hero h1{font-size:clamp(2rem,6.5vw,4.6rem);font-weight:900;line-height:1.06;
+             letter-spacing:-.025em;color:var(--white);margin-top:.4rem;}
     .hero h1 em{font-style:normal;
       background:linear-gradient(90deg,#74c0fc,var(--gold));
       -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-    .match-meta{
+    .who-box{
       display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;
+      margin-top:1.2rem;
+    }
+    .who-pill{
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+      border-radius:100px;padding:.5rem 1.3rem;
+      font-size:.9rem;color:var(--white);font-weight:700;
+    }
+    .who-pill small{display:block;font-size:.72rem;font-weight:400;color:#5a6a80;margin-top:.1rem;}
+
+    .match-meta{
+      display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;
       margin-top:1.4rem;
     }
     .meta-chip{
-      background:rgba(255,255,255,.05);border:1px solid var(--border);
+      background:rgba(255,255,255,.04);border:1px solid var(--border);
       border-radius:8px;padding:.4rem 1rem;
-      font-size:.85rem;color:#8899b0;font-weight:600;
+      font-size:.82rem;color:#6a7a90;font-weight:600;
     }
     .meta-chip span{color:var(--white);}
 
     /* countdown */
     .countdown{
       display:flex;justify-content:center;align-items:flex-start;
-      gap:1.2rem;margin-top:2rem;flex-wrap:wrap;
+      gap:1.2rem;margin-top:1.8rem;flex-wrap:wrap;
     }
     .c-block{text-align:center;min-width:64px;}
-    .c-num{font-size:3rem;font-weight:900;color:var(--white);line-height:1;
+    .c-num{font-size:2.8rem;font-weight:900;color:var(--white);line-height:1;
            background:rgba(255,255,255,.04);border:1px solid var(--border);
            border-radius:12px;padding:.3rem .8rem;}
-    .c-lbl{font-size:.68rem;color:#4a5568;letter-spacing:.12em;text-transform:uppercase;margin-top:.4rem;}
-    .c-sep{font-size:2.6rem;font-weight:900;color:rgba(255,255,255,.12);padding-top:.5rem;}
+    .c-lbl{font-size:.65rem;color:#3a4558;letter-spacing:.12em;text-transform:uppercase;margin-top:.4rem;}
+    .c-sep{font-size:2.4rem;font-weight:900;color:rgba(255,255,255,.10);padding-top:.5rem;}
 
-    .hero-cta{margin-top:2.4rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+    .hero-cta{margin-top:2rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
     .btn{
       display:inline-block;padding:.85rem 2rem;border-radius:10px;
       font-size:.95rem;font-weight:700;text-decoration:none;
@@ -91,26 +110,38 @@
     .btn-outline{background:transparent;border:1px solid var(--border);color:#b0bac8;}
     .btn-outline:hover{background:rgba(255,255,255,.05);}
 
-    /* ---- TICKET SPEC BOX ---- */
+    /* ---- TICKET SPEC BAR ---- */
     .spec-bar{
-      background:rgba(26,86,219,.07);
-      border-top:1px solid rgba(26,86,219,.2);
-      border-bottom:1px solid rgba(26,86,219,.2);
-      padding:1.6rem 1rem;
+      background:rgba(26,86,219,.06);
+      border-top:1px solid rgba(26,86,219,.18);
+      border-bottom:1px solid rgba(26,86,219,.18);
+      padding:1.4rem 1rem;
     }
     .spec-inner{
-      max-width:900px;margin:0 auto;
-      display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem;
+      max-width:960px;margin:0 auto;
+      display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;
     }
     .spec-item{
       background:rgba(255,255,255,.04);border:1px solid var(--border);
-      border-radius:10px;padding:.7rem 1.4rem;text-align:center;
+      border-radius:10px;padding:.65rem 1.3rem;text-align:center;
     }
-    .spec-key{font-size:.68rem;font-weight:700;letter-spacing:.12em;
-              text-transform:uppercase;color:#4a6080;margin-bottom:.25rem;}
-    .spec-val{font-size:1.05rem;font-weight:800;color:var(--white);}
+    .spec-key{font-size:.65rem;font-weight:700;letter-spacing:.12em;
+              text-transform:uppercase;color:#3a4a60;margin-bottom:.2rem;}
+    .spec-val{font-size:1rem;font-weight:800;color:var(--white);}
     .spec-item.target{border-color:rgba(116,192,252,.35);background:rgba(116,192,252,.05);}
     .spec-item.target .spec-key{color:var(--sky);}
+
+    /* ---- CHILD ALERT BOX ---- */
+    .child-alert{
+      max-width:960px;margin:1.4rem auto 0;
+      background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.25);
+      border-radius:14px;padding:1.2rem 1.6rem;
+      display:flex;gap:1rem;align-items:flex-start;
+    }
+    .child-alert-icon{font-size:1.8rem;flex-shrink:0;line-height:1;}
+    .child-alert-title{font-size:.95rem;font-weight:700;color:var(--green);margin-bottom:.3rem;}
+    .child-alert-body{font-size:.83rem;color:#4a6050;line-height:1.65;}
+    .child-alert-body strong{color:#a0c0a8;}
 
     /* ---- SECTIONS ---- */
     section{max-width:1000px;margin:0 auto;padding:4rem 1.5rem;}
@@ -118,61 +149,57 @@
                text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;}
     .sec-title{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;
                color:var(--white);margin-bottom:.8rem;line-height:1.15;}
-    .sec-sub{color:#4a5568;max-width:540px;line-height:1.7;font-size:.92rem;}
+    .sec-sub{color:#3a4558;max-width:560px;line-height:1.7;font-size:.9rem;}
 
     hr.divider{border:none;border-top:1px solid rgba(255,255,255,.05);}
 
     /* ---- PLATFORM CARDS ---- */
-    .platforms{display:grid;gap:1.2rem;margin-top:2.4rem;}
+    .platforms{display:grid;gap:1.1rem;margin-top:2.2rem;}
 
     .pcard{
       background:var(--card);border:1px solid var(--border);
       border-radius:16px;overflow:hidden;
       display:grid;grid-template-columns:auto 1fr auto;
-      align-items:center;gap:1.4rem;padding:1.5rem;
+      align-items:center;gap:1.3rem;padding:1.4rem;
       transition:border-color .2s,transform .2s;
     }
     .pcard:hover{border-color:rgba(116,192,252,.3);transform:translateX(4px);}
     .pcard.top-pick{border-color:rgba(245,200,66,.35);}
 
     .pcard-rank{
-      width:40px;height:40px;border-radius:50%;
+      width:38px;height:38px;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
-      font-size:1rem;font-weight:900;flex-shrink:0;
+      font-size:.95rem;font-weight:900;flex-shrink:0;
     }
     .rank-1{background:rgba(245,200,66,.15);color:var(--gold);border:1px solid rgba(245,200,66,.4);}
-    .rank-2{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
-    .rank-3{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
-    .rank-4{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
-    .rank-5{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
-    .rank-6{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
-    .rank-7{background:rgba(255,255,255,.05);color:#7a8498;border:1px solid var(--border);}
+    .rank-n{background:rgba(255,255,255,.04);color:#5a6a80;border:1px solid var(--border);}
 
     .pcard-body{min-width:0;}
-    .pcard-name{font-size:1.05rem;font-weight:800;color:var(--white);margin-bottom:.25rem;
-                display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;}
+    .pcard-name{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:.22rem;
+                display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
     .badge{
-      font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-      padding:.2rem .55rem;border-radius:100px;
+      font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      padding:.18rem .5rem;border-radius:100px;
     }
     .badge-official{background:rgba(26,86,219,.2);color:#74c0fc;border:1px solid rgba(26,86,219,.4);}
-    .badge-fast{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.3);}
+    .badge-fast{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.3);}
     .badge-social{background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.3);}
     .badge-free{background:rgba(245,200,66,.1);color:var(--gold);border:1px solid rgba(245,200,66,.3);}
+    .badge-child{background:rgba(74,222,128,.08);color:#6ee7b7;border:1px solid rgba(74,222,128,.25);}
 
-    .pcard-desc{font-size:.84rem;color:#4a5a70;line-height:1.6;margin-bottom:.6rem;}
+    .pcard-desc{font-size:.83rem;color:#3a4a60;line-height:1.62;margin-bottom:.55rem;}
     .pcard-tip{
       display:inline-flex;align-items:center;gap:.4rem;
-      font-size:.78rem;color:#8899b0;
+      font-size:.77rem;color:#6a7a90;
       background:rgba(255,255,255,.03);border:1px solid var(--border);
-      border-radius:6px;padding:.3rem .7rem;
+      border-radius:6px;padding:.28rem .65rem;
     }
-    .pcard-tip::before{content:'\26A1';font-size:.85rem;}
+    .pcard-tip::before{content:'\26A1';font-size:.82rem;}
 
     .pcard-action{flex-shrink:0;}
     .action-btn{
-      display:inline-block;padding:.7rem 1.4rem;border-radius:10px;
-      font-size:.88rem;font-weight:700;text-decoration:none;
+      display:inline-block;padding:.65rem 1.3rem;border-radius:10px;
+      font-size:.85rem;font-weight:700;text-decoration:none;
       white-space:nowrap;text-align:center;
       transition:transform .15s,opacity .15s;
     }
@@ -180,45 +207,46 @@
     .action-gold{background:linear-gradient(135deg,var(--gold),#ff9f43);color:#1a0f00;
                  box-shadow:0 4px 20px rgba(245,200,66,.25);}
     .action-blue{background:linear-gradient(135deg,#1a56db,#3b82f6);color:#fff;
-                 box-shadow:0 4px 20px rgba(26,86,219,.25);}
+                 box-shadow:0 4px 20px rgba(26,86,219,.2);}
     .action-ghost{background:rgba(255,255,255,.05);color:#b0bac8;
                   border:1px solid var(--border);}
 
     /* ---- TIPS GRID ---- */
-    .tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-               gap:1rem;margin-top:2.4rem;}
+    .tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+               gap:1rem;margin-top:2.2rem;}
     .tip-card{
       background:var(--card);border:1px solid var(--border);
       border-radius:14px;padding:1.4rem;
     }
-    .tip-icon{font-size:1.6rem;margin-bottom:.7rem;}
-    .tip-title{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.4rem;}
-    .tip-body{font-size:.82rem;color:#4a5568;line-height:1.65;}
+    .tip-card.family{border-color:rgba(74,222,128,.2);background:rgba(74,222,128,.03);}
+    .tip-icon{font-size:1.5rem;margin-bottom:.65rem;}
+    .tip-title{font-size:.93rem;font-weight:700;color:var(--white);margin-bottom:.35rem;}
+    .tip-body{font-size:.81rem;color:#3a4a60;line-height:1.65;}
 
     /* ---- DANGER ZONE ---- */
     .danger-box{
-      background:rgba(230,57,70,.06);border:1px solid rgba(230,57,70,.2);
-      border-radius:14px;padding:1.6rem;margin-top:2rem;
+      background:rgba(230,57,70,.05);border:1px solid rgba(230,57,70,.18);
+      border-radius:14px;padding:1.5rem;
     }
     .danger-title{
-      font-size:1rem;font-weight:800;color:#ff7070;
-      display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem;
+      font-size:.95rem;font-weight:800;color:#ff7070;
+      display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem;
     }
     .danger-list{list-style:none;}
     .danger-list li{
-      font-size:.84rem;color:#6a7585;padding:.35rem 0;
-      border-bottom:1px solid rgba(255,255,255,.04);
+      font-size:.82rem;color:#5a6070;padding:.32rem 0;
+      border-bottom:1px solid rgba(255,255,255,.03);
       display:flex;align-items:baseline;gap:.6rem;
     }
     .danger-list li:last-child{border-bottom:none;}
     .danger-list li::before{content:'\26A0';color:#ff7070;flex-shrink:0;}
 
     /* ---- SOCIAL SEARCH ---- */
-    .social-chips{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem;}
+    .social-chips{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem;}
     .chip{
       background:rgba(255,255,255,.04);border:1px solid var(--border);
-      border-radius:100px;padding:.4rem 1rem;
-      font-size:.82rem;color:#8899b0;text-decoration:none;
+      border-radius:100px;padding:.38rem .95rem;
+      font-size:.8rem;color:#7a8a9c;text-decoration:none;
       transition:border-color .2s,color .2s;
     }
     .chip:hover{border-color:rgba(116,192,252,.4);color:var(--sky);}
@@ -226,13 +254,15 @@
     /* ---- FOOTER ---- */
     footer{
       border-top:1px solid var(--border);text-align:center;
-      padding:2rem 1rem;color:#2d3540;font-size:.8rem;
+      padding:2rem 1rem;color:#252d38;font-size:.78rem;
     }
+    footer .heart{color:#ff6b6b;}
 
     @media(max-width:640px){
       .pcard{grid-template-columns:auto 1fr;}
       .pcard-action{grid-column:1/-1;}
-      .action-btn{width:100%;display:block;}
+      .action-btn{width:100%;display:block;text-align:center;}
+      .child-alert{flex-direction:column;}
     }
   </style>
 </head>
@@ -243,14 +273,22 @@
   <div class="hero-bg"></div>
   <div class="stripes"></div>
   <div class="hero-inner">
-    <div class="urgency"><span class="dot"></span>13 days left &mdash; Act Now</div>
-    <h1>Get 2 Tickets<br><em>Argentina vs Jordan</em></h1>
+    <div class="urgency"><span class="dot"></span>13 days to go &mdash; Act Now</div>
+    <div class="family-banner">&#128106; Mission: Get tickets for your brother &amp; nephew</div>
+    <h1>2 Tickets to<br><em>Argentina vs Jordan</em></h1>
+
+    <div class="who-box">
+      <div class="who-pill">&#128116; Your Brother<small>50 years old</small></div>
+      <div class="who-pill">&#129306; Your Nephew<small>9 years old &mdash; his first World Cup?</small></div>
+    </div>
+
     <div class="match-meta">
       <div class="meta-chip">&#127942; <span>M70 Group Stage</span></div>
-      <div class="meta-chip">&#128197; <span>27 Jun 2026 &bull; 21:00</span></div>
+      <div class="meta-chip">&#128197; <span>Jun 27, 2026 &bull; 21:00 CDT</span></div>
       <div class="meta-chip">&#127967; <span>AT&amp;T Stadium, Dallas</span></div>
       <div class="meta-chip">&#127385; <span>Cat. 2 &bull; Upper Concourse</span></div>
     </div>
+
     <div class="countdown">
       <div class="c-block"><div class="c-num" id="cd-d">--</div><div class="c-lbl">Days</div></div>
       <div class="c-sep">:</div>
@@ -260,9 +298,10 @@
       <div class="c-sep">:</div>
       <div class="c-block"><div class="c-num" id="cd-s">--</div><div class="c-lbl">Secs</div></div>
     </div>
+
     <div class="hero-cta">
       <a href="#platforms" class="btn btn-gold">Find Tickets Now</a>
-      <a href="#target" class="btn btn-outline">My Ticket Specs</a>
+      <a href="#target" class="btn btn-outline">View Target Specs</a>
     </div>
   </div>
 </div>
@@ -276,127 +315,110 @@
     <div class="spec-item"><div class="spec-key">City</div><div class="spec-val">Dallas, TX</div></div>
     <div class="spec-item target"><div class="spec-key">Level</div><div class="spec-val">Upper Conc.</div></div>
     <div class="spec-item target"><div class="spec-key">Category</div><div class="spec-val">Cat. 2</div></div>
-    <div class="spec-item target"><div class="spec-key">Target Section</div><div class="spec-val">~410</div></div>
-    <div class="spec-item target"><div class="spec-key">Gate</div><div class="spec-val">D &bull; Entrance 2</div></div>
-    <div class="spec-item"><div class="spec-key">Qty Needed</div><div class="spec-val">2 tickets</div></div>
+    <div class="spec-item target"><div class="spec-key">Near Section</div><div class="spec-val">~410</div></div>
+    <div class="spec-item target"><div class="spec-key">Gate / Entrance</div><div class="spec-val">D &bull; Ent. 2</div></div>
+    <div class="spec-item"><div class="spec-key">Qty</div><div class="spec-val">2 tickets</div></div>
+  </div>
+
+  <!-- CHILD NOTE -->
+  <div class="child-alert">
+    <div class="child-alert-icon">&#129306;</div>
+    <div>
+      <div class="child-alert-title">Child ticket rules for a 9-year-old at FIFA World Cup 2026</div>
+      <div class="child-alert-body">
+        <strong>Children under 3 are free</strong> (no seat, on lap). Ages 3&ndash;12 require a <strong>paid child ticket</strong> — your nephew needs his own seat and his own ticket linked to his ID.
+        Category 2 child tickets are typically <strong>30–40% cheaper</strong> than adult. On secondary markets, the original buyer’s name is on the ticket so confirm with the seller whether the FIFA app allows re-assignment to a child’s profile. The safest approach is an official FIFA-app peer-to-peer transfer where you enter your nephew’s details. <strong>AT&amp;T Stadium has no age restriction</strong> for accompanied minors in any seating level.
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- PLATFORMS -->
 <section id="platforms">
-  <div class="sec-label">Actionable Sources — Ranked by Speed &amp; Reliability</div>
+  <div class="sec-label">Actionable Sources — Ranked by Speed &amp; Safety</div>
   <h2 class="sec-title">Where to Buy Right Now</h2>
-  <p class="sec-sub">Match is June 27 &mdash; 13 days away. Start with #1 and work down the list simultaneously.</p>
+  <p class="sec-sub">Start at #1 and open every link simultaneously in separate tabs. You have 13 days — prices rise as the date approaches.</p>
 
   <div class="platforms">
 
-    <!-- 1 -->
     <div class="pcard top-pick">
       <div class="pcard-rank rank-1">1</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          FIFA Official Ticket Exchange
-          <span class="badge badge-official">Official</span>
-          <span class="badge badge-free">No Markup</span>
-        </div>
-        <div class="pcard-desc">The only <strong style="color:#c8d4e8">official</strong> resale channel authorised by FIFA. Face-value transfers between verified fans. Search for M70 Jordan vs Argentina at AT&amp;T Stadium. Log in with your FIFA account and set an alert.</div>
-        <div class="pcard-tip">Filter by AT&amp;T Stadium &rarr; Jun 27 &rarr; Upper Category 2. Buy both in a single transaction.</div>
+        <div class="pcard-name">FIFA Official Ticket Exchange <span class="badge badge-official">Official</span><span class="badge badge-free">Face Value</span><span class="badge badge-child">Child Tickets</span></div>
+        <div class="pcard-desc">The only FIFA-authorised resale channel. Crucially, this is where you can transfer tickets properly to a child’s profile. Log in &rarr; search M70 AT&amp;T Stadium Jun 27 &rarr; filter Category 2. Also check if child-discounted seats appear here — this is your best shot at getting both an adult + child ticket legitimately at near face value.</div>
+        <div class="pcard-tip">Set a “Ticket Alert” for this match — you’ll get an email the moment anyone lists seats in Section 410 area.</div>
       </div>
       <div class="pcard-action">
         <a href="https://tickets.fifa.com" target="_blank" rel="noopener" class="action-btn action-gold">Open FIFA Tickets &rarr;</a>
       </div>
     </div>
 
-    <!-- 2 -->
     <div class="pcard">
-      <div class="pcard-rank rank-2">2</div>
+      <div class="pcard-rank rank-n">2</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          StubHub
-          <span class="badge badge-fast">Largest Inventory</span>
-        </div>
-        <div class="pcard-desc">World’s biggest secondary ticket market. Search <em>Jordan vs Argentina 2026</em> or <em>FIFA World Cup AT&amp;T Stadium June 27</em>. Filter to Upper Concourse / Section 400s for matching seats next to yours.</div>
-        <div class="pcard-tip">Use “Seat Together” filter &rarr; 2 consecutive seats &rarr; Section 410 area.</div>
+        <div class="pcard-name">StubHub <span class="badge badge-fast">Largest Inventory</span></div>
+        <div class="pcard-desc">World’s biggest secondary market. Search <em>"Jordan Argentina 2026 Dallas"</em>. Use the interactive seating map to click the 400-level Upper Concourse sections. Buy both seats in one transaction so they’re guaranteed adjacent — critical for sitting next to a 9-year-old.</div>
+        <div class="pcard-tip">Filter: “2 tickets together” + Section 408–412 + Upper Concourse. StubHub guarantees delivery or full refund.</div>
       </div>
       <div class="pcard-action">
         <a href="https://www.stubhub.com/fifa-world-cup-tickets" target="_blank" rel="noopener" class="action-btn action-blue">Search StubHub &rarr;</a>
       </div>
     </div>
 
-    <!-- 3 -->
     <div class="pcard">
-      <div class="pcard-rank rank-3">3</div>
+      <div class="pcard-rank rank-n">3</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          Viagogo
-          <span class="badge badge-official">FIFA Partner</span>
-        </div>
-        <div class="pcard-desc">FIFA’s official secondary market partner for some regions. Tickets are guaranteed. Search the match directly and filter by section. Price premium expected but delivery is guaranteed.</div>
-        <div class="pcard-tip">Check “Guaranteed Delivery” box &rarr; it’ll only show tickets that arrive before Jun 27.</div>
+        <div class="pcard-name">Viagogo <span class="badge badge-official">FIFA Partner</span></div>
+        <div class="pcard-desc">FIFA’s official secondary market partner. Tickets are guaranteed valid or Viagogo replaces them. Filter by AT&amp;T Stadium &rarr; Jun 27 &rarr; Upper tier. Tick "Guaranteed Delivery Before Event" — essential when buying for a family trip.</div>
+        <div class="pcard-tip">Viagogo shows the exact section on a stadium map. Aim for 400s sections near Gate D, Entrance 2.</div>
       </div>
       <div class="pcard-action">
         <a href="https://www.viagogo.com/Sport-Tickets/Soccer/FIFA-World-Cup" target="_blank" rel="noopener" class="action-btn action-ghost">Search Viagogo &rarr;</a>
       </div>
     </div>
 
-    <!-- 4 -->
     <div class="pcard">
-      <div class="pcard-rank rank-4">4</div>
+      <div class="pcard-rank rank-n">4</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          SeatGeek
-          <span class="badge badge-fast">Deal Score</span>
-        </div>
-        <div class="pcard-desc">SeatGeek aggregates listings from multiple brokers and shows a Deal Score. Search <em>FIFA World Cup Dallas June 27</em>. The interactive seating map lets you click exactly Section 410 to see available seats.</div>
-        <div class="pcard-tip">Click the 3D seat view to confirm Upper Concourse rows match yours (Row 14 area).</div>
+        <div class="pcard-name">SeatGeek <span class="badge badge-fast">Deal Score + Map</span></div>
+        <div class="pcard-desc">Best interactive seating map — click Section 410 directly to see exactly what’s listed. The “Deal Score” flags which listings are priced below market. Useful for comparison. Buy 2 consecutive seats (same row) so your nephew is right next to his dad.</div>
+        <div class="pcard-tip">Use SeatGeek’s 3D seat preview to confirm sightlines from row 14 area — Upper Conc. rows 10–18 are ideal.</div>
       </div>
       <div class="pcard-action">
         <a href="https://seatgeek.com/search#q=FIFA+World+Cup+2026+Dallas" target="_blank" rel="noopener" class="action-btn action-ghost">Search SeatGeek &rarr;</a>
       </div>
     </div>
 
-    <!-- 5 -->
     <div class="pcard">
-      <div class="pcard-rank rank-5">5</div>
+      <div class="pcard-rank rank-n">5</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          TicketSwap
-          <span class="badge badge-free">Fan-to-Fan</span>
-        </div>
-        <div class="pcard-desc">European fan-to-fan exchange capped at 20% above face value. Strong for Argentina fans selling spares. Set up a <strong style="color:#c8d4e8">saved search alert</strong> for the match so you’re notified the instant new listings appear.</div>
-        <div class="pcard-tip">Create a free alert &rarr; “Argentina vs Jordan Dallas” &rarr; you’ll get an email the moment someone lists.</div>
+        <div class="pcard-name">TicketSwap <span class="badge badge-free">Fan-to-Fan &bull; Capped Price</span></div>
+        <div class="pcard-desc">Capped at 20% above face value — cheapest secondary option. Strong Argentina fan community here. Set a saved search alert right now so you’re notified instantly when anyone lists Cat. 2 seats for this match.</div>
+        <div class="pcard-tip">Create a free alert: “Argentina Dallas June 27” — ideal for catching someone offloading spare family tickets at face value.</div>
       </div>
       <div class="pcard-action">
-        <a href="https://www.ticketswap.com" target="_blank" rel="noopener" class="action-btn action-ghost">Go to TicketSwap &rarr;</a>
+        <a href="https://www.ticketswap.com" target="_blank" rel="noopener" class="action-btn action-ghost">Open TicketSwap &rarr;</a>
       </div>
     </div>
 
-    <!-- 6 -->
     <div class="pcard">
-      <div class="pcard-rank rank-6">6</div>
+      <div class="pcard-rank rank-n">6</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          Vivid Seats
-          <span class="badge badge-fast">US-Based</span>
-        </div>
-        <div class="pcard-desc">Strong US inventory for Dallas-area events. Often has tickets other platforms don’t. Search by event and use the map view to pinpoint 400-level sections at AT&amp;T Stadium.</div>
-        <div class="pcard-tip">Use promo code search — Vivid often has 10–15% off coupons for first-time buyers.</div>
+        <div class="pcard-name">Vivid Seats <span class="badge badge-fast">US-Based</span></div>
+        <div class="pcard-desc">Strong US inventory for Dallas events. Often has listings the other platforms don’t. First-time buyer coupons (10–15% off) are frequently available. Search the event and use the map to target sections 408–412.</div>
+        <div class="pcard-tip">Look for “2 seats, same row” listings so your brother and nephew can sit together.</div>
       </div>
       <div class="pcard-action">
         <a href="https://www.vividseats.com/search?searchTerm=FIFA+World+Cup+2026+Dallas" target="_blank" rel="noopener" class="action-btn action-ghost">Search Vivid Seats &rarr;</a>
       </div>
     </div>
 
-    <!-- 7 -->
     <div class="pcard">
-      <div class="pcard-rank rank-7">7</div>
+      <div class="pcard-rank rank-n">7</div>
       <div class="pcard-body">
-        <div class="pcard-name">
-          Facebook Marketplace &amp; Groups
-          <span class="badge badge-social">Peer-to-Peer</span>
-        </div>
-        <div class="pcard-desc">Search Facebook for <em>“FIFA World Cup 2026 tickets Argentina”</em> and <em>“World Cup tickets Dallas”</em> groups. Thousands of fans selling spares. Can negotiate face value or below. Meet in person or use PayPal Goods &amp; Services.</div>
-        <div class="pcard-tip">Only pay via PayPal G&amp;S or bank transfer — never Zelle/Venmo/crypto for tickets from strangers.</div>
+        <div class="pcard-name">Facebook Groups <span class="badge badge-social">Peer-to-Peer</span></div>
+        <div class="pcard-desc">Thousands of fans post spare tickets in World Cup Facebook groups. Families selling spare pairs are common — exactly what you need. Often face value or below. Pay only via PayPal Goods &amp; Services for buyer protection.</div>
+        <div class="pcard-tip">Post in the group: “Looking for 2 Cat. 2 Upper Concourse M70 Dallas Jun 27 — for my brother (50) and nephew (9). Will pay fair price.” Personal context gets responses.</div>
       </div>
       <div class="pcard-action">
         <a href="https://www.facebook.com/groups/search/results/?q=FIFA+World+Cup+2026+tickets+Argentina" target="_blank" rel="noopener" class="action-btn action-ghost">Search FB Groups &rarr;</a>
@@ -412,33 +434,34 @@
 <section>
   <div class="sec-label">Social Media Hunt</div>
   <h2 class="sec-title">Search These Right Now</h2>
-  <p class="sec-sub">Copy these exact searches into X/Twitter, Instagram, and Reddit to find fans selling directly.</p>
+  <p class="sec-sub">Open each link in a new tab. Sort by “Latest” to find the freshest listings.</p>
 
-  <div style="margin-top:1.6rem;">
-    <p style="font-size:.85rem;color:#4a5568;margin-bottom:.6rem;">X / Twitter searches:</p>
+  <div style="margin-top:1.4rem;">
+    <p style="font-size:.82rem;color:#3a4558;margin-bottom:.55rem;">X / Twitter:</p>
     <div class="social-chips">
-      <a class="chip" href="https://x.com/search?q=Argentina+Jordan+ticket+Dallas+2026&src=typed_query&f=live" target="_blank" rel="noopener">#Argentina Jordan ticket Dallas 2026</a>
+      <a class="chip" href="https://x.com/search?q=Argentina+Jordan+ticket+Dallas+2026&src=typed_query&f=live" target="_blank" rel="noopener">Argentina Jordan ticket Dallas 2026</a>
       <a class="chip" href="https://x.com/search?q=worldcup2026+ticket+Dallas+sell&src=typed_query&f=live" target="_blank" rel="noopener">#WorldCup2026 ticket Dallas sell</a>
-      <a class="chip" href="https://x.com/search?q=M70+ticket+sell+worldcup&src=typed_query&f=live" target="_blank" rel="noopener">M70 ticket sell worldcup</a>
-      <a class="chip" href="https://x.com/search?q=%22AT%26T+Stadium%22+ticket+sell+Argentina&src=typed_query&f=live" target="_blank" rel="noopener">AT&amp;T Stadium ticket sell Argentina</a>
+      <a class="chip" href="https://x.com/search?q=M70+ticket+vendo+worldcup&src=typed_query&f=live" target="_blank" rel="noopener">M70 ticket vendo worldcup</a>
+      <a class="chip" href="https://x.com/search?q=%22AT%26T+Stadium%22+ticket+Argentina+sell&src=typed_query&f=live" target="_blank" rel="noopener">AT&amp;T Stadium ticket Argentina sell</a>
     </div>
   </div>
 
-  <div style="margin-top:1.2rem;">
-    <p style="font-size:.85rem;color:#4a5568;margin-bottom:.6rem;">Reddit threads:</p>
+  <div style="margin-top:1.1rem;">
+    <p style="font-size:.82rem;color:#3a4558;margin-bottom:.55rem;">Reddit:</p>
     <div class="social-chips">
-      <a class="chip" href="https://www.reddit.com/r/FIFAWorldCup/search/?q=ticket+Dallas+Argentina+sell&sort=new" target="_blank" rel="noopener">r/FIFAWorldCup &rarr; ticket Dallas Argentina sell</a>
+      <a class="chip" href="https://www.reddit.com/r/FIFAWorldCup/search/?q=ticket+Dallas+Argentina&sort=new" target="_blank" rel="noopener">r/FIFAWorldCup &rarr; ticket Dallas Argentina</a>
       <a class="chip" href="https://www.reddit.com/r/worldcup/search/?q=ticket+sell+Dallas&sort=new" target="_blank" rel="noopener">r/worldcup &rarr; ticket sell Dallas</a>
-      <a class="chip" href="https://www.reddit.com/r/argentina/search/?q=world+cup+ticket+sell+2026&sort=new" target="_blank" rel="noopener">r/argentina &rarr; world cup ticket sell 2026</a>
+      <a class="chip" href="https://www.reddit.com/r/argentina/search/?q=world+cup+entradas+vendo+2026&sort=new" target="_blank" rel="noopener">r/argentina &rarr; entradas vendo 2026</a>
     </div>
   </div>
 
-  <div style="margin-top:1.2rem;">
-    <p style="font-size:.85rem;color:#4a5568;margin-bottom:.6rem;">WhatsApp / Telegram — search and join:</p>
+  <div style="margin-top:1.1rem;">
+    <p style="font-size:.82rem;color:#3a4558;margin-bottom:.55rem;">Telegram / WhatsApp groups to search and join:</p>
     <div class="social-chips">
-      <span class="chip">Search Telegram: “Mundial 2026 entradas”</span>
-      <span class="chip">Search Telegram: “FIFA WC 2026 tickets Dallas”</span>
-      <span class="chip">Search WhatsApp: “World Cup 2026 Argentina tickets”</span>
+      <span class="chip">Telegram: “Mundial 2026 entradas”</span>
+      <span class="chip">Telegram: “FIFA WC 2026 tickets Dallas”</span>
+      <span class="chip">WhatsApp: “World Cup 2026 Argentina tickets”</span>
+      <span class="chip">Telegram: “Entradas Argentina 2026”</span>
     </div>
   </div>
 </section>
@@ -448,38 +471,38 @@
 <!-- PRO TIPS -->
 <section>
   <div class="sec-label">Strategy</div>
-  <h2 class="sec-title">Pro Tips for Finding Section 410 Seats</h2>
+  <h2 class="sec-title">Tips for This Specific Situation</h2>
 
   <div class="tips-grid">
-    <div class="tip-card">
-      <div class="tip-icon">&#128073;</div>
-      <div class="tip-title">Search Adjacent Sections</div>
-      <div class="tip-body">Section 410 may be sold out but 408, 409, 411, 412 are in the same Upper Concourse area around Gate D. You’ll be near the same entrance and same atmosphere.</div>
+    <div class="tip-card family">
+      <div class="tip-icon">&#129306;</div>
+      <div class="tip-title">Seat Adjacent to Section 410</div>
+      <div class="tip-body">You have Section 410, Row 14, Seat 22. Target seats 20–21 (same row, same section) or sections 409/411 which are right next to you. Being in adjacent sections at AT&amp;T Stadium means you’re still within easy walking distance at Gate D.</div>
+    </div>
+    <div class="tip-card family">
+      <div class="tip-icon">&#128103;</div>
+      <div class="tip-title">9-Year-Old Needs His Own Seat</div>
+      <div class="tip-body">FIFA requires under-12s to have a paid ticket with their own ID linked. When buying on secondary markets, confirm the seller can officially transfer via FIFA app — that’s the only way to change the name on the ticket to your nephew’s.</div>
     </div>
     <div class="tip-card">
       <div class="tip-icon">&#9200;</div>
       <div class="tip-title">Check Daily at 09:00 &amp; 18:00</div>
-      <div class="tip-body">Secondary market inventory peaks in the morning and early evening when sellers list. Prices also tend to drop in the 72–48 hours before a match as holdouts panic-sell.</div>
+      <div class="tip-body">Secondary inventory peaks morning and evening. Prices also tend to drop in the 72–48 hours before a match as sellers who can’t attend panic-list. But for Argentina games, don’t bank on last-minute deals.</div>
     </div>
     <div class="tip-card">
       <div class="tip-icon">&#128276;</div>
       <div class="tip-title">Set Alerts on Every Platform</div>
-      <div class="tip-body">StubHub, SeatGeek, and TicketSwap all have email/push alerts for saved searches. Set them up now for “AT&amp;T Stadium June 27” so you’re notified instantly when new seats list.</div>
+      <div class="tip-body">StubHub, SeatGeek, and TicketSwap all have email/push alerts. Set them all up now for “AT&amp;T Stadium June 27” so you’re the first to see new listings in Section 410 area.</div>
     </div>
     <div class="tip-card">
       <div class="tip-icon">&#128176;</div>
-      <div class="tip-title">Budget Expectation</div>
-      <div class="tip-body">Argentina group stage Cat. 2 tickets on the secondary market are currently trading $300–$700 each. Expect higher closer to the date. Buying 2 at once may get a small bundle discount from a private seller.</div>
+      <div class="tip-title">Budget: $300–$700 per Ticket</div>
+      <div class="tip-body">Argentina group stage Cat. 2 seats are currently trading in this range on secondary markets. Buying 2 from a single private seller may get a small discount. Child tickets on official channels are 30–40% cheaper — worth checking FIFA first.</div>
     </div>
     <div class="tip-card">
-      <div class="tip-icon">&#127760;</div>
-      <div class="tip-title">Target Jordan Fan Sellers</div>
-      <div class="tip-body">Jordan fans who bought tickets may not have travel arranged. Search Arabic-language social media and Facebook groups for Jordanians selling — they may sell at or near face value.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">&#128196;</div>
-      <div class="tip-title">FIFA Transfer Feature</div>
-      <div class="tip-body">If you find a private seller who has FIFA app tickets (like yours), the official FIFA app has a “Send Ticket” (Enviar boleto) feature for official peer-to-peer transfers. This is the safest method of all.</div>
+      <div class="tip-icon">&#127816;</div>
+      <div class="tip-title">The Personal Pitch Works</div>
+      <div class="tip-body">When posting in Facebook groups or messaging sellers, mention it’s for your brother and 9-year-old nephew at their first World Cup. Sellers with spare family tickets respond to this — they want the seats to go to a deserving family.</div>
     </div>
   </div>
 </section>
@@ -491,46 +514,48 @@
   <div class="sec-label">Safety</div>
   <h2 class="sec-title">Avoid Scams</h2>
   <div class="danger-box">
-    <div class="danger-title">&#128721; Red Flags to Reject Immediately</div>
+    <div class="danger-title">&#128721; Red Flags — Walk Away Immediately</div>
     <ul class="danger-list">
-      <li>Seller asks for payment via Zelle, Venmo, crypto, or Western Union — no buyer protection</li>
-      <li>Tickets sent as a PDF or photo before payment — PDFs can be copied infinitely</li>
-      <li>Price is suspiciously below market (e.g. $80 for an Argentina match) — too good to be true</li>
-      <li>Seller refuses to do a video call showing the FIFA app with the live QR code</li>
-      <li>Transfer attempted outside the official FIFA ticketing app — only official transfers are valid</li>
-      <li>Seller can’t provide the exact section, row, and seat number before you pay</li>
+      <li>Payment requested via Zelle, Venmo, crypto, or Western Union — zero buyer protection</li>
+      <li>Ticket sent as PDF or screenshot before payment — PDFs can be duplicated endlessly</li>
+      <li>Price is suspiciously low (e.g. $80 Cat.2 for Argentina) — it’s a scam</li>
+      <li>Seller refuses video call showing live FIFA app QR code ticking in real time</li>
+      <li>Transfer outside the official FIFA app — only app-to-app transfers are valid at turnstiles</li>
+      <li>Seller can’t confirm Section, Row, and Seat number before payment</li>
+      <li>Pressure tactics: “I have 3 other buyers, decide in 10 minutes”</li>
     </ul>
   </div>
-  <div style="margin-top:1.2rem;display:flex;gap:.8rem;flex-wrap:wrap;">
-    <a href="https://www.ic3.gov" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:.82rem;padding:.6rem 1.2rem;">Report Fraud (US FBI IC3)</a>
-    <a href="https://tickets.fifa.com/faq" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:.82rem;padding:.6rem 1.2rem;">FIFA Ticket FAQ</a>
+  <div style="margin-top:1rem;display:flex;gap:.7rem;flex-wrap:wrap;">
+    <a href="https://tickets.fifa.com/faq" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:.8rem;padding:.55rem 1.1rem;">FIFA Ticket FAQ</a>
+    <a href="https://www.ic3.gov" target="_blank" rel="noopener" class="btn btn-outline" style="font-size:.8rem;padding:.55rem 1.1rem;">Report Fraud (FBI IC3)</a>
   </div>
 </section>
 
 <footer>
-  <p>M70 Jordan vs Argentina &bull; AT&amp;T Stadium, Dallas &bull; Jun 27, 2026 &bull; 21:00</p>
-  <p style="margin-top:.4rem;">Need 2 &times; Category 2 Upper Concourse seats near Section 410, Gate D, Entrance 2</p>
+  <p>M70 Jordan vs Argentina &bull; AT&amp;T Stadium, Dallas &bull; Jun 27, 2026 &bull; 21:00 CDT</p>
+  <p style="margin-top:.4rem;">2 &times; Cat. 2 Upper Concourse &bull; Near Section 410, Gate D, Entrance 2</p>
+  <p style="margin-top:.6rem;">Made with <span class="heart">&#9829;</span> for a brother and nephew who deserve to be there</p>
 </footer>
 
 <script>
-  const matchTime = new Date('2026-06-27T21:00:00-05:00'); // Dallas CDT
+  const matchTime = new Date('2026-06-27T21:00:00-05:00');
   function tick(){
     const diff = matchTime - new Date();
     if(diff <= 0){
       ['d','h','m','s'].forEach(u=>document.getElementById('cd-'+u).textContent='00');
       return;
     }
-    const pad = n=>String(n).padStart(2,'0');
+    const pad = n => String(n).padStart(2,'0');
     document.getElementById('cd-d').textContent = pad(Math.floor(diff/864e5));
     document.getElementById('cd-h').textContent = pad(Math.floor((diff%864e5)/36e5));
     document.getElementById('cd-m').textContent = pad(Math.floor((diff%36e5)/6e4));
     document.getElementById('cd-s').textContent = pad(Math.floor((diff%6e4)/1e3));
   }
-  tick(); setInterval(tick,1000);
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click',e=>{
-      const el=document.querySelector(a.getAttribute('href'));
-      if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
+  tick(); setInterval(tick, 1000);
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const el = document.querySelector(a.getAttribute('href'));
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
   });
 </script>
