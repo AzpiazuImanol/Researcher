@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIFA World Cup 2026 — Tickets</title>
+  <style>
+    :root {
+      --gold: #f5c842;
+      --dark: #0a0a0f;
+      --card-bg: #12121a;
+      --accent: #e63946;
+      --blue: #1d3557;
+      --light: #f1faee;
+      --text: #cdd3de;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245,200,66,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 80% at 80% 100%, rgba(230,57,70,.12) 0%, transparent 60%),
+        linear-gradient(160deg, #0a0a0f 0%, #0d1117 60%, #0a0a0f 100%);
+      z-index: 0;
+    }
+
+    /* animated pitch lines */
+    .pitch-lines {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: .04;
+      background-image:
+        repeating-linear-gradient(0deg, #fff 0, #fff 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(90deg, #fff 0, #fff 1px, transparent 1px, transparent 60px);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 860px; }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(230,57,70,.15);
+      border: 1px solid rgba(230,57,70,.5);
+      color: #ff6b6b;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.6rem;
+    }
+
+    .pulse {
+      width: 8px; height: 8px;
+      background: #ff6b6b;
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(1.5); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: #fff;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, var(--gold), #ff9f43);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      margin-top: 1.2rem;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #8892a4;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hosts {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .host-flag {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px;
+      padding: .5rem 1.2rem;
+      font-size: .9rem;
+      font-weight: 600;
+      color: #c8d0de;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2.4rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .85rem 2.2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform .18s, box-shadow .18s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold), #ff9f43);
+      color: #1a1000;
+      box-shadow: 0 6px 28px rgba(245,200,66,.35);
+    }
+
+    .btn-primary:hover { box-shadow: 0 10px 36px rgba(245,200,66,.5); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,.06);
+      color: #dde4f0;
+      border: 1px solid rgba(255,255,255,.15);
+    }
+
+    .btn-secondary:hover { background: rgba(255,255,255,.1); }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      animation: bounce 2s infinite;
+      opacity: .4;
+      font-size: .8rem;
+      text-align: center;
+    }
+
+    .scroll-hint::after { content: '\2193'; display: block; font-size: 1.3rem; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: rgba(255,255,255,.03);
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .stat {
+      padding: 1.4rem 2.5rem;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,.06);
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .78rem;
+      color: #6b7585;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .3rem;
+    }
+
+    /* ── SECTIONS ── */
+    section { max-width: 1100px; margin: 0 auto; padding: 5rem 1.5rem; }
+
+    .section-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .7rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      color: #6b7585;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── TICKET CARDS ── */
+    .tickets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.4rem;
+      margin-top: 3rem;
+    }
+
+    .ticket-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform .22s, border-color .22s, box-shadow .22s;
+      position: relative;
+    }
+
+    .ticket-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(245,200,66,.35);
+      box-shadow: 0 12px 40px rgba(0,0,0,.4);
+    }
+
+    .ticket-card.featured {
+      border-color: rgba(245,200,66,.4);
+    }
+
+    .featured-tag {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--gold);
+      color: #1a1000;
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .7rem;
+      border-radius: 100px;
+    }
+
+    .ticket-header {
+      padding: 1.8rem 1.8rem 0;
+    }
+
+    .ticket-icon {
+      font-size: 2.2rem;
+      margin-bottom: .8rem;
+    }
+
+    .ticket-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: .3rem;
+    }
+
+    .ticket-desc {
+      font-size: .85rem;
+      color: #6b7585;
+      line-height: 1.6;
+    }
+
+    .ticket-divider {
+      border: none;
+      border-top: 1px dashed rgba(255,255,255,.08);
+      margin: 1.4rem 1.8rem;
+    }
+
+    .ticket-price-row {
+      padding: 0 1.8rem;
+      display: flex;
+      align-items: baseline;
+      gap: .4rem;
+    }
+
+    .ticket-from { font-size: .8rem; color: #5a6273; }
+
+    .ticket-price {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .ticket-currency { font-size: .9rem; color: #8892a4; }
+
+    .ticket-perks {
+      padding: 1rem 1.8rem;
+      list-style: none;
+    }
+
+    .ticket-perks li {
+      font-size: .84rem;
+      color: #7d8a9c;
+      padding: .3rem 0;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .ticket-perks li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .ticket-footer {
+      padding: 1.4rem 1.8rem;
+    }
+
+    .ticket-btn {
+      display: block;
+      width: 100%;
+      padding: .8rem;
+      border-radius: 10px;
+      font-size: .95rem;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, var(--gold), #ff9f43);
+      color: #1a1000;
+      transition: opacity .18s, transform .18s;
+    }
+
+    .ticket-btn:hover { opacity: .88; transform: scale(.98); }
+
+    .ticket-btn.outline {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.15);
+      color: #c0c8d8;
+    }
+
+    .ticket-btn.outline:hover { background: rgba(255,255,255,.05); }
+
+    /* ── PHASES ── */
+    .phases {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .phase-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 1.6rem;
+      transition: border-color .2s;
+    }
+
+    .phase-card:hover { border-color: rgba(245,200,66,.3); }
+
+    .phase-round {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: .6rem;
+    }
+
+    .phase-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .3rem;
+    }
+
+    .phase-date {
+      font-size: .82rem;
+      color: #5a6273;
+    }
+
+    .phase-games {
+      margin-top: .8rem;
+      font-size: .82rem;
+      color: #8892a4;
+    }
+
+    /* ── VENUES ── */
+    .venues-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 3rem;
+    }
+
+    .venue-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: border-color .2s, transform .2s;
+    }
+
+    .venue-card:hover {
+      border-color: rgba(245,200,66,.25);
+      transform: translateY(-3px);
+    }
+
+    .venue-country {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
+
+    .venue-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .2rem;
+    }
+
+    .venue-city {
+      font-size: .85rem;
+      color: #5a6273;
+    }
+
+    .venue-cap {
+      margin-top: .8rem;
+      font-size: .8rem;
+      color: #8892a4;
+    }
+
+    /* ── HOW TO BUY ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-top: 3rem;
+    }
+
+    .step {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 1.8rem;
+    }
+
+    .step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(245,200,66,.12);
+      border: 1px solid rgba(245,200,66,.3);
+      color: var(--gold);
+      font-size: 1rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: .4rem;
+    }
+
+    .step-desc { font-size: .85rem; color: #5a6273; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,.06);
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: #3d4553;
+      font-size: .82rem;
+    }
+
+    footer a { color: #5a6273; text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.05);
+    }
+
+    /* ── TIMER ── */
+    .timer-section {
+      background: rgba(245,200,66,.04);
+      border-top: 1px solid rgba(245,200,66,.08);
+      border-bottom: 1px solid rgba(245,200,66,.08);
+      padding: 2.5rem 1rem;
+      text-align: center;
+    }
+
+    .timer-label {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .count-block {
+      min-width: 70px;
+    }
+
+    .count-num {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .count-unit {
+      font-size: .72rem;
+      color: #5a6273;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-top: .3rem;
+    }
+
+    .count-sep {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: rgba(255,255,255,.15);
+      line-height: 1.1;
+      padding-top: .1rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="pitch-lines"></div>
+  <div class="hero-content">
+    <div class="live-badge"><span class="pulse"></span> Tournament In Progress &bull; 2026</div>
+    <h1>FIFA World Cup<br><span class="highlight">2026 Tickets</span></h1>
+    <p class="hero-sub">The greatest sporting event on Earth — USA &bull; Canada &bull; Mexico. 48 nations. 16 venues. One champion.</p>
+    <div class="hosts">
+      <span class="host-flag">🇺🇸 United States</span>
+      <span class="host-flag">🇨🇦 Canada</span>
+      <span class="host-flag">🇲🇽 Mexico</span>
+    </div>
+    <div class="cta-group">
+      <a href="#tickets" class="btn btn-primary">Browse Tickets</a>
+      <a href="#venues" class="btn btn-secondary">View Venues</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</div>
+
+<!-- ── TIMER ── -->
+<div class="timer-section">
+  <div class="timer-label">&#9917; World Cup Final Countdown</div>
+  <div class="countdown">
+    <div class="count-block"><div class="count-num" id="cd-d">--</div><div class="count-unit">Days</div></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><div class="count-num" id="cd-h">--</div><div class="count-unit">Hours</div></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><div class="count-num" id="cd-m">--</div><div class="count-unit">Mins</div></div>
+    <div class="count-sep">:</div>
+    <div class="count-block"><div class="count-num" id="cd-s">--</div><div class="count-unit">Secs</div></div>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">48</div><div class="stat-label">Nations</div></div>
+  <div class="stat"><div class="stat-num">16</div><div class="stat-label">Venues</div></div>
+  <div class="stat"><div class="stat-num">104</div><div class="stat-label">Matches</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">Host Countries</div></div>
+  <div class="stat"><div class="stat-num">5M+</div><div class="stat-label">Fans</div></div>
+</div>
+
+<!-- ── TICKETS ── -->
+<section id="tickets">
+  <div class="section-label">Official Tickets</div>
+  <h2 class="section-title">Choose Your Experience</h2>
+  <p class="section-sub">From group stage to the Final at MetLife Stadium — find the ticket that matches your passion.</p>
+
+  <div class="tickets-grid">
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div class="ticket-icon">⚽</div>
+        <div class="ticket-name">Group Stage</div>
+        <div class="ticket-desc">Witness the opening battles as 48 nations fight for a spot in the Round of 32.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$110</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>3 matches per group (4 sessions)</li>
+        <li>Category 1 – 4 seating</li>
+        <li>All 3 host nations' venues</li>
+        <li>E-ticket delivery</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn outline">Check Availability</button>
+      </div>
+    </div>
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div class="ticket-icon">🏟️</div>
+        <div class="ticket-name">Round of 32</div>
+        <div class="ticket-desc">Knockout football begins — every match is do-or-die. Drama guaranteed.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$190</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>Single match ticket</li>
+        <li>Venue selection available</li>
+        <li>Category 1 – 3 seating</li>
+        <li>Instant e-ticket</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn outline">Check Availability</button>
+      </div>
+    </div>
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div class="ticket-icon">🔥</div>
+        <div class="ticket-name">Quarter-Finals</div>
+        <div class="ticket-desc">The best eight teams in the world battle for a place in the semi-finals.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$380</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>Single match ticket</li>
+        <li>Premium seating options</li>
+        <li>Official match programme</li>
+        <li>Venue hospitality access</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn outline">Check Availability</button>
+      </div>
+    </div>
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div class="ticket-icon">⚡</div>
+        <div class="ticket-name">Semi-Finals</div>
+        <div class="ticket-desc">Two matches that decide who gets to play for the greatest trophy in sport.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$620</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>Single semi-final match</li>
+        <li>Category 1 premium only</li>
+        <li>Exclusive hospitality lounge</li>
+        <li>Official keepsake ticket</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn outline">Check Availability</button>
+      </div>
+    </div>
+
+    <div class="ticket-card featured">
+      <span class="featured-tag">Most Wanted</span>
+      <div class="ticket-header">
+        <div class="ticket-icon">🏆</div>
+        <div class="ticket-name">The Final</div>
+        <div class="ticket-desc">MetLife Stadium, New York. July 19, 2026. The single greatest match in world football.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$1,200</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>MetLife Stadium, New Jersey</li>
+        <li>Category 1 – 4 seating</li>
+        <li>Official Final programme &amp; lanyard</li>
+        <li>Pre-match ceremony access</li>
+        <li>Exclusive trophy presentation view</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn">Join Waitlist</button>
+      </div>
+    </div>
+
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <div class="ticket-icon">✨</div>
+        <div class="ticket-name">Hospitality Package</div>
+        <div class="ticket-desc">Premium match-day experience with lounge access, fine dining, and behind-the-scenes tours.</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-price-row">
+        <span class="ticket-from">from</span>
+        <span class="ticket-price">$2,500</span>
+        <span class="ticket-currency">USD</span>
+      </div>
+      <ul class="ticket-perks">
+        <li>VIP lounge &amp; gourmet dining</li>
+        <li>Premium padded seats</li>
+        <li>Dedicated host &amp; concierge</li>
+        <li>Official FIFA gift pack</li>
+      </ul>
+      <div class="ticket-footer">
+        <button class="ticket-btn outline">Enquire Now</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── TOURNAMENT PHASES ── -->
+<section id="schedule">
+  <div class="section-label">Schedule</div>
+  <h2 class="section-title">Tournament Phases</h2>
+  <p class="section-sub">From opening kick-off to the Final — 39 days of unmissable football.</p>
+
+  <div class="phases">
+    <div class="phase-card">
+      <div class="phase-round">Phase 1</div>
+      <div class="phase-name">Group Stage</div>
+      <div class="phase-date">Jun 11 – Jul 2, 2026</div>
+      <div class="phase-games">72 matches &bull; 12 groups</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-round">Phase 2</div>
+      <div class="phase-name">Round of 32</div>
+      <div class="phase-date">Jul 3 – Jul 6, 2026</div>
+      <div class="phase-games">16 matches</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-round">Phase 3</div>
+      <div class="phase-name">Round of 16</div>
+      <div class="phase-date">Jul 7 – Jul 10, 2026</div>
+      <div class="phase-games">8 matches</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-round">Phase 4</div>
+      <div class="phase-name">Quarter-Finals</div>
+      <div class="phase-date">Jul 11 – Jul 12, 2026</div>
+      <div class="phase-games">4 matches</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-round">Phase 5</div>
+      <div class="phase-name">Semi-Finals</div>
+      <div class="phase-date">Jul 15 – Jul 16, 2026</div>
+      <div class="phase-games">2 matches</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-round">Final</div>
+      <div class="phase-name">The Final</div>
+      <div class="phase-date">Jul 19, 2026</div>
+      <div class="phase-games">MetLife Stadium, NJ</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── VENUES ── -->
+<section id="venues">
+  <div class="section-label">Host Venues</div>
+  <h2 class="section-title">16 Iconic Stadiums</h2>
+  <p class="section-sub">From Azteca to MetLife — the most celebrated football stages on the continent.</p>
+
+  <div class="venues-grid">
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">MetLife Stadium</div>
+      <div class="venue-city">East Rutherford, NJ — Final Venue</div>
+      <div class="venue-cap">Capacity 82,500</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">AT&amp;T Stadium</div>
+      <div class="venue-city">Arlington, Texas</div>
+      <div class="venue-cap">Capacity 80,000</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">SoFi Stadium</div>
+      <div class="venue-city">Inglewood, California</div>
+      <div class="venue-cap">Capacity 70,240</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Levi's Stadium</div>
+      <div class="venue-city">Santa Clara, California</div>
+      <div class="venue-cap">Capacity 68,500</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Hard Rock Stadium</div>
+      <div class="venue-city">Miami Gardens, Florida</div>
+      <div class="venue-cap">Capacity 65,326</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Arrowhead Stadium</div>
+      <div class="venue-city">Kansas City, Missouri</div>
+      <div class="venue-cap">Capacity 76,416</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Lincoln Financial Field</div>
+      <div class="venue-city">Philadelphia, Pennsylvania</div>
+      <div class="venue-cap">Capacity 69,796</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Gillette Stadium</div>
+      <div class="venue-city">Foxborough, Massachusetts</div>
+      <div class="venue-cap">Capacity 65,878</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">NRG Stadium</div>
+      <div class="venue-city">Houston, Texas</div>
+      <div class="venue-cap">Capacity 72,220</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Seattle Lumen Field</div>
+      <div class="venue-city">Seattle, Washington</div>
+      <div class="venue-cap">Capacity 69,000</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇨🇦 Canada</div>
+      <div class="venue-name">BC Place</div>
+      <div class="venue-city">Vancouver, BC</div>
+      <div class="venue-cap">Capacity 54,500</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇨🇦 Canada</div>
+      <div class="venue-name">BMO Field</div>
+      <div class="venue-city">Toronto, Ontario</div>
+      <div class="venue-cap">Capacity 45,736</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇲🇽 Mexico</div>
+      <div class="venue-name">Estadio Azteca</div>
+      <div class="venue-city">Mexico City — Historic Opening</div>
+      <div class="venue-cap">Capacity 87,523</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇲🇽 Mexico</div>
+      <div class="venue-name">Estadio BBVA</div>
+      <div class="venue-city">Monterrey</div>
+      <div class="venue-cap">Capacity 53,500</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇲🇽 Mexico</div>
+      <div class="venue-name">Estadio Akron</div>
+      <div class="venue-city">Guadalajara</div>
+      <div class="venue-cap">Capacity 49,850</div>
+    </div>
+    <div class="venue-card">
+      <div class="venue-country">🇺🇸 USA</div>
+      <div class="venue-name">Mercedes-Benz Stadium</div>
+      <div class="venue-city">Atlanta, Georgia</div>
+      <div class="venue-cap">Capacity 71,000</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── HOW TO BUY ── -->
+<section id="how-to-buy">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Getting Your Tickets</h2>
+  <p class="section-sub">Official tickets are sold exclusively through FIFA's ticketing platform. Here's the process.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Create a FIFA Account</div>
+      <div class="step-desc">Register on the official FIFA ticketing portal with a valid ID and payment method.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Apply in a Ballot</div>
+      <div class="step-desc">High-demand matches use a ballot system. Apply during the window and wait for the draw result.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">First-Come, First-Served</div>
+      <div class="step-desc">Remaining tickets go on general sale. Be ready at the exact time — they sell out fast.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Receive E-Tickets</div>
+      <div class="step-desc">Your tickets are delivered digitally to your FIFA account. Add to Apple/Google Wallet.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-title">Attend &amp; Enjoy</div>
+      <div class="step-desc">Present your QR code at the turnstiles. Tickets are non-transferable and ID-linked.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>FIFA World Cup 2026&trade; &mdash; USA &bull; Canada &bull; Mexico &bull; June 11 &ndash; July 19, 2026</p>
+  <p style="margin-top:.5rem">This page is a fan information resource. Official tickets sold at <a href="#">fifa.com/tickets</a></p>
+</footer>
+
+<script>
+  // Countdown to the Final: July 19 2026 18:00 UTC
+  const finalDate = new Date('2026-07-19T18:00:00Z');
+  function tick() {
+    const now = new Date();
+    const diff = finalDate - now;
+    if (diff <= 0) {
+      document.querySelector('.timer-label').textContent = '⚽ The Final Is Live!';
+      ['d','h','m','s'].forEach(u => document.getElementById('cd-'+u).textContent = '00');
+      return;
+    }
+    const d = Math.floor(diff / 864e5);
+    const h = Math.floor((diff % 864e5) / 36e5);
+    const m = Math.floor((diff % 36e5) / 6e4);
+    const s = Math.floor((diff % 6e4) / 1e3);
+    const fmt = n => String(n).padStart(2,'0');
+    document.getElementById('cd-d').textContent = fmt(d);
+    document.getElementById('cd-h').textContent = fmt(h);
+    document.getElementById('cd-m').textContent = fmt(m);
+    document.getElementById('cd-s').textContent = fmt(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const el = document.querySelector(a.getAttribute('href'));
+      if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
