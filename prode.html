@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prode — FIFA World Cup 2026</title>
+  <style>
+    :root {
+      --gold:#f5c842; --dark:#0a0a0f; --card:#111118;
+      --border:rgba(255,255,255,.08); --text:#b0bac8; --white:#f0f4ff;
+      --g3:#22c55e; --g1:#eab308; --g0:#374151;
+      --blue:#3b82f6; --red:#ef4444;
+      --change:#f97316; --keep:#22c55e;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--dark);color:var(--text);}
+
+    /* HEADER */
+    .header{
+      background:#0d1117;border-bottom:1px solid rgba(245,200,66,.15);
+      padding:2rem 1.5rem 1.8rem;text-align:center;position:relative;overflow:hidden;
+    }
+    .header::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse 60% 80% at 50% -20%,rgba(245,200,66,.09) 0%,transparent 70%);
+    }
+    .header-inner{position:relative;z-index:1;max-width:900px;margin:0 auto;}
+    .nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;flex-wrap:wrap;gap:.5rem;}
+    .nav a{color:#3a4558;font-size:.8rem;text-decoration:none;transition:color .2s;}
+    .nav a:hover{color:var(--gold);}
+    .header h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:900;color:var(--white);letter-spacing:-.02em;}
+    .header h1 span{background:linear-gradient(90deg,var(--gold),#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .header-sub{color:#3a4558;font-size:.88rem;margin-top:.4rem;}
+
+    /* TOTAL SCORE */
+    .total-bar{
+      background:rgba(245,200,66,.05);border-top:1px solid rgba(245,200,66,.12);
+      border-bottom:1px solid rgba(245,200,66,.12);padding:1.4rem 1rem;
+    }
+    .total-inner{max-width:900px;margin:0 auto;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+    .total-item{text-align:center;}
+    .total-num{font-size:2.4rem;font-weight:900;color:var(--white);line-height:1;}
+    .total-lbl{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#3a4558;margin-top:.25rem;}
+    .total-item.highlight .total-num{color:var(--gold);}
+
+    /* SECTION */
+    section{max-width:900px;margin:0 auto;padding:3rem 1.5rem;}
+    .sec-label{font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;}
+    .sec-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:var(--white);margin-bottom:.5rem;}
+    .sec-sub{font-size:.85rem;color:#3a4558;line-height:1.65;margin-bottom:1.8rem;}
+    hr.div{border:none;border-top:1px solid rgba(255,255,255,.05);}
+
+    /* MATCH TABLE */
+    .match-table{width:100%;border-collapse:collapse;}
+    .match-table th{
+      font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      color:#2d3748;padding:.5rem .8rem;border-bottom:1px solid rgba(255,255,255,.05);
+      text-align:left;
+    }
+    .match-table th:last-child,.match-table td:last-child{text-align:center;}
+    .match-table tr:hover td{background:rgba(255,255,255,.02);}
+    .match-table td{
+      padding:.65rem .8rem;border-bottom:1px solid rgba(255,255,255,.03);
+      font-size:.83rem;vertical-align:middle;
+    }
+    .grp{font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#2d3748;background:rgba(255,255,255,.04);
+         border:1px solid var(--border);border-radius:4px;padding:.15rem .4rem;white-space:nowrap;}
+    .match-name{color:#8899b0;font-weight:600;}
+    .score-cell{font-family:monospace;font-size:.88rem;color:var(--white);font-weight:700;}
+    .pts-badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:32px;height:24px;border-radius:6px;font-size:.8rem;font-weight:800;
+    }
+    .pts-3{background:rgba(34,197,94,.15);color:var(--g3);border:1px solid rgba(34,197,94,.3);}
+    .pts-1{background:rgba(234,179,8,.12);color:var(--g1);border:1px solid rgba(234,179,8,.3);}
+    .pts-0{background:rgba(55,65,81,.3);color:#4a5568;border:1px solid rgba(55,65,81,.4);}
+
+    /* R2 PREDICTION CARDS */
+    .r2-grid{display:grid;gap:.9rem;margin-top:1.4rem;}
+    .r2-card{
+      background:var(--card);border:1px solid var(--border);
+      border-radius:14px;padding:1.2rem 1.4rem;
+      display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;
+      transition:border-color .2s;
+    }
+    .r2-card:hover{border-color:rgba(255,255,255,.15);}
+    .r2-card.change{border-left:3px solid var(--change);}
+    .r2-card.keep{border-left:3px solid var(--keep);}
+
+    .r2-meta{display:flex;flex-direction:column;gap:.3rem;min-width:56px;}
+    .r2-grp{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+            color:#2d3748;background:rgba(255,255,255,.04);border:1px solid var(--border);
+            border-radius:4px;padding:.15rem .4rem;text-align:center;}
+    .r2-date{font-size:.68rem;color:#2d3748;}
+
+    .r2-body{}
+    .r2-match{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.35rem;}
+    .r2-pred-row{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;}
+    .r2-pred-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#2d3748;}
+    .r2-score{
+      font-family:monospace;font-size:1rem;font-weight:800;color:var(--white);
+      background:rgba(255,255,255,.05);border:1px solid var(--border);
+      border-radius:7px;padding:.2rem .6rem;
+    }
+    .r2-score.suggested{color:var(--change);border-color:rgba(249,115,22,.35);background:rgba(249,115,22,.07);}
+    .arrow{color:#3a4558;font-size:.8rem;}
+    .r2-tip{margin-top:.55rem;font-size:.78rem;color:#3a4558;line-height:1.55;}
+    .r2-tip strong{color:#6a7a90;}
+
+    .r2-action{flex-shrink:0;}
+    .tag{
+      display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;padding:.28rem .7rem;border-radius:100px;white-space:nowrap;
+    }
+    .tag-change{background:rgba(249,115,22,.12);color:var(--change);border:1px solid rgba(249,115,22,.3);}
+    .tag-keep{background:rgba(34,197,94,.1);color:var(--keep);border:1px solid rgba(34,197,94,.25);}
+
+    /* LEGEND */
+    .legend{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+    .legend-item{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:#3a4558;}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);text-align:center;padding:1.8rem 1rem;color:#1e2530;font-size:.78rem;}
+    footer a{color:#2d3748;text-decoration:none;}
+    footer a:hover{color:var(--gold);}
+
+    @media(max-width:580px){
+      .r2-card{grid-template-columns:1fr;gap:.6rem;}
+      .r2-action{justify-self:start;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="nav">
+      <a href="index.html">&#8592; Back to Ticket Hunt</a>
+      <span style="font-size:.75rem;color:#1e2530;">FIFA World Cup 2026</span>
+    </div>
+    <h1>Prode <span>World Cup 2026</span></h1>
+    <p class="header-sub">Group Stage — Full Predictions Tracker</p>
+  </div>
+</div>
+
+<!-- TOTAL SCORE -->
+<div class="total-bar">
+  <div class="total-inner">
+    <div class="total-item highlight">
+      <div class="total-num">21</div>
+      <div class="total-lbl">Round 1 Points</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num">24</div>
+      <div class="total-lbl">R1 Matches</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num">4</div>
+      <div class="total-lbl">Exact Scores (3pts)</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num">5</div>
+      <div class="total-lbl">Correct Winners (1pt)</div>
+    </div>
+    <div class="total-item">
+      <div class="total-num" id="r2-pts">—</div>
+      <div class="total-lbl">Round 2 Points</div>
+    </div>
+  </div>
+</div>
+
+<!-- ROUND 1 -->
+<section>
+  <div class="sec-label">Completed</div>
+  <h2 class="sec-title">Group Stage — Round 1</h2>
+  <p class="sec-sub">24/24 predictions submitted. Final score: <strong style="color:var(--gold)">21 points</strong>. Highlights: exact scores on Mexico, Belgium, France and Colombia.</p>
+
+  <div class="legend">
+    <div class="legend-item"><span class="pts-badge pts-3">3</span> Exact score</div>
+    <div class="legend-item"><span class="pts-badge pts-1">1</span> Correct winner/draw</div>
+    <div class="legend-item"><span class="pts-badge pts-0">0</span> Wrong result</div>
+  </div>
+
+  <table class="match-table">
+    <thead>
+      <tr>
+        <th>Grp</th>
+        <th>Match</th>
+        <th>Result</th>
+        <th>Prediction</th>
+        <th>Pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="grp">A</span></td><td class="match-name">Mexico vs South Africa</td><td class="score-cell">2 – 0</td><td class="score-cell" style="color:var(--g3)">2 – 0</td><td><span class="pts-badge pts-3">3</span></td></tr>
+      <tr><td><span class="grp">A</span></td><td class="match-name">South Korea vs Czech Rep.</td><td class="score-cell">2 – 1</td><td class="score-cell">1 – 1</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">B</span></td><td class="match-name">Canada vs Bosnia &amp; Herz.</td><td class="score-cell">1 – 1</td><td class="score-cell">2 – 1</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">B</span></td><td class="match-name">Qatar vs Switzerland</td><td class="score-cell">1 – 1</td><td class="score-cell">0 – 2</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">C</span></td><td class="match-name">Brazil vs Morocco</td><td class="score-cell">1 – 1</td><td class="score-cell">3 – 2</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">C</span></td><td class="match-name">Haiti vs Scotland</td><td class="score-cell">0 – 1</td><td class="score-cell">0 – 2</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">D</span></td><td class="match-name">USA vs Paraguay</td><td class="score-cell">4 – 1</td><td class="score-cell">1 – 1</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">D</span></td><td class="match-name">Australia vs Turkey</td><td class="score-cell">2 – 0</td><td class="score-cell">1 – 2</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">E</span></td><td class="match-name">Germany vs Curaçao</td><td class="score-cell">7 – 1</td><td class="score-cell">2 – 0</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">E</span></td><td class="match-name">Ivory Coast vs Ecuador</td><td class="score-cell">1 – 0</td><td class="score-cell">1 – 2</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">F</span></td><td class="match-name">Netherlands vs Japan</td><td class="score-cell">2 – 2</td><td class="score-cell">1 – 1</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">F</span></td><td class="match-name">Sweden vs Tunisia</td><td class="score-cell">5 – 1</td><td class="score-cell">2 – 0</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">G</span></td><td class="match-name">Belgium vs Egypt</td><td class="score-cell">1 – 1</td><td class="score-cell" style="color:var(--g3)">1 – 1</td><td><span class="pts-badge pts-3">3</span></td></tr>
+      <tr><td><span class="grp">G</span></td><td class="match-name">Group G — Match 2</td><td class="score-cell" style="color:#2d3748">?</td><td class="score-cell" style="color:#2d3748">?</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">H</span></td><td class="match-name">Spain vs Cape Verde</td><td class="score-cell">0 – 0</td><td class="score-cell">4 – 0</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">H</span></td><td class="match-name">Saudi Arabia vs Uruguay</td><td class="score-cell">1 – 1</td><td class="score-cell">1 – 2</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">I</span></td><td class="match-name">France vs Senegal</td><td class="score-cell">3 – 1</td><td class="score-cell" style="color:var(--g3)">3 – 1</td><td><span class="pts-badge pts-3">3</span></td></tr>
+      <tr><td><span class="grp">I</span></td><td class="match-name">Iraq vs Norway</td><td class="score-cell">1 – 4</td><td class="score-cell">1 – 3</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">J</span></td><td class="match-name">Argentina vs Algeria</td><td class="score-cell">3 – 0</td><td class="score-cell">2 – 0</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">J</span></td><td class="match-name">Austria vs Jordan</td><td class="score-cell">3 – 1</td><td class="score-cell">2 – 0</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">K</span></td><td class="match-name">Portugal vs DR Congo</td><td class="score-cell">1 – 1</td><td class="score-cell">2 – 0</td><td><span class="pts-badge pts-0">0</span></td></tr>
+      <tr><td><span class="grp">K</span></td><td class="match-name">Uzbekistan vs Colombia</td><td class="score-cell">1 – 3</td><td class="score-cell" style="color:var(--g3)">1 – 3</td><td><span class="pts-badge pts-3">3</span></td></tr>
+      <tr><td><span class="grp">L</span></td><td class="match-name">England vs Croatia</td><td class="score-cell">4 – 2</td><td class="score-cell">2 – 1</td><td><span class="pts-badge pts-1">1</span></td></tr>
+      <tr><td><span class="grp">L</span></td><td class="match-name">Ghana vs Panama</td><td class="score-cell">1 – 0</td><td class="score-cell">1 – 1</td><td><span class="pts-badge pts-0">0</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr class="div">
+
+<!-- ROUND 2 -->
+<section>
+  <div class="sec-label">Upcoming — Jun 19–23</div>
+  <h2 class="sec-title">Group Stage — Round 2</h2>
+  <p class="sec-sub">23/24 predictions submitted. Cards marked <strong style="color:var(--change)">CHANGE</strong> are ones I'd reconsider based on Round 1 form. <strong style="color:var(--keep)">KEEP</strong> means your pick looks solid.</p>
+
+  <div class="r2-grid">
+
+    <!-- GROUP C -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">C</span><span class="r2-date">Fri 06/19 20:30</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Brazil vs Haiti</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">3 – 0</span>
+        </div>
+        <div class="r2-tip">Brazil drew 1-1 with Morocco which was disappointing, but Haiti is significantly weaker. A win is almost certain. Consider <strong>2-0</strong> if you want a more cautious pick, but 3-0 is defensible.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card change">
+      <div class="r2-meta"><span class="r2-grp">C</span><span class="r2-date">Fri 06/19 18:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Scotland vs Morocco</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 2</span>
+          <span class="arrow">→</span>
+          <span class="r2-pred-label">Suggested</span>
+          <span class="r2-score suggested">1 – 2</span>
+        </div>
+        <div class="r2-tip">Morocco held Brazil to a draw. Scotland barely beat Haiti 1-0. Morocco is the better team here and a 2-2 with Scotland scoring twice seems optimistic. I'd back <strong>Morocco to win 2-1</strong>.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-change">Change ⚡</span></div>
+    </div>
+
+    <!-- GROUP D -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">D</span><span class="r2-date">Fri 06/19 15:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">USA vs Australia</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 1</span>
+        </div>
+        <div class="r2-tip">USA won 4-1 in Round 1 and look lethal. Australia lost 0-2. USA should win comfortably — 2-1 might even be conservative, but it's a solid pick.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">D</span><span class="r2-date">Fri 06/19 23:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Turkey vs Paraguay</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 1</span>
+        </div>
+        <div class="r2-tip">Both teams lost badly in Round 1 (Turkey 0-2, Paraguay 1-4). Turkey at home on the schedule may have a slight edge. 2-1 Turkey is a reasonable call, though a draw is possible.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP E -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">E</span><span class="r2-date">Sat 06/20 16:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Germany vs Ivory Coast</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 0</span>
+        </div>
+        <div class="r2-tip">Germany scored 7 goals in Round 1. Ivory Coast only won 1-0. Germany should win — 2-0 is a solid, conservative pick. Could be bigger but no need to over-predict.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">E</span><span class="r2-date">Sat 06/20 20:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Ecuador vs Curaçao</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">1 – 0</span>
+        </div>
+        <div class="r2-tip">Ecuador lost to Ivory Coast 0-1 so they need points badly. Curaçao was hammered 1-7 by Germany. Ecuador should win — 1-0 is fine though could be 2-0.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP F -->
+    <div class="r2-card change">
+      <div class="r2-meta"><span class="r2-grp">F</span><span class="r2-date">Sat 06/20</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Netherlands vs Sweden</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">1 – 0</span>
+          <span class="arrow">→</span>
+          <span class="r2-pred-label">Suggested</span>
+          <span class="r2-score suggested">1 – 2</span>
+        </div>
+        <div class="r2-tip"><strong>Biggest change I'd make.</strong> Sweden demolished Tunisia 5-1 and look incredible. Netherlands only drew 2-2 with Japan. Sweden's form is far superior — I'd back <strong>Sweden to win 2-1</strong>.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-change">Change ⚡</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">F</span><span class="r2-date">Sun 06/21 00:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Tunisia vs Japan</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">1 – 2</span>
+        </div>
+        <div class="r2-tip">Tunisia lost 1-5. Japan drew 2-2 with Netherlands and showed quality. Predicting Japan wins 2-1 here is correct — this is a good pick.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP G -->
+    <div class="r2-card change">
+      <div class="r2-meta"><span class="r2-grp">G</span><span class="r2-date">Sun 06/21 15:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Belgium vs Iran</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">3 – 1</span>
+          <span class="arrow">→</span>
+          <span class="r2-pred-label">Suggested</span>
+          <span class="r2-score suggested">2 – 0</span>
+        </div>
+        <div class="r2-tip">Belgium only drew 1-1 with Egypt in Round 1 — not convincing. Predicting 3-1 is risky. Belgium should win but a tighter scoreline like <strong>2-0</strong> is safer and more likely to score points.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-change">Change ⚡</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">G</span><span class="r2-date">Sun 06/21 21:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">New Zealand vs Egypt</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">0 – 1</span>
+        </div>
+        <div class="r2-tip">Egypt drew 1-1 with Belgium — respectable. New Zealand are the weakest team in the group. Egypt to win 1-0 is a sensible pick.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP H -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">H</span><span class="r2-date">Sun 06/21</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Spain vs Saudi Arabia</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 1</span>
+        </div>
+        <div class="r2-tip">Spain drew 0-0 with Cape Verde in Round 1 — an embarrassing result. They need to bounce back hard. Saudi Arabia drew 1-1 with Uruguay. Spain 2-1 is a fair prediction — Spain will be motivated.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">H</span><span class="r2-date">Sun 06/21 18:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Uruguay vs Cape Verde</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 0</span>
+        </div>
+        <div class="r2-tip">Uruguay drew with Saudi Arabia but have quality. Cape Verde held Spain to 0-0 — impressive but Uruguay are a different level. 2-0 is a solid pick.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP I -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">I</span><span class="r2-date">Mon 06/22 17:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">France vs Iraq</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">3 – 0</span>
+        </div>
+        <div class="r2-tip">France won 3-1 vs Senegal and look sharp. Iraq lost 1-4 to Norway. France 3-0 is very well-reasoned — one of your best picks this round.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">I</span><span class="r2-date">Mon 06/22 20:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Norway vs Senegal</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 1</span>
+        </div>
+        <div class="r2-tip">Norway thrashed Iraq 4-1. Senegal lost 1-3 to France. Norway are in great form. 2-1 seems conservative — could even be 3-1 — but a solid prediction.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP J -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">J</span><span class="r2-date">Mon 06/22</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Argentina vs Austria</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 0</span>
+        </div>
+        <div class="r2-tip">Argentina won 3-0. Austria won 3-1. Both strong but Argentina's quality is higher. 2-0 is a confident and well-justified pick. Keep it.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card change">
+      <div class="r2-meta"><span class="r2-grp">J</span><span class="r2-date">Mon 06/22 23:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Jordan vs Algeria</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">0 – 1</span>
+          <span class="arrow">→</span>
+          <span class="r2-pred-label">Suggested</span>
+          <span class="r2-score suggested">1 – 1</span>
+        </div>
+        <div class="r2-tip">Jordan lost 1-3 to Austria. Algeria lost 0-3 to Argentina. Both teams were bad. A match between two struggling teams is hard to call — a <strong>1-1 draw</strong> is worth considering as neither team has shown convincing quality.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-change">Change ⚡</span></div>
+    </div>
+
+    <!-- GROUP K -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">K</span><span class="r2-date">Tue 06/23</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Portugal vs Uzbekistan</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 0</span>
+        </div>
+        <div class="r2-tip">Portugal drew 1-1 with DR Congo — a shock. They'll be desperate for a win. Uzbekistan lost 1-3 to Colombia. Portugal 2-0 is the right direction even after their poor Round 1.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">K</span><span class="r2-date">Tue 06/23 22:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Colombia vs DR Congo</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">2 – 1</span>
+        </div>
+        <div class="r2-tip">Colombia won 3-1 in Round 1 — great form. DR Congo drew with Portugal. Colombia should win but DR Congo can score. 2-1 is well thought-out.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <!-- GROUP L -->
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">L</span><span class="r2-date">Tue 06/23 16:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">England vs Ghana</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">3 – 1</span>
+        </div>
+        <div class="r2-tip">England won 4-2 vs Croatia — outstanding. Ghana beat Panama narrowly 1-0. England 3-1 is one of your strongest picks this round. Very likely to score 3 pts here.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+    <div class="r2-card keep">
+      <div class="r2-meta"><span class="r2-grp">L</span><span class="r2-date">Tue 06/23 19:00</span></div>
+      <div class="r2-body">
+        <div class="r2-match">Panama vs Croatia</div>
+        <div class="r2-pred-row">
+          <span class="r2-pred-label">Your pick</span>
+          <span class="r2-score">0 – 2</span>
+        </div>
+        <div class="r2-tip">Panama lost 0-1 to Ghana. Croatia lost 2-4 to England but scored twice — they can attack. Croatia winning 2-0 is a reasonable call.</div>
+      </div>
+      <div class="r2-action"><span class="tag tag-keep">Keep ✓</span></div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY BOX -->
+  <div style="margin-top:2rem;background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:14px;padding:1.4rem 1.6rem;">
+    <div style="font-size:.85rem;font-weight:800;color:var(--change);margin-bottom:.8rem;">&#9889; 4 Changes Recommended</div>
+    <div style="display:grid;gap:.5rem;">
+      <div style="font-size:.82rem;color:#5a6070;"><strong style="color:#8899b0;">SCO vs MAR</strong> — Change 2-2 to <strong style="color:var(--change)">MAR 2-1 SCO</strong> (Morocco stronger)</div>
+      <div style="font-size:.82rem;color:#5a6070;"><strong style="color:#8899b0;">NED vs SWE</strong> — Change 1-0 to <strong style="color:var(--change)">SWE 2-1 NED</strong> (Sweden on fire, biggest change)</div>
+      <div style="font-size:.82rem;color:#5a6070;"><strong style="color:#8899b0;">BEL vs IRN</strong> — Change 3-1 to <strong style="color:var(--change)">BEL 2-0 IRN</strong> (Belgium's form not convincing)</div>
+      <div style="font-size:.82rem;color:#5a6070;"><strong style="color:#8899b0;">JOR vs ALG</strong> — Change 0-1 to <strong style="color:var(--change)">1-1 draw</strong> (both teams struggling equally)</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Prode FIFA World Cup 2026 &bull; Group Stage Tracker</p>
+  <p style="margin-top:.3rem;"><a href="index.html">&#8592; Back to Ticket Hunt — Argentina vs Jordan, Dallas Jun 27</a></p>
+</footer>
+
+</body>
+</html>
