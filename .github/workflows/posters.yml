@@ -2,6 +2,10 @@ name: Fetch cover art
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "scripts/**"
+      - ".github/workflows/posters.yml"
 
 permissions:
   contents: write
