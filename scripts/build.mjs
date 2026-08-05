@@ -88,6 +88,11 @@ try {
   page = fillById(page, "s-left", snap.left);
   page = fillById(page, "s-now", snap.nowN);
   page = page.replace('id="s-bar" style="width:0%"', `id="s-bar" style="width:${snap.bar}"`);
+
+  // Las portadas ya viajan en el HTML pre-renderizado, así que se saca la
+  // segunda copia del script: el archivo pesa la mitad y la página la
+  // reconstruye leyendo el DOM al cargar.
+  page = inject(page, "POSTERS", {});
   prerendered = true;
 } catch (err) {
   console.warn(`sin pre-render (${err.message}) — la página va a necesitar JavaScript.`);

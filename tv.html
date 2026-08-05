@@ -317,8 +317,8 @@ footer b { color: var(--ink-2); font-weight: 600; }
   <section class="sec">
     <div class="sec-head">
       <span class="kicker">En curso</span>
-      <h2>Lo que están viendo</h2>
-      <span class="note">La fase Apple TV+ con Lu</span>
+      <h2>Lo que estás viendo</h2>
+      <span class="note" id="now-count"></span>
     </div>
     <div class="now-grid" id="now-grid"></div>
   </section>
@@ -420,7 +420,7 @@ function norm(s) {
 function renderNow() {
   document.getElementById("now-grid").innerHTML = NOW.map(function (n) {
     var art = POSTERS[n.id];
-    return '<div class="now">' +
+    return '<div class="now" data-id="' + n.id + '">' +
       '<div class="chip-art" style="--g:' + (GC[n.g] || "#555") + '"><b>' + esc(n.t.charAt(0)) + '</b>' +
         (art ? '<img src="' + art + '" alt="" loading="lazy">' : '') + '</div>' +
       '<div class="now-body">' +
@@ -575,7 +575,7 @@ function updateStats() {
 })();
 
 /* ─── Eventos ─── */
-document.addEventListener("click", function (e) {
+document.body.addEventListener("click", function (e) {
   var c = e.target.closest(".card");
   if (c) {
     var d = DATA.find(function (x) { return x.id === c.dataset.id; });
@@ -618,6 +618,23 @@ document.getElementById("q").addEventListener("input", function (e) {
   terms = norm(e.target.value).split(/\s+/).filter(Boolean);
   render();
 });
+
+/**
+ * La página se publica pre-renderizada, así que las portadas ya viajan en el
+ * HTML. En ese caso el build deja POSTERS vacío y las recuperamos del DOM:
+ * llevar una segunda copia en base64 duplicaba el peso del archivo, y en iOS
+ * eso alcanza para que Safari descarte la pestaña por memoria.
+ */
+(function () {
+  if (Object.keys(POSTERS).length) return;
+  document.querySelectorAll("[data-id]").forEach(function (el) {
+    var img = el.querySelector(".p-img, .chip-art img");
+    if (img) POSTERS[el.getAttribute("data-id")] = img.getAttribute("src");
+  });
+})();
+
+document.getElementById("now-count").textContent =
+  NOW.length + " en paralelo";
 
 renderNow();
 render();
