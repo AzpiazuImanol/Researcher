@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "scripts/**"
+      - "scripts/catalog.mjs"
+      - "scripts/fetch-posters.mjs"
       - ".github/workflows/posters.yml"
 
 permissions:

@@ -16,40 +16,31 @@
   --accent:    #8f5e0d;
   --accent-bg: #f0e2c6;
   --seen:      #2a6355;
-  --seen-bg:   #d6e7e1;
   --shadow:    0 1px 2px rgba(20,24,36,.07), 0 8px 20px -12px rgba(20,24,36,.22);
 
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", "Hoefler Text", Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  --maxw: 1220px;
+  --maxw: 1240px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg:        #0f1117;
-    --panel:     #171a23;
-    --panel-2:   #1d212c;
-    --ink:       #eef0f6;
-    --ink-2:     #99a0b6;
-    --ink-3:     #6d7488;
-    --line:      #2a2f3d;
-    --line-soft: #222732;
-    --accent:    #e0a03c;
-    --accent-bg: #33280f;
-    --seen:      #6fbaa6;
-    --seen-bg:   #14322b;
-    --shadow:    0 1px 2px rgba(0,0,0,.4), 0 10px 24px -14px rgba(0,0,0,.8);
+    --bg:#0f1117; --panel:#171a23; --panel-2:#1d212c;
+    --ink:#eef0f6; --ink-2:#99a0b6; --ink-3:#6d7488;
+    --line:#2a2f3d; --line-soft:#222732;
+    --accent:#e0a03c; --accent-bg:#33280f;
+    --seen:#6fbaa6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -14px rgba(0,0,0,.8);
   }
 }
-
 :root[data-theme="dark"] {
   --bg:#0f1117; --panel:#171a23; --panel-2:#1d212c;
   --ink:#eef0f6; --ink-2:#99a0b6; --ink-3:#6d7488;
   --line:#2a2f3d; --line-soft:#222732;
   --accent:#e0a03c; --accent-bg:#33280f;
-  --seen:#6fbaa6; --seen-bg:#14322b;
+  --seen:#6fbaa6;
   --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -14px rgba(0,0,0,.8);
 }
 :root[data-theme="light"] {
@@ -57,342 +48,224 @@
   --ink:#171a24; --ink-2:#565d72; --ink-3:#838aa0;
   --line:#ccd1dd; --line-soft:#dde1ea;
   --accent:#8f5e0d; --accent-bg:#f0e2c6;
-  --seen:#2a6355; --seen-bg:#d6e7e1;
+  --seen:#2a6355;
   --shadow: 0 1px 2px rgba(20,24,36,.07), 0 8px 20px -12px rgba(20,24,36,.22);
 }
 
 * { box-sizing: border-box; }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 15px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
-
 .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 
-/* ─────────────────────────────────────────────
-   Header
-   ───────────────────────────────────────────── */
-header.top {
-  border-bottom: 1px solid var(--line);
-  background: var(--panel);
-}
+/* ─────────── Header ─────────── */
+header.top { border-bottom: 1px solid var(--line); background: var(--panel); }
 .top-in {
   max-width: var(--maxw); margin: 0 auto; padding: 26px 20px 22px;
-  display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-end;
-  justify-content: space-between;
+  display: flex; flex-wrap: wrap; gap: 22px;
+  align-items: flex-end; justify-content: space-between;
 }
 .brand h1 {
-  font-family: var(--serif);
-  font-size: clamp(28px, 4.4vw, 42px);
-  font-weight: 400;
-  letter-spacing: -.015em;
-  margin: 0;
-  text-wrap: balance;
+  font-family: var(--serif); font-size: clamp(28px, 4.4vw, 42px);
+  font-weight: 400; letter-spacing: -.015em; margin: 0; text-wrap: balance;
 }
-.brand p {
-  margin: 6px 0 0;
-  color: var(--ink-2);
-  font-size: 13.5px;
-  max-width: 62ch;
-}
+.brand p { margin: 6px 0 0; color: var(--ink-2); font-size: 13.5px; max-width: 60ch; }
 
 .stats { display: flex; gap: 10px; flex-wrap: wrap; }
 .stat {
-  background: var(--panel-2);
-  border: 1px solid var(--line-soft);
-  border-radius: 3px;
-  padding: 9px 14px;
-  min-width: 84px;
+  background: var(--panel-2); border: 1px solid var(--line-soft);
+  border-radius: 3px; padding: 9px 14px; min-width: 82px;
 }
 .stat b {
-  display: block;
-  font-family: var(--mono);
-  font-size: 21px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.15;
-  letter-spacing: -.02em;
+  display: block; font-family: var(--mono); font-size: 21px;
+  font-variant-numeric: tabular-nums; line-height: 1.15; letter-spacing: -.02em;
 }
 .stat span {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: .09em;
-  color: var(--ink-3);
-  margin-top: 3px;
+  display: block; font-size: 10px; text-transform: uppercase;
+  letter-spacing: .09em; color: var(--ink-3); margin-top: 3px;
 }
 .stat.is-seen b { color: var(--seen); }
 
-/* ─────────────────────────────────────────────
-   Notice
-   ───────────────────────────────────────────── */
+/* progreso */
+.bar { margin-top: 12px; height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; flex-basis: 100%; }
+.bar i { display: block; height: 100%; background: var(--seen); transition: width .3s ease; }
+
+/* ─────────── Aviso ─────────── */
 .notice {
-  margin: 22px 0 0;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--accent);
-  background: var(--panel);
-  border-radius: 0 3px 3px 0;
-  padding: 14px 18px;
-  font-size: 13.5px;
-  color: var(--ink-2);
+  margin: 22px 0 0; border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  background: var(--panel); border-radius: 0 3px 3px 0; padding: 14px 18px;
+  font-size: 13.5px; color: var(--ink-2);
 }
 .notice strong { color: var(--ink); font-weight: 600; }
-.notice p { margin: 0 0 8px; }
-.notice p:last-child { margin-bottom: 0; }
+.notice p { margin: 0 0 8px; } .notice p:last-child { margin-bottom: 0; }
 
-/* ─────────────────────────────────────────────
-   Section headings
-   ───────────────────────────────────────────── */
+/* ─────────── Secciones ─────────── */
 .sec { margin-top: 44px; }
 .sec-head {
-  display: flex; align-items: baseline; gap: 12px;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 9px; margin-bottom: 20px;
-  flex-wrap: wrap;
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 20px;
 }
-.sec-head h2 {
-  font-family: var(--serif);
-  font-size: 22px; font-weight: 400; margin: 0;
-  letter-spacing: -.01em;
-}
+.sec-head h2 { font-family: var(--serif); font-size: 22px; font-weight: 400; margin: 0; letter-spacing: -.01em; }
 .sec-head .kicker {
-  font-family: var(--mono); font-size: 10.5px;
-  text-transform: uppercase; letter-spacing: .11em;
-  color: var(--ink-3);
+  font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: .11em; color: var(--ink-3);
 }
 .sec-head .note { font-size: 12.5px; color: var(--ink-2); margin-left: auto; }
 
-/* ─────────────────────────────────────────────
-   Viendo ahora
-   ───────────────────────────────────────────── */
-.now-grid {
-  display: grid; gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
-}
+/* ─────────── Viendo ahora ─────────── */
+.now-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(262px, 1fr)); }
 .now {
-  display: flex; gap: 13px;
-  background: var(--panel);
-  border: 1px solid var(--line-soft);
-  border-radius: 3px;
-  padding: 12px;
-  box-shadow: var(--shadow);
+  display: flex; gap: 13px; background: var(--panel);
+  border: 1px solid var(--line-soft); border-radius: 3px; padding: 12px; box-shadow: var(--shadow);
 }
-.now .chip-art {
-  flex: 0 0 52px; height: 74px; border-radius: 2px;
-  background: var(--g); position: relative; overflow: hidden;
-}
-.now .chip-art::after {
-  content: ""; position: absolute; inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(0,0,0,.28));
-}
+.now .chip-art { flex: 0 0 54px; height: 78px; border-radius: 2px; background: var(--g); position: relative; overflow: hidden; }
+.now .chip-art::after { content:""; position:absolute; inset:0; background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(0,0,0,.28)); }
 .now .chip-art b {
-  position: absolute; inset: 0; z-index: 1;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-size: 23px; color: #fff;
-  opacity: .92; font-weight: 400;
+  position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 24px; color: #fff; opacity: .92; font-weight: 400;
 }
-.now .chip-art img {
-  position: absolute; inset: 0; z-index: 2;
-  width: 100%; height: 100%; object-fit: cover; display: block;
-}
+.now .chip-art img { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: cover; display: block; }
 .now-body { min-width: 0; }
 .now-body h3 { margin: 1px 0 3px; font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
 .now-body .row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
 .now-body p { margin: 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
 
 .tag {
-  font-family: var(--mono); font-size: 9.5px;
-  text-transform: uppercase; letter-spacing: .07em;
-  padding: 2.5px 6px; border-radius: 2px;
-  background: var(--panel-2); color: var(--ink-2);
-  border: 1px solid var(--line-soft);
-  white-space: nowrap;
+  font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .07em;
+  padding: 2.5px 6px; border-radius: 2px; background: var(--panel-2); color: var(--ink-2);
+  border: 1px solid var(--line-soft); white-space: nowrap;
 }
 .tag.warn { background: var(--accent-bg); color: var(--accent); border-color: transparent; }
 
-/* ─────────────────────────────────────────────
-   Controls
-   ───────────────────────────────────────────── */
+/* ─────────── Controles ─────────── */
 .controls {
-  position: sticky; top: 0; z-index: 20;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-  padding: 12px 0 11px;
-  margin-bottom: 22px;
+  position: sticky; top: 0; z-index: 20; background: var(--bg);
+  border-bottom: 1px solid var(--line); padding: 12px 0 11px; margin-bottom: 22px;
 }
 .ctl-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .ctl-row + .ctl-row { margin-top: 9px; }
 .ctl-label {
-  font-family: var(--mono); font-size: 9.5px; text-transform: uppercase;
-  letter-spacing: .11em; color: var(--ink-3); margin-right: 3px;
-  flex: 0 0 auto; min-width: 52px;
+  font-family: var(--mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .11em;
+  color: var(--ink-3); margin-right: 3px; flex: 0 0 auto; min-width: 56px;
 }
 
 button.chip {
-  font-family: var(--sans); font-size: 12px; font-weight: 500;
-  padding: 5px 11px; border-radius: 2px;
-  border: 1px solid var(--line);
-  background: var(--panel); color: var(--ink-2);
+  font-family: var(--sans); font-size: 12px; font-weight: 500; padding: 5px 11px;
+  border-radius: 2px; border: 1px solid var(--line); background: var(--panel); color: var(--ink-2);
   cursor: pointer; transition: background .12s, color .12s, border-color .12s;
 }
 button.chip:hover { border-color: var(--ink-3); color: var(--ink); }
-button.chip[aria-pressed="true"] {
-  background: var(--ink); color: var(--bg); border-color: var(--ink);
-}
+button.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 button.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 button.chip .dot {
   display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-  background: var(--g); margin-right: 6px; vertical-align: baseline;
+  background: var(--g); margin-right: 6px;
 }
 
-/* ─────────────────────────────────────────────
-   Tier blocks
-   ───────────────────────────────────────────── */
-.tier-head {
-  display: flex; align-items: baseline; gap: 12px;
-  margin: 34px 0 14px; flex-wrap: wrap;
+input.search {
+  font-family: var(--sans); font-size: 12.5px; padding: 6px 11px; border-radius: 2px;
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  min-width: 210px; flex: 1 1 210px; max-width: 340px;
 }
+input.search:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+input.search::placeholder { color: var(--ink-3); }
+
+/* ─────────── Bloques ─────────── */
+.tier-head { display: flex; align-items: baseline; gap: 12px; margin: 34px 0 14px; flex-wrap: wrap; }
 .tier-head .badge {
-  font-family: var(--mono); font-size: 15px; font-weight: 700;
-  width: 30px; height: 30px; border-radius: 2px;
-  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 14px; font-weight: 700; min-width: 30px; height: 30px;
+  padding: 0 7px; border-radius: 2px; display: flex; align-items: center; justify-content: center;
   color: #fff; background: var(--tc); flex: 0 0 auto;
 }
 .tier-head h3 { margin: 0; font-family: var(--serif); font-size: 19px; font-weight: 400; }
 .tier-head p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
 
-/* ─────────────────────────────────────────────
-   Cards
-   ───────────────────────────────────────────── */
-.grid {
-  display: grid; gap: 14px;
-  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
-}
+/* ─────────── Fichas ─────────── */
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(166px, 1fr)); }
+.grid.dense { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
 
 .card {
-  background: var(--panel);
-  border: 1px solid var(--line-soft);
-  border-radius: 3px;
-  overflow: hidden;
-  cursor: pointer;
-  display: flex; flex-direction: column;
+  background: var(--panel); border: 1px solid var(--line-soft); border-radius: 3px;
+  overflow: hidden; cursor: pointer; display: flex; flex-direction: column;
   transition: transform .14s ease, box-shadow .14s ease, opacity .14s;
-  box-shadow: var(--shadow);
-  text-align: left;
-  font: inherit; color: inherit; padding: 0;
+  box-shadow: var(--shadow); text-align: left; font: inherit; color: inherit; padding: 0;
 }
 .card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 14px 28px -16px rgba(0,0,0,.45); }
 .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .poster {
-  position: relative;
-  aspect-ratio: 2 / 3;
-  background: var(--g);
-  padding: 13px 12px;
-  display: flex; flex-direction: column;
-  overflow: hidden;
+  position: relative; aspect-ratio: 2 / 3; background: var(--g);
+  padding: 13px 12px; display: flex; flex-direction: column; overflow: hidden;
 }
 .poster::before {
   content: ""; position: absolute; inset: 0;
-  background:
-    linear-gradient(155deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,0) 42%, rgba(0,0,0,.34) 100%);
+  background: linear-gradient(155deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,0) 42%, rgba(0,0,0,.34) 100%);
 }
 .poster::after {
-  content: ""; position: absolute; inset: 0;
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55;
   background: repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px);
-  opacity: .55; pointer-events: none;
 }
 
 .p-tier {
-  position: relative; z-index: 2;
-  font-family: var(--mono); font-size: 10px; font-weight: 700;
-  color: rgba(255,255,255,.62);
-  letter-spacing: .1em;
+  position: relative; z-index: 2; font-family: var(--mono); font-size: 10px;
+  font-weight: 700; color: rgba(255,255,255,.62); letter-spacing: .1em;
 }
 .p-title {
-  position: relative; z-index: 2;
-  margin: auto 0 0;
-  font-family: var(--serif);
-  font-weight: 400;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: .005em;
-  line-height: 1.05;
-  font-size: 20px;
-  text-wrap: balance;
-  text-shadow: 0 1px 10px rgba(0,0,0,.32);
+  position: relative; z-index: 2; margin: auto 0 0; font-family: var(--serif);
+  font-weight: 400; color: #fff; text-transform: uppercase; letter-spacing: .005em;
+  line-height: 1.05; font-size: 19px; text-wrap: balance; text-shadow: 0 1px 10px rgba(0,0,0,.32);
 }
-.p-title.len-m { font-size: 17px; }
-.p-title.len-l { font-size: 14.5px; letter-spacing: .015em; }
-.p-title.len-xl { font-size: 12.5px; letter-spacing: .02em; }
+.p-title.len-m { font-size: 16px; }
+.p-title.len-l { font-size: 13.5px; letter-spacing: .015em; }
+.p-title.len-xl { font-size: 11.5px; letter-spacing: .02em; }
+.dense .p-title { font-size: 13px; }
+.dense .p-title.len-m { font-size: 11.5px; }
+.dense .p-title.len-l, .dense .p-title.len-xl { font-size: 10px; }
 
-.p-rule {
-  position: relative; z-index: 2;
-  height: 1px; background: rgba(255,255,255,.42);
-  margin: 9px 0 7px;
-}
+.p-rule { position: relative; z-index: 2; height: 1px; background: rgba(255,255,255,.42); margin: 9px 0 7px; }
 .p-foot {
-  position: relative; z-index: 2;
-  display: flex; justify-content: space-between; gap: 8px;
-  font-family: var(--mono); font-size: 9.5px;
-  color: rgba(255,255,255,.8);
-  letter-spacing: .05em;
-  font-variant-numeric: tabular-nums;
+  position: relative; z-index: 2; display: flex; justify-content: space-between; gap: 8px;
+  font-family: var(--mono); font-size: 9.5px; color: rgba(255,255,255,.8);
+  letter-spacing: .05em; font-variant-numeric: tabular-nums;
 }
 .p-foot span:last-child { text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Portadas reales — reemplazan el campo tipográfico cuando existen */
+/* portadas reales */
 .poster.has-img { padding: 0; }
 .poster.has-img::before, .poster.has-img::after { display: none; }
-.p-img {
-  position: absolute; inset: 0; z-index: 1;
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-}
+.p-img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; }
 .p-scrim {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.28) 26%, rgba(0,0,0,0) 52%);
 }
-.has-img .p-tier {
-  position: absolute; top: 8px; left: 10px; z-index: 3;
-  color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.85);
-}
+.has-img .p-tier { position: absolute; top: 8px; left: 10px; z-index: 3; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.85); }
 .has-img .p-foot {
   position: absolute; left: 10px; right: 10px; bottom: 8px; z-index: 3;
-  color: rgba(255,255,255,.92);
-  text-shadow: 0 1px 5px rgba(0,0,0,.85);
+  color: rgba(255,255,255,.92); text-shadow: 0 1px 5px rgba(0,0,0,.85);
 }
 
 .stamp {
-  position: absolute; z-index: 4;
-  top: 46%; left: 50%;
+  position: absolute; z-index: 4; top: 46%; left: 50%;
   transform: translate(-50%,-50%) rotate(-11deg) scale(.82);
-  font-family: var(--mono); font-size: 17px; font-weight: 700;
-  letter-spacing: .16em;
-  color: #fff;
-  border: 2.5px solid #fff;
-  padding: 4px 11px; border-radius: 3px;
-  opacity: 0; transition: opacity .16s ease, transform .16s ease;
-  pointer-events: none;
-  text-shadow: 0 1px 6px rgba(0,0,0,.4);
-  box-shadow: 0 1px 8px rgba(0,0,0,.3);
+  font-family: var(--mono); font-size: 16px; font-weight: 700; letter-spacing: .16em;
+  color: #fff; border: 2.5px solid #fff; padding: 4px 11px; border-radius: 3px;
+  opacity: 0; transition: opacity .16s ease, transform .16s ease; pointer-events: none;
+  text-shadow: 0 1px 6px rgba(0,0,0,.4); box-shadow: 0 1px 8px rgba(0,0,0,.3);
 }
+.dense .stamp { font-size: 11px; padding: 3px 7px; border-width: 2px; }
 
 .c-meta { padding: 10px 11px 12px; display: flex; flex-direction: column; gap: 5px; flex: 1; }
+.dense .c-meta { padding: 7px 8px 9px; }
 .c-gen {
-  font-family: var(--mono); font-size: 9.5px;
-  text-transform: uppercase; letter-spacing: .08em;
-  color: var(--ink-3); margin: 0;
+  font-family: var(--mono); font-size: 9.5px; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--ink-3); margin: 0;
 }
 .c-verdict { margin: 0; font-size: 12px; line-height: 1.42; color: var(--ink-2); }
 
-.card.seen { opacity: .58; }
+.card.seen { opacity: .6; }
 .card.seen .poster { filter: grayscale(.85) contrast(.92); }
 .card.seen .stamp { opacity: .95; transform: translate(-50%,-50%) rotate(-11deg) scale(1); }
 .card.seen .c-verdict { text-decoration: line-through; text-decoration-color: var(--ink-3); }
@@ -402,22 +275,16 @@ button.chip .dot {
   font-size: 13.5px; border: 1px dashed var(--line); border-radius: 3px;
 }
 
-/* ─────────────────────────────────────────────
-   Footer
-   ───────────────────────────────────────────── */
-footer {
-  margin-top: 58px; border-top: 1px solid var(--line);
-  padding: 22px 0 46px; font-size: 12.5px; color: var(--ink-3);
-}
-footer p { margin: 0 0 7px; max-width: 74ch; }
+footer { margin-top: 58px; border-top: 1px solid var(--line); padding: 22px 0 46px; font-size: 12.5px; color: var(--ink-3); }
+footer p { margin: 0 0 7px; max-width: 76ch; }
 footer b { color: var(--ink-2); font-weight: 600; }
 
 @media (max-width: 560px) {
-  .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 11px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 11px; }
+  .grid.dense { grid-template-columns: repeat(auto-fill, minmax(102px, 1fr)); }
   .ctl-label { min-width: 100%; margin-bottom: -3px; }
   .sec-head .note { margin-left: 0; flex-basis: 100%; }
 }
-
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
   .card:hover { transform: none; }
@@ -428,13 +295,14 @@ footer b { color: var(--ink-2); font-weight: 600; }
   <div class="top-in">
     <div class="brand">
       <h1>📺 TV — Repositorio</h1>
-      <p>Listado transversal de series y películas entre Netflix, Apple&nbsp;TV+, Disney+, Max, Prime y cine. Tocá cualquier ficha para marcarla como vista — queda guardada en este dispositivo.</p>
+      <p>Tu nota de Apple, las listas de Netflix y lo que fuimos hablando, en un solo lugar. Tocá cualquier ficha para marcarla como vista.</p>
     </div>
     <div class="stats">
-      <div class="stat"><b id="s-total">0</b><span>Total</span></div>
+      <div class="stat"><b id="s-total">0</b><span>Títulos</span></div>
       <div class="stat is-seen"><b id="s-seen">0</b><span>Vistas</span></div>
       <div class="stat"><b id="s-left">0</b><span>Pendientes</span></div>
-      <div class="stat"><b id="s-now">5</b><span>En curso</span></div>
+      <div class="stat"><b id="s-now">0</b><span>En curso</span></div>
+      <div class="bar"><i id="s-bar" style="width:0%"></i></div>
     </div>
   </div>
 </header>
@@ -442,8 +310,8 @@ footer b { color: var(--ink-2); font-weight: 600; }
 <div class="wrap">
 
   <div class="notice">
-    <p><strong>Dos cosas antes de arrancar.</strong> No pude leer tu nota de Apple “📺 TV”: no hay conector de Apple&nbsp;Notes en esta sesión, así que este listado está armado con las dos capturas que mandaste (Netflix “Mi lista” y la segunda pantalla), lo que contaste de Apple&nbsp;TV+, y todo lo que veníamos hablando de Star&nbsp;Wars, Alien y sci-fi. Si pegás el texto de la nota, lo integro y sumo lo que falte.</p>
-    <p>Las portadas son tipográficas y no las reales: el entorno tiene bloqueado el acceso a bancos de imágenes, y las páginas publicadas no pueden cargar imágenes externas. Si querés carátulas de verdad, subilas al chat y las incrusto.</p>
+    <p><strong>Los tildes vienen de tu nota.</strong> Todo lo que tenías marcado en verde arranca tildado acá, incluido el MCU completo y las diez de X-Men. Lo que estaba sin marcar arranca pendiente y lleva tier y veredicto.</p>
+    <p>Si cambiás un tilde, se guarda en este navegador y pisa el valor de la nota. Un título nuevo que agregue después va a entrar con el estado de la nota sin tocar lo que hayas cambiado vos.</p>
   </div>
 
   <section class="sec">
@@ -457,21 +325,26 @@ footer b { color: var(--ink-2); font-weight: 600; }
 
   <section class="sec">
     <div class="sec-head">
-      <span class="kicker">Watchlist</span>
-      <h2>Todo lo demás, por tier</h2>
+      <span class="kicker">Catálogo</span>
+      <h2>Todo lo demás</h2>
       <span class="note" id="filter-count"></span>
     </div>
 
     <div class="controls">
       <div class="ctl-row">
-        <span class="ctl-label">Vista</span>
+        <span class="ctl-label">Agrupar</span>
         <button class="chip" data-view="tier" aria-pressed="true">Por tier</button>
         <button class="chip" data-view="genre" aria-pressed="false">Por género</button>
         <button class="chip" data-view="platform" aria-pressed="false">Por plataforma</button>
-        <button class="chip" id="hide-seen" aria-pressed="false">Ocultar vistas</button>
+        <button class="chip" data-view="saga" aria-pressed="false">Sagas</button>
+        <input class="search" id="q" type="search" placeholder="Buscar título…" aria-label="Buscar título">
       </div>
       <div class="ctl-row">
-        <span class="ctl-label">Tipo</span>
+        <span class="ctl-label">Estado</span>
+        <button class="chip" data-state="all" aria-pressed="true">Todo</button>
+        <button class="chip" data-state="pend" aria-pressed="false">Pendientes</button>
+        <button class="chip" data-state="seen" aria-pressed="false">Vistas</button>
+        <span class="ctl-label" style="min-width:44px;margin-left:10px">Tipo</span>
         <button class="chip" data-type="all" aria-pressed="true">Todo</button>
         <button class="chip" data-type="serie" aria-pressed="false">Series</button>
         <button class="chip" data-type="peli" aria-pressed="false">Películas</button>
@@ -485,9 +358,9 @@ footer b { color: var(--ink-2); font-weight: 600; }
   </section>
 
   <footer>
-    <p><b>Cómo leer los tiers.</b> Son mi criterio, calibrado a lo que fuiste diciendo: te va la ciencia ficción de acción, Dune te vuela la cabeza, y el terror de fuego lento no es tu palo. Alien (1979) ya figura tildada porque me contaste que la viste.</p>
-    <p><b>Los tildes se guardan en el navegador</b> donde abras la página (localStorage). Si la abrís en el iPad y en la compu, cada uno lleva su propia cuenta.</p>
-    <p><b>Faltan cosas a propósito.</b> Cuando me pases el contenido de la nota de Apple sumo lo que tengas tildado ahí y lo que estén siguiendo que no aparezca en las capturas.</p>
+    <p><b>Los tiers son mi criterio</b>, calibrado a lo que fuiste diciendo: te va la ciencia ficción de acción, Dune te vuela la cabeza, y el terror de fuego lento no es tu palo. Sólo los pendientes llevan tier — en lo ya visto no aporta nada.</p>
+    <p><b>Un título no lo pude identificar:</b> «Frente a frente», del bloque largo de la nota. Decime cuál es y le pongo ficha completa.</p>
+    <p><b>Todo se guarda en el navegador donde abras la página.</b> Si la abrís en el iPad y en la compu, cada uno lleva su propia cuenta.</p>
   </footer>
 
 </div>
@@ -495,282 +368,215 @@ footer b { color: var(--ink-2); font-weight: 600; }
 <script>
 "use strict";
 
-/* Portadas: data URIs inyectadas por scripts/build.mjs desde posters.json.
-   Sin ellas la página cae de vuelta a los pósters tipográficos. */
+/* Catálogo y portadas, inyectados por scripts/build.mjs */
+var DATA = /*DATA_START*/[]/*DATA_END*/;
 var POSTERS = /*POSTERS_START*/{}/*POSTERS_END*/;
 
-/* Paleta por género — campos de color planos, filmicos, que funcionan en ambos temas */
+/* Paleta por género — campos planos y fílmicos que funcionan en ambos temas */
 var GC = {
-  "Sci-fi":      "#4a6fa5",
-  "Acción":      "#b0543e",
-  "Thriller":    "#5d4a7a",
-  "Drama":       "#2f6b63",
-  "Comedia":     "#b5821f",
-  "Terror":      "#3c3949",
-  "Documental":  "#556e5a",
-  "True Crime":  "#74484a",
-  "Naturaleza":  "#3f7d70",
-  "Deporte":     "#487a5a",
-  "Bélico":      "#5a5847",
-  "Western":     "#94663a",
-  "Animación":   "#3d7a8c"
+  "Sci-fi":"#4a6fa5", "Acción":"#b0543e", "Thriller":"#5d4a7a", "Crimen":"#6b4a3a",
+  "Drama":"#2f6b63", "Comedia":"#b5821f", "Terror":"#3c3949", "Fantasía":"#5b5a9e",
+  "Animación":"#3d7a8c", "Documental":"#556e5a", "True Crime":"#74484a",
+  "Naturaleza":"#3f7d70", "Deporte":"#487a5a", "Bélico":"#5a5847", "Western":"#94663a"
 };
 
 var TIERS = [
-  { k: "S", c: "#8a6a1e", name: "Imprescindible", desc: "Si ves una sola cosa de la lista, que salga de acá." },
-  { k: "A", c: "#3f6b8a", name: "Muy vale la pena", desc: "Muy buenas. Ninguna te va a hacer perder el tiempo." },
-  { k: "B", c: "#4f6155", name: "Según el ánimo", desc: "Correctas. Andan bien de fondo o cuando querés algo liviano." },
-  { k: "C", c: "#6d6a5c", name: "Meh", desc: "Prescindibles. Sólo si el tema te tira mucho." },
-  { k: "D", c: "#8c4a3e", name: "Ni te molestes", desc: "Directamente no." }
-];
-
-/* Series en curso */
-var NOW = [
-  { t:"Severance",         y:"T1–T2", pf:"Apple TV+", g:"Sci-fi",
-    n:"Lo mejor que tiene la plataforma y la mejor sci-fi de la década. La T2 cierra altísimo." },
-  { t:"Silo",              y:"T1–T3", pf:"Apple TV+", g:"Sci-fi",
-    n:"Distopía cerrada, lenta al principio, pero la mitología del silo engancha fuerte." },
-  { t:"Shrinking",         y:"T1–T3", pf:"Apple TV+", g:"Comedia",
-    n:"Comedia con duelo de fondo. Harrison Ford se roba cada escena en la que aparece." },
-  { t:"The Morning Show",  y:"T1–T4", pf:"Apple TV+", g:"Drama",
-    n:"Culebrón elegante y adictivo. Baja un escalón por temporada, pero se ve solo." },
-  { t:"Paradise",          y:"T1–T2", pf:"Disney+", g:"Thriller", flag:"No es Apple TV+",
-    n:"Ojo con la plataforma: es de Hulu, acá va por Disney+. El giro del piloto justifica todo." }
-];
-
-/* Watchlist */
-var D = [
-  /* ── S ── */
-  {t:"Aliens",                         y:1986, ty:"peli",  g:"Acción",     g2:"Sci-fi",      pf:"Disney+",   tier:"S", v:"Tu película. Cameron agarra el terror del 79 y lo convierte en guerra. Mirá el Director's Cut."},
-  {t:"The Empire Strikes Back",        y:1980, ty:"peli",  g:"Sci-fi",     g2:"Aventura",    pf:"Disney+",   tier:"S", v:"El pico de todo Star Wars. Más oscura, mejor escrita, mejor final."},
-  {t:"A New Hope",                     y:1977, ty:"peli",  g:"Sci-fi",     g2:"Aventura",    pf:"Disney+",   tier:"S", v:"Tu punto de entrada. Autoconclusiva y sin deberes previos."},
-  {t:"Andor",                          y:2022, ty:"serie", g:"Sci-fi",     g2:"Espionaje",   pf:"Disney+",   tier:"S", v:"El mejor Star Wars escrito, de lejos. Adulto, político, casi sin sables láser."},
-  {t:"All Quiet on the Western Front", y:2022, ty:"peli",  g:"Bélico",     g2:"Drama",       pf:"Netflix",   tier:"S", v:"Brutal y sin épica. La mejor película de guerra de la década."},
-  {t:"Society of the Snow",            y:2023, ty:"peli",  g:"Drama",      g2:"Supervivencia", pf:"Netflix", tier:"S", v:"Bayona haciendo lo que nadie pudo con esta historia. Siendo de la región, es obligatoria."},
-  {t:"El secreto de sus ojos",         y:2009, ty:"peli",  g:"Thriller",   g2:"Drama",       pf:"Netflix",   tier:"S", v:"El plano secuencia de la cancha es historia del cine. Cómo la tenés pendiente."},
-  {t:"Train to Busan",                 y:2016, ty:"peli",  g:"Acción",     g2:"Terror",      pf:"Netflix",   tier:"S", v:"Zombies con motor de película de acción. Cero fuego lento: es justo tu género."},
-  {t:"Beef",                           y:2023, ty:"serie", g:"Comedia",    g2:"Drama",       pf:"Netflix",   tier:"S", v:"Comedia negra que empieza con un bocinazo y termina en otro lado. 10 capítulos, no afloja."},
-  {t:"Atlanta",                        y:2016, ty:"serie", g:"Comedia",    g2:"Drama",       pf:"Netflix",   tier:"S", v:"Rara y brillante. Cada capítulo se anima a ser otra cosa distinta."},
-  {t:"12 Monkeys",                     y:1995, ty:"peli",  g:"Sci-fi",     g2:"Thriller",    pf:"Alquiler",  tier:"S", v:"Gilliam, Willis y un Brad Pitt irreconocible. Viaje en el tiempo bien hecho."},
-
-  /* ── A ── */
-  {t:"Return of the Jedi",             y:1983, ty:"peli",  g:"Sci-fi",     g2:"Aventura",    pf:"Disney+",   tier:"A", v:"Cierra el arco como corresponde. Perdonale los ewoks."},
-  {t:"Rogue One",                      y:2016, ty:"peli",  g:"Sci-fi",     g2:"Bélico",      pf:"Disney+",   tier:"A", v:"La mejor película de Star Wars moderna. Se ve justo antes del Episodio IV."},
-  {t:"The Mandalorian",                y:2019, ty:"serie", g:"Sci-fi",     g2:"Western",     pf:"Disney+",   tier:"A", v:"Western espacial con el espíritu de la trilogía original. T1 y T2, después baja."},
-  {t:"Alien: Romulus",                 y:2024, ty:"peli",  g:"Acción",     g2:"Terror",      pf:"Disney+",   tier:"A", v:"Lo mejor de la saga desde 1986. Más nerviosa que contemplativa, te va a ir bien."},
-  {t:"Le chant du loup",               y:2019, ty:"peli",  g:"Thriller",   g2:"Acción",      pf:"Netflix",   tier:"A", v:"Submarinos franceses, tensión de sonar, cero grasa. Muy tu palo."},
-  {t:"Wake Up Dead Man",               y:2025, ty:"peli",  g:"Thriller",   g2:"Misterio",    pf:"Netflix",   tier:"A", v:"La mejor Knives Out desde la primera. Más oscura y con Josh O'Connor a la par de Craig."},
-  {t:"Frankenstein",                   y:2025, ty:"peli",  g:"Drama",      g2:"Gótico",      pf:"Netflix",   tier:"A", v:"Del Toro en estado puro. Es melancólica, no de sustos: no te va a pasar lo del terror lento."},
-  {t:"Maid",                           y:2021, ty:"serie", g:"Drama",      g2:"Miniserie",   pf:"Netflix",   tier:"A", v:"Diez capítulos durísimos y perfectos. Margaret Qualley sostiene todo."},
-  {t:"Yellowstone",                    y:2018, ty:"serie", g:"Western",    g2:"Drama",       pf:"Netflix",   tier:"A", v:"Sucesión con caballos. Costner y un culebrón de tierras que funciona muy bien."},
-  {t:"Nisman",                         y:2019, ty:"serie", g:"True Crime", g2:"Político",    pf:"Netflix",   tier:"A", v:"La reconstrucción más completa del caso. Seis capítulos, ninguno de relleno."},
-  {t:"Don't F**k with Cats",           y:2019, ty:"serie", g:"True Crime", g2:"Documental",  pf:"Netflix",   tier:"A", v:"Tres capítulos, se ven de una sentada. El mejor true crime del catálogo."},
-  {t:"Life on Our Planet",             y:2023, ty:"serie", g:"Naturaleza", g2:"Documental",  pf:"Netflix",   tier:"A", v:"Attenborough + el equipo de Spielberg. La reconstrucción prehistórica es impresionante."},
-  {t:"Pangolin: Kulu's Journey",       y:2025, ty:"peli",  g:"Naturaleza", g2:"Documental",  pf:"Netflix",   tier:"A", v:"De la directora de Mi maestro el pulpo. 90 minutos hermosos y tristes."},
-  {t:"If Anything Happens I Love You", y:2020, ty:"peli",  g:"Animación",  g2:"Corto",       pf:"Netflix",   tier:"A", v:"Doce minutos. Te va a partir al medio. Ganó el Oscar a corto animado."},
-
-  /* ── B ── */
-  {t:"Cape Fear",                      y:2026, ty:"serie", g:"Thriller",   g2:"Miniserie",   pf:"Apple TV+", tier:"B", v:"Bardem está enorme, pero estiran la venganza a 10 capítulos y se desinfla. Vale por él."},
-  {t:"The Night Manager T2",           y:2026, ty:"serie", g:"Thriller",   g2:"Espionaje",   pf:"Prime Video", tier:"B", flag:"No es Apple TV+", v:"Ojo: va por Prime, no Apple. Buena y con paisajes colombianos, pero no llega a la T1."},
-  {t:"Dune: Prophecy",                 y:2024, ty:"serie", g:"Sci-fi",     g2:"Drama",       pf:"Max",       tier:"B", v:"Para vos, obligatoria de mirar aunque sea. Es política Bene Gesserit, no la epopeya de Paul."},
-  {t:"The Devil Wears Prada 2",        y:2026, ty:"peli",  g:"Comedia",    g2:"Drama",       pf:"Cine",      tier:"B", v:"79% en RT, mejor recibida que la original. Comfort watch de manual."},
-  {t:"Avatar Aang: The Last Airbender",y:2026, ty:"peli",  g:"Animación",  g2:"Aventura",    pf:"Paramount+",tier:"B", v:"Preciosa, pero es una temporada comprimida en 99 minutos. Sin la serie original no te va a importar."},
-  {t:"Carry-On",                       y:2024, ty:"peli",  g:"Acción",     g2:"Thriller",    pf:"Netflix",   tier:"B", v:"Thriller de aeropuerto eficiente y descartable. Irónicamente, ideal para el avión."},
-  {t:"The Gentlemen",                  y:2024, ty:"serie", g:"Comedia",    g2:"Crimen",      pf:"Netflix",   tier:"B", v:"Guy Ritchie en piloto automático, que igual es divertido. Capítulos livianos."},
-  {t:"The Devil All the Time",         y:2020, ty:"peli",  g:"Thriller",   g2:"Drama",       pf:"Netflix",   tier:"B", v:"Elenco tremendo, tono uniformemente sombrío. Larga y sin respiro."},
-  {t:"The Spy",                        y:2019, ty:"serie", g:"Thriller",   g2:"Espionaje",   pf:"Netflix",   tier:"B", v:"Sacha Baron Cohen serio y creíble. Seis capítulos, historia real de Eli Cohen."},
-  {t:"The Whale",                      y:2022, ty:"peli",  g:"Drama",      g2:"Teatral",     pf:"Netflix",   tier:"B", v:"Fraser se ganó el Oscar. Es teatro filmado en un cuarto: te va a pesar el ritmo."},
-  {t:"The Two Popes",                  y:2019, ty:"peli",  g:"Drama",      g2:"Biopic",      pf:"Netflix",   tier:"B", v:"Dos actores enormes charlando dos horas. Más liviana y graciosa de lo que promete."},
-  {t:"Rafa",                           y:2026, ty:"serie", g:"Deporte",    g2:"Documental",  pf:"Netflix",   tier:"B", v:"Acceso brutal al archivo personal, pero mantiene distancia emocional. Cuatro capítulos."},
-  {t:"Arnold",                         y:2023, ty:"serie", g:"Deporte",    g2:"Documental",  pf:"Netflix",   tier:"B", v:"Tres capítulos: fisicoculturismo, Hollywood, política. El primero es el mejor de lejos."},
-  {t:"Captains of the World",          y:2022, ty:"serie", g:"Deporte",    g2:"Documental",  pf:"Netflix",   tier:"B", v:"El Mundial desde los capitanes. Si sos de la camiseta, se disfruta."},
-  {t:"Big Vape",                       y:2023, ty:"serie", g:"Documental", g2:"Negocios",    pf:"Netflix",   tier:"B", v:"Auge y caída de Juul. Ordenada y bien contada, sin nada que la distinga."},
-  {t:"Our Universe",                   y:2022, ty:"serie", g:"Naturaleza", g2:"Documental",  pf:"Netflix",   tier:"B", v:"Cosmos y naturaleza mezclados, con Morgan Freeman. Preciosa y liviana."},
-  {t:"Life on Our Planet: dinosaurios",y:2023, ty:"serie", g:"Naturaleza", g2:"Documental",  pf:"Netflix",   tier:"B", v:"La veta prehistórica del catálogo. CGI muy logrado, narración estándar."},
-
-  /* ── C ── */
-  {t:"Alien 3",                        y:1992, ty:"peli",  g:"Terror",     g2:"Sci-fi",      pf:"Disney+",   tier:"C", v:"Debut de Fincher, que la repudió. Oscura y frustrante. Saltala en la primera pasada."},
-  {t:"Prometheus",                     y:2012, ty:"peli",  g:"Sci-fi",     g2:"Terror",      pf:"Disney+",   tier:"C", v:"Ideas grandes, ejecución floja y personajes que toman decisiones absurdas."},
-  {t:"Alien: Covenant",                y:2017, ty:"peli",  g:"Terror",     g2:"Sci-fi",      pf:"Disney+",   tier:"C", v:"Mejor que Prometheus, igual dispareja. Sólo si querés la línea completa."},
-  {t:"Wednesday",                      y:2022, ty:"serie", g:"Comedia",    g2:"Fantasía",    pf:"Netflix",   tier:"C", v:"Ortega sola contra una serie floja. La T2 empeoró el promedio."},
-  {t:"StartUp",                        y:2016, ty:"serie", g:"Thriller",   g2:"Crimen",      pf:"Netflix",   tier:"C", v:"Entretenida y absolutamente olvidable. Tres temporadas es mucho pedir."},
-  {t:"Into the Night",                 y:2020, ty:"serie", g:"Sci-fi",     g2:"Thriller",    pf:"Netflix",   tier:"C", v:"Premisa buenísima, ejecución de saldo. Salva que son capítulos de 30 minutos."},
-  {t:"Machos Alfa",                    y:2022, ty:"serie", g:"Comedia",    g2:"—",           pf:"Netflix",   tier:"C", v:"Comedia española de trazo grueso. Sirve de fondo, poco más."},
-  {t:"Jeffrey Epstein: Filthy Rich",   y:2020, ty:"serie", g:"True Crime", g2:"Documental",  pf:"Netflix",   tier:"C", v:"Sensacionalista y desprolija. El caso da para muchísimo más."},
-  {t:"Trainwreck: Astroworld",         y:2025, ty:"peli",  g:"True Crime", g2:"Documental",  pf:"Netflix",   tier:"C", v:"Cuarenta y cinco minutos de recortes de noticias. No aporta nada nuevo."},
-  {t:"Money Explained",                y:2021, ty:"serie", g:"Documental", g2:"Divulgación", pf:"Netflix",   tier:"C", v:"Formato Vox. Superficial si ya sabés algo de los temas que toca."},
-
-  /* ── D ── */
-  {t:"Mercy",                          y:2026, ty:"peli",  g:"Sci-fi",     g2:"Thriller",    pf:"Prime Video", tier:"D", v:"25% en RT. Pratt atado a una silla noventa minutos. El público la banca, la crítica la fusiló."},
-  {t:"The Phantom Menace",             y:1999, ty:"peli",  g:"Sci-fi",     g2:"Aventura",    pf:"Disney+",   tier:"D", v:"No es tu entrada a Star Wars ni de casualidad. Dejala para cuando ya seas fan."},
-  {t:"Alien: Resurrection",            y:1997, ty:"peli",  g:"Terror",     g2:"Sci-fi",      pf:"Disney+",   tier:"D", v:"Sólo si sos completista obsesivo. No lo sos todavía."},
-
-  /* ── Ya vista ── */
-  {t:"Alien",                          y:1979, ty:"peli",  g:"Terror",     g2:"Sci-fi",      pf:"Disney+",   tier:"S", seen:true, v:"Ya la viste. Obra maestra, pero el fuego lento no es lo tuyo — por eso Aliens te va a gustar más."}
+  {k:"S", c:"#8a6a1e", name:"Imprescindible", desc:"Si ves una sola cosa de la lista, que salga de acá."},
+  {k:"A", c:"#3f6b8a", name:"Muy vale la pena", desc:"Ninguna te va a hacer perder el tiempo."},
+  {k:"B", c:"#4f6155", name:"Según el ánimo", desc:"Correctas. Andan bien de fondo o para algo liviano."},
+  {k:"C", c:"#6d6a5c", name:"Meh", desc:"Prescindibles. Sólo si el tema te tira mucho."},
+  {k:"D", c:"#8c4a3e", name:"Ni te molestes", desc:"Directamente no."}
 ];
 
 /* ─── Estado ─── */
-var KEY = "tv-repo-v1";
-var seen = {};
-try { seen = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { seen = {}; }
+var KEY = "tv-repo-v2";
+var overrides = {};
+try { overrides = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { overrides = {}; }
 
-D.forEach(function (d) {
-  d.id = d.t.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + d.y;
-  if (d.seen && !(d.id in seen)) seen[d.id] = true;
-});
+function isSeen(d) { return d.id in overrides ? overrides[d.id] : !!d.seen; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(overrides)); } catch (e) {} }
 
-var view = "tier";
-var typeF = "all";
-var genreF = null;
-var hideSeen = false;
+var view = "tier", stateF = "all", typeF = "all", genreF = null, query = "";
 
-function save() {
-  try { localStorage.setItem(KEY, JSON.stringify(seen)); } catch (e) {}
+var NOW = DATA.filter(function (d) { return d.now; });
+var REST = DATA.filter(function (d) { return !d.now; });
+
+/* ─── Utilidades ─── */
+function esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
-
 function lenClass(t) {
   var n = t.length;
-  if (n > 26) return " len-xl";
-  if (n > 18) return " len-l";
-  if (n > 12) return " len-m";
+  if (n > 30) return " len-xl";
+  if (n > 21) return " len-l";
+  if (n > 13) return " len-m";
   return "";
 }
-
-function esc(s) {
-  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+function norm(s) {
+  return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
 /* ─── Viendo ahora ─── */
-(function renderNow() {
+function renderNow() {
   document.getElementById("now-grid").innerHTML = NOW.map(function (n) {
-    var art = POSTERS[n.t.toLowerCase().replace(/[^a-z0-9]+/g, "-")];
+    var art = POSTERS[n.id];
     return '<div class="now">' +
-      '<div class="chip-art" style="--g:' + GC[n.g] + '"><b>' + esc(n.t.charAt(0)) + '</b>' +
+      '<div class="chip-art" style="--g:' + (GC[n.g] || "#555") + '"><b>' + esc(n.t.charAt(0)) + '</b>' +
         (art ? '<img src="' + art + '" alt="" loading="lazy">' : '') + '</div>' +
       '<div class="now-body">' +
         '<h3>' + esc(n.t) + '</h3>' +
         '<div class="row">' +
-          '<span class="tag">' + esc(n.y) + '</span>' +
+          '<span class="tag">' + esc(n.g) + '</span>' +
           '<span class="tag' + (n.flag ? " warn" : "") + '">' + esc(n.pf) + '</span>' +
           (n.flag ? '<span class="tag warn">' + esc(n.flag) + '</span>' : '') +
         '</div>' +
-        '<p>' + esc(n.n) + '</p>' +
+        '<p>' + esc(n.v || "") + '</p>' +
       '</div></div>';
   }).join("");
-})();
+}
 
-/* ─── Chips de género ─── */
-(function renderGenreChips() {
-  var row = document.getElementById("genre-chips");
-  var order = Object.keys(GC).filter(function (g) {
-    return D.some(function (d) { return d.g === g; });
-  });
-  var html = '<button class="chip" data-genre="" aria-pressed="true">Todos</button>';
-  html += order.map(function (g) {
-    return '<button class="chip" data-genre="' + esc(g) + '" aria-pressed="false">' +
-           '<span class="dot" style="--g:' + GC[g] + '"></span>' + esc(g) + '</button>';
-  }).join("");
-  row.insertAdjacentHTML("beforeend", html);
-})();
+/* ─── Ficha ─── */
+function badgeFor(d) {
+  if (d.saga === "X-Men" && d.rank) return "#" + d.rank;
+  if (d.saga === "MCU" && d.n) return String(d.n);
+  return d.tier || (isSeen(d) ? "✓" : "");
+}
 
-/* ─── Card ─── */
 function posterHtml(d) {
   var g = GC[d.g] || "#555";
   var art = POSTERS[d.id];
+  var yr = d.y ? d.y : "—";
 
   if (art) {
     return '<div class="poster has-img" style="--g:' + g + '">' +
       '<img class="p-img" src="' + art + '" alt="" loading="lazy">' +
       '<div class="p-scrim"></div>' +
-      '<div class="p-tier">' + d.tier + '</div>' +
-      '<div class="p-foot"><span>' + d.y + '</span><span>' + esc(d.pf) + '</span></div>' +
-      '<span class="stamp">VISTO</span>' +
-    '</div>';
+      '<div class="p-tier">' + esc(badgeFor(d)) + '</div>' +
+      '<div class="p-foot"><span>' + yr + '</span><span>' + esc(d.pf || "") + '</span></div>' +
+      '<span class="stamp">VISTO</span></div>';
   }
-
   return '<div class="poster" style="--g:' + g + '">' +
-    '<div class="p-tier">' + d.tier + '</div>' +
+    '<div class="p-tier">' + esc(badgeFor(d)) + '</div>' +
     '<h3 class="p-title' + lenClass(d.t) + '">' + esc(d.t) + '</h3>' +
     '<div class="p-rule"></div>' +
-    '<div class="p-foot"><span>' + d.y + '</span><span>' + esc(d.pf) + '</span></div>' +
-    '<span class="stamp">VISTO</span>' +
-  '</div>';
+    '<div class="p-foot"><span>' + yr + '</span><span>' + esc(d.pf || "") + '</span></div>' +
+    '<span class="stamp">VISTO</span></div>';
 }
 
 function card(d) {
-  var isSeen = !!seen[d.id];
-  return '<button class="card' + (isSeen ? " seen" : "") + '" data-id="' + d.id + '" ' +
-    'aria-pressed="' + isSeen + '" aria-label="' + esc(d.t) + ' — marcar como vista">' +
+  var s = isSeen(d);
+  return '<button class="card' + (s ? " seen" : "") + '" data-id="' + d.id + '" aria-pressed="' + s + '" ' +
+    'aria-label="' + esc(d.t) + ' — marcar como vista">' +
     posterHtml(d) +
     '<div class="c-meta">' +
-      '<p class="c-gen">' + esc(d.g) + (d.g2 && d.g2 !== "—" ? " · " + esc(d.g2) : "") +
-        (d.ty === "serie" ? " · Serie" : "") + '</p>' +
-      '<p class="c-verdict">' + esc(d.v) + '</p>' +
-    '</div>' +
-  '</button>';
+      '<p class="c-gen">' + esc(d.g) + (d.ty === "serie" ? " · Serie" : "") + '</p>' +
+      (d.v ? '<p class="c-verdict">' + esc(d.v) + '</p>' : '') +
+    '</div></button>';
 }
 
-/* ─── Render principal ─── */
+function block(badge, color, title, desc, items, dense) {
+  return '<div class="tier-head"><span class="badge" style="--tc:' + color + '">' + esc(badge) + '</span>' +
+    '<h3>' + esc(title) + '</h3>' + (desc ? '<p>' + esc(desc) + '</p>' : '') + '</div>' +
+    '<div class="grid' + (dense ? " dense" : "") + '">' + items.map(card).join("") + '</div>';
+}
+
+/* ─── Render ─── */
 function render() {
-  var list = D.filter(function (d) {
+  var list = REST.filter(function (d) {
+    var s = isSeen(d);
+    if (stateF === "pend" && s) return false;
+    if (stateF === "seen" && !s) return false;
     if (typeF !== "all" && d.ty !== typeF) return false;
     if (genreF && d.g !== genreF) return false;
-    if (hideSeen && seen[d.id]) return false;
+    if (query && norm(d.t).indexOf(query) === -1) return false;
     return true;
   });
 
-  var board = document.getElementById("board");
   var html = "";
 
   if (!list.length) {
     html = '<div class="empty">Nada que mostrar con estos filtros.</div>';
   } else if (view === "tier") {
+    var pend = list.filter(function (d) { return !isSeen(d); });
+    var done = list.filter(isSeen);
+
     TIERS.forEach(function (t) {
-      var items = list.filter(function (d) { return d.tier === t.k; });
-      if (!items.length) return;
-      html += '<div class="tier-head">' +
-        '<span class="badge" style="--tc:' + t.c + '">' + t.k + '</span>' +
-        '<h3>' + t.name + '</h3><p>' + t.desc + '</p></div>' +
-        '<div class="grid">' + items.map(card).join("") + '</div>';
+      var items = pend.filter(function (d) { return d.tier === t.k; });
+      if (items.length) html += block(t.k, t.c, t.name, t.desc, items);
     });
+    var noTier = pend.filter(function (d) { return !d.tier; });
+    if (noTier.length) html += block("·", "#5a6070", "Sin clasificar", "", noTier);
+    if (done.length) html += block(String(done.length), "#4a7a68", "Ya vistas", "Vienen tildadas desde tu nota.", done, true);
+
+  } else if (view === "saga") {
+    var sagas = {};
+    list.forEach(function (d) { if (d.saga) (sagas[d.saga] = sagas[d.saga] || []).push(d); });
+
+    if (sagas["MCU"]) {
+      sagas["MCU"].sort(function (a, b) { return a.n - b.n; });
+      html += block(String(sagas["MCU"].length), "#8a3a3a", "MCU — orden de estreno",
+        "Las 32, numeradas como en tu nota.", sagas["MCU"], true);
+    }
+    if (sagas["X-Men"]) {
+      sagas["X-Men"].sort(function (a, b) { return a.rank - b.rank; });
+      html += block(String(sagas["X-Men"].length), "#3a5a8a", "X-Men — tu ranking",
+        "De mejor a peor, con el número que le pusiste.", sagas["X-Men"], true);
+    }
+    var rest = list.filter(function (d) { return !d.saga; });
+    if (rest.length) html += block(String(rest.length), "#5a6070", "Fuera de saga", "", rest, true);
+
   } else {
-    var keyOf = view === "genre" ? "g" : "pf";
+    var key = view === "genre" ? "g" : "pf";
     var groups = {};
-    list.forEach(function (d) { (groups[d[keyOf]] = groups[d[keyOf]] || []).push(d); });
+    list.forEach(function (d) { var k = d[key] || "—"; (groups[k] = groups[k] || []).push(d); });
     Object.keys(groups).sort(function (a, b) {
       return groups[b].length - groups[a].length || a.localeCompare(b);
     }).forEach(function (k) {
-      var color = view === "genre" ? (GC[k] || "#555") : "#5a6070";
-      html += '<div class="tier-head">' +
-        '<span class="badge" style="--tc:' + color + '">' + groups[k].length + '</span>' +
-        '<h3>' + esc(k) + '</h3></div>' +
-        '<div class="grid">' + groups[k].map(card).join("") + '</div>';
+      var color = view === "genre" ? (GC[k] || "#5a6070") : "#5a6070";
+      html += block(String(groups[k].length), color, k, "", groups[k]);
     });
   }
 
-  board.innerHTML = html;
-  document.getElementById("filter-count").textContent =
-    list.length + " de " + D.length + " títulos en pantalla";
+  document.getElementById("board").innerHTML = html;
+  document.getElementById("filter-count").textContent = list.length + " de " + REST.length + " en pantalla";
   updateStats();
 }
 
 function updateStats() {
-  var n = D.filter(function (d) { return seen[d.id]; }).length;
-  document.getElementById("s-total").textContent = D.length;
+  var n = DATA.filter(isSeen).length;
+  document.getElementById("s-total").textContent = DATA.length;
   document.getElementById("s-seen").textContent = n;
-  document.getElementById("s-left").textContent = D.length - n;
+  document.getElementById("s-left").textContent = DATA.length - n;
+  document.getElementById("s-now").textContent = NOW.length;
+  document.getElementById("s-bar").style.width = Math.round((n / DATA.length) * 100) + "%";
 }
+
+/* ─── Chips de género ─── */
+(function () {
+  var row = document.getElementById("genre-chips");
+  var present = Object.keys(GC).filter(function (g) {
+    return DATA.some(function (d) { return d.g === g; });
+  });
+  row.insertAdjacentHTML("beforeend",
+    '<button class="chip" data-genre="" aria-pressed="true">Todos</button>' +
+    present.map(function (g) {
+      return '<button class="chip" data-genre="' + esc(g) + '" aria-pressed="false">' +
+        '<span class="dot" style="--g:' + GC[g] + '"></span>' + esc(g) + '</button>';
+    }).join(""));
+})();
 
 /* ─── Eventos ─── */
 document.addEventListener("click", function (e) {
   var c = e.target.closest(".card");
   if (c) {
-    var id = c.dataset.id;
-    if (seen[id]) { delete seen[id]; } else { seen[id] = true; }
+    var d = DATA.find(function (x) { return x.id === c.dataset.id; });
+    if (!d) return;
+    overrides[d.id] = !isSeen(d);
     save();
-    if (hideSeen) { render(); } else {
-      c.classList.toggle("seen", !!seen[id]);
-      c.setAttribute("aria-pressed", String(!!seen[id]));
+    if (stateF !== "all") { render(); }
+    else {
+      c.classList.toggle("seen", isSeen(d));
+      c.setAttribute("aria-pressed", String(isSeen(d)));
       updateStats();
     }
     return;
@@ -779,30 +585,31 @@ document.addEventListener("click", function (e) {
   var b = e.target.closest("button.chip");
   if (!b) return;
 
-  if (b.dataset.view) {
-    view = b.dataset.view;
-    document.querySelectorAll("[data-view]").forEach(function (x) {
-      x.setAttribute("aria-pressed", String(x.dataset.view === view));
-    });
-    render();
-  } else if (b.dataset.type) {
-    typeF = b.dataset.type;
-    document.querySelectorAll("[data-type]").forEach(function (x) {
-      x.setAttribute("aria-pressed", String(x.dataset.type === typeF));
-    });
-    render();
-  } else if ("genre" in b.dataset) {
+  var map = { view: "view", state: "stateF", type: "typeF" };
+  for (var attr in map) {
+    if (b.dataset[attr]) {
+      var val = b.dataset[attr];
+      if (attr === "view") view = val; else if (attr === "state") stateF = val; else typeF = val;
+      document.querySelectorAll("[data-" + attr + "]").forEach(function (x) {
+        x.setAttribute("aria-pressed", String(x.dataset[attr] === val));
+      });
+      return render();
+    }
+  }
+  if ("genre" in b.dataset) {
     genreF = b.dataset.genre || null;
     document.querySelectorAll("[data-genre]").forEach(function (x) {
       x.setAttribute("aria-pressed", String((x.dataset.genre || null) === genreF));
     });
     render();
-  } else if (b.id === "hide-seen") {
-    hideSeen = !hideSeen;
-    b.setAttribute("aria-pressed", String(hideSeen));
-    render();
   }
 });
 
+document.getElementById("q").addEventListener("input", function (e) {
+  query = norm(e.target.value.trim());
+  render();
+});
+
+renderNow();
 render();
 </script>
