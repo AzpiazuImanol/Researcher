@@ -1,31 +1,35 @@
 /**
- * Downloads cover art for every title in the watchlist and writes them to
- * posters.json as base64 data URIs.
+ * Downloads cover art for every title in the catalog and writes posters.json
+ * as base64 data URIs.
  *
  * Runs on a GitHub Actions runner because this repo's dev sandbox cannot
- * reach Wikimedia. Two things this has to get right:
+ * reach Wikimedia. Three things this has to get right:
  *
  *  - pilicense=any. By default pageimages returns only freely-licensed
  *    images, and film/TV posters are non-free, so the default silently
  *    yields nothing for almost every title here.
  *  - Batching. Actions runners share a heavily rate-limited IP pool, so
  *    metadata goes out 20 titles per request rather than one at a time.
+ *  - Thumbnail width by status. Watched titles render small and desaturated,
+ *    so they get a narrow thumbnail; the whole set has to fit under the
+ *    16 MB ceiling for a published page.
  */
 
-import { writeFileSync, readFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
+import { CATALOG } from "./catalog.mjs";
 
 const API = "https://en.wikipedia.org/w/api.php";
-const THUMB_WIDTH = 320;
+const WIDTH_PENDING = 300;
+const WIDTH_SEEN = 150;
 const BATCH = 20;
 const UA = "tv-watchlist-poster-fetcher/1.0 (https://github.com/AzpiazuImanol/Researcher)";
 
-const titles = JSON.parse(readFileSync(new URL("./titles.json", import.meta.url), "utf8"));
-
+const widthFor = (entry) => (entry.seen ? WIDTH_SEEN : WIDTH_PENDING);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** GET with backoff, because Wikimedia answers 429 to bursts from CI ranges. */
 async function get(url, attempt = 0) {
-  const res = await fetch(url, { headers: { "User-Agent": UA, "Accept-Encoding": "gzip" } });
+  const res = await fetch(url, { headers: { "User-Agent": UA } });
   if (res.status === 429 && attempt < 5) {
     const wait = 2000 * Math.pow(2, attempt);
     console.log(`   429 — esperando ${wait / 1000}s`);
@@ -40,13 +44,6 @@ async function api(params) {
   const res = await get(`${API}?${new URLSearchParams({ ...params, format: "json" })}`);
   return res.json();
 }
-
-const IMAGE_PARAMS = {
-  prop: "pageimages",
-  piprop: "thumbnail",
-  pithumbsize: String(THUMB_WIDTH),
-  pilicense: "any",
-};
 
 /**
  * MediaWiki rewrites requested titles through normalization and redirects,
@@ -66,57 +63,40 @@ function buildAliasMap(query) {
 
 const found = new Map();
 
-/* Pass 1 — batched lookups for every entry that names an article. */
-const named = titles.filter((t) => t.wiki);
+/* Pass 1 — batched lookups, grouped by the width each entry needs. */
+for (const seen of [false, true]) {
+  const group = CATALOG.filter((e) => e.wiki && !!e.seen === seen);
+  const pithumbsize = String(seen ? WIDTH_SEEN : WIDTH_PENDING);
 
-for (let i = 0; i < named.length; i += BATCH) {
-  const chunk = named.slice(i, i + BATCH);
-  const json = await api({
-    action: "query",
-    titles: chunk.map((c) => c.wiki).join("|"),
-    redirects: "1",
-    ...IMAGE_PARAMS,
-  });
-
-  const query = json.query || {};
-  const resolve = buildAliasMap(query);
-  const byTitle = new Map(
-    Object.values(query.pages || {}).map((p) => [p.title, p.thumbnail?.source])
-  );
-
-  for (const entry of chunk) {
-    const src = byTitle.get(resolve(entry.wiki));
-    if (src) found.set(entry.id, src);
-  }
-
-  console.log(`lote ${i / BATCH + 1}: ${found.size} acumuladas`);
-  await sleep(1200);
-}
-
-/* Pass 2 — search fallback for whatever the article lookup missed. */
-for (const entry of titles) {
-  if (found.has(entry.id)) continue;
-  try {
+  for (let i = 0; i < group.length; i += BATCH) {
+    const chunk = group.slice(i, i + BATCH);
     const json = await api({
       action: "query",
-      generator: "search",
-      gsrsearch: entry.search || entry.wiki || entry.id,
-      gsrlimit: "1",
-      ...IMAGE_PARAMS,
+      titles: chunk.map((c) => c.wiki).join("|"),
+      redirects: "1",
+      prop: "pageimages",
+      piprop: "thumbnail",
+      pithumbsize,
+      pilicense: "any",
     });
-    const page = Object.values(json.query?.pages || {})[0];
-    if (page?.thumbnail?.source) {
-      found.set(entry.id, page.thumbnail.source);
-      console.log(`   búsqueda resolvió ${entry.id} → ${page.title}`);
+
+    const query = json.query || {};
+    const resolve = buildAliasMap(query);
+    const byTitle = new Map(
+      Object.values(query.pages || {}).map((p) => [p.title, p.thumbnail?.source])
+    );
+
+    for (const entry of chunk) {
+      const src = byTitle.get(resolve(entry.wiki));
+      if (src) found.set(entry.id, src);
     }
-  } catch (err) {
-    console.log(`   búsqueda falló ${entry.id}: ${err.message}`);
+    await sleep(1000);
   }
-  await sleep(1200);
+  console.log(`lotes ${seen ? "vistas" : "pendientes"}: ${found.size} acumuladas`);
 }
 
 /**
- * Pass 2b — for the stragglers, parse the article's lead section and take the
+ * Pass 2 — for the stragglers, parse the article's lead section and take the
  * first upload.wikimedia.org image, which is the infobox poster. pageimages
  * selects nothing on a fair number of TV series articles even with
  * pilicense=any, and the rendered HTML sidesteps that heuristic entirely.
@@ -133,26 +113,47 @@ async function viaLeadHtml(entry) {
   const html = json.parse?.text || "";
   const match = html.match(/<img[^>]+src="([^"]*upload\.wikimedia\.org[^"]+)"/i);
   if (!match) return null;
-  return match[1].startsWith("//") ? "https:" + match[1] : match[1];
+  const src = match[1].startsWith("//") ? "https:" + match[1] : match[1];
+  // Rewrite the rendered thumbnail to the width we actually want.
+  return src.replace(/\/(\d+)px-/, `/${widthFor(entry)}px-`);
 }
 
-for (const entry of titles) {
-  if (found.has(entry.id) || !entry.wiki) continue;
-  try {
-    const src = await viaLeadHtml(entry);
-    if (src) {
-      found.set(entry.id, src);
-      console.log(`   infobox resolvió ${entry.id}`);
-    } else {
-      console.log(`   infobox sin imagen para ${entry.id} (${entry.wiki})`);
+/** Pass 3 — last resort: full-text search for whatever is still missing. */
+async function viaSearch(entry) {
+  const json = await api({
+    action: "query",
+    generator: "search",
+    gsrsearch: entry.search || entry.wiki || entry.t,
+    gsrlimit: "1",
+    prop: "pageimages",
+    piprop: "thumbnail",
+    pithumbsize: String(widthFor(entry)),
+    pilicense: "any",
+  });
+  const page = Object.values(json.query?.pages || {})[0];
+  return page?.thumbnail?.source || null;
+}
+
+for (const [label, resolver, needsWiki] of [
+  ["infobox", viaLeadHtml, true],
+  ["búsqueda", viaSearch, false],
+]) {
+  for (const entry of CATALOG) {
+    if (found.has(entry.id) || (needsWiki && !entry.wiki)) continue;
+    try {
+      const src = await resolver(entry);
+      if (src) {
+        found.set(entry.id, src);
+        console.log(`   ${label} resolvió ${entry.id}`);
+      }
+    } catch (err) {
+      console.log(`   ${label} falló ${entry.id}: ${err.message}`);
     }
-  } catch (err) {
-    console.log(`   infobox falló ${entry.id}: ${err.message}`);
+    await sleep(900);
   }
-  await sleep(1200);
 }
 
-/* Pass 3 — download and encode. */
+/* Pass 4 — download and encode. */
 const out = {};
 
 for (const [id, url] of found) {
@@ -161,15 +162,15 @@ for (const [id, url] of found) {
     const type = res.headers.get("content-type") || "image/jpeg";
     const buf = Buffer.from(await res.arrayBuffer());
     out[id] = `data:${type};base64,${buf.toString("base64")}`;
-    console.log(`ok ${id}: ${Math.round(buf.length / 1024)}kb`);
   } catch (err) {
     console.log(`!  ${id}: ${err.message}`);
   }
-  await sleep(300);
+  await sleep(200);
 }
 
 writeFileSync("posters.json", JSON.stringify(out, null, 0));
 
-const missing = titles.filter((t) => !out[t.id]).map((t) => t.id);
-console.log(`\n${Object.keys(out).length}/${titles.length} portadas, ${Math.round(JSON.stringify(out).length / 1024)}kb`);
-if (missing.length) console.log(`faltan: ${missing.join(", ")}`);
+const missing = CATALOG.filter((e) => !out[e.id]);
+const mb = (JSON.stringify(out).length / 1024 / 1024).toFixed(2);
+console.log(`\n${Object.keys(out).length}/${CATALOG.length} portadas, ${mb} MB`);
+if (missing.length) console.log(`faltan: ${missing.map((e) => e.id).join(", ")}`);
