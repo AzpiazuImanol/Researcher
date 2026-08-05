@@ -11,15 +11,23 @@ on:
 permissions:
   contents: write
 
+# A second push while this is still downloading would only race it to the
+# same branch, so let the newer run win.
+concurrency:
+  group: posters-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   posters:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Download covers
         run: node scripts/fetch-posters.mjs
@@ -29,5 +37,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add posters.json
-          git diff --staged --quiet || git commit -m "Update cover art data"
-          git push
+          git diff --staged --quiet && { echo "sin cambios"; exit 0; }
+          git commit -m "Update cover art data"
+
+          # The download takes minutes, so the branch may well have moved on.
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase --autostash origin "${{ github.ref_name }}" \
+               && git push origin "HEAD:${{ github.ref_name }}"; then
+              echo "pusheado en el intento $attempt"
+              exit 0
+            fi
+            echo "push rechazado, reintento $attempt"
+            sleep $((attempt * 5))
+          done
+          echo "::error::no se pudo pushear posters.json tras 5 intentos"
+          exit 1
