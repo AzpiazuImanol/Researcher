@@ -116,46 +116,38 @@ for (const entry of titles) {
 }
 
 /**
- * Pass 2b — for the stragglers, read the article's image list directly.
- * pageimages picks nothing on a fair number of TV series articles even with
- * pilicense=any, but the infobox poster is still the first real file on the
- * page once the site furniture is filtered out.
+ * Pass 2b — for the stragglers, parse the article's lead section and take the
+ * first upload.wikimedia.org image, which is the infobox poster. pageimages
+ * selects nothing on a fair number of TV series articles even with
+ * pilicense=any, and the rendered HTML sidesteps that heuristic entirely.
  */
-const FURNITURE = /commons-logo|edit-icon|wiki[a-z]*-?logo|ambox|question_book|folder|symbol|padlock|star_|flag_|_icon|\.svg$|\.ogg$|\.webm$/i;
-
-async function viaImageList(entry) {
-  const list = await api({
-    action: "query",
-    titles: entry.wiki,
-    prop: "images",
-    imlimit: "20",
+async function viaLeadHtml(entry) {
+  const json = await api({
+    action: "parse",
+    page: entry.wiki,
+    prop: "text",
+    section: "0",
     redirects: "1",
+    formatversion: "2",
   });
-  const page = Object.values(list.query?.pages || {})[0];
-  const candidate = (page?.images || []).map((i) => i.title).find((t) => !FURNITURE.test(t));
-  if (!candidate) return null;
-
-  const info = await api({
-    action: "query",
-    titles: candidate,
-    prop: "imageinfo",
-    iiprop: "url",
-    iiurlwidth: String(THUMB_WIDTH),
-  });
-  const file = Object.values(info.query?.pages || {})[0];
-  return file?.imageinfo?.[0]?.thumburl || null;
+  const html = json.parse?.text || "";
+  const match = html.match(/<img[^>]+src="([^"]*upload\.wikimedia\.org[^"]+)"/i);
+  if (!match) return null;
+  return match[1].startsWith("//") ? "https:" + match[1] : match[1];
 }
 
 for (const entry of titles) {
   if (found.has(entry.id) || !entry.wiki) continue;
   try {
-    const src = await viaImageList(entry);
+    const src = await viaLeadHtml(entry);
     if (src) {
       found.set(entry.id, src);
-      console.log(`   lista de imágenes resolvió ${entry.id}`);
+      console.log(`   infobox resolvió ${entry.id}`);
+    } else {
+      console.log(`   infobox sin imagen para ${entry.id} (${entry.wiki})`);
     }
   } catch (err) {
-    console.log(`   lista falló ${entry.id}: ${err.message}`);
+    console.log(`   infobox falló ${entry.id}: ${err.message}`);
   }
   await sleep(1200);
 }
