@@ -1,0 +1,13 @@
+{
+  "name": "researcher-tv",
+  "private": true,
+  "type": "module",
+  "description": "Watchlist page: cover fetching and build scripts.",
+  "scripts": {
+    "covers": "node scripts/fetch-posters.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.34.5"
+  }
+}

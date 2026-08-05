@@ -15,10 +15,12 @@
  *    16 MB ceiling for a published page.
  */
 
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import sharp from "sharp";
 import { CATALOG } from "./catalog.mjs";
 
 const API = "https://en.wikipedia.org/w/api.php";
+const API_ES = "https://es.wikipedia.org/w/api.php";
 const WIDTH_PENDING = 300;
 const WIDTH_SEEN = 150;
 const BATCH = 20;
@@ -40,9 +42,27 @@ async function get(url, attempt = 0) {
   return res;
 }
 
-async function api(params) {
-  const res = await get(`${API}?${new URLSearchParams({ ...params, format: "json" })}`);
+async function api(params, base = API) {
+  const res = await get(`${base}?${new URLSearchParams({ ...params, format: "json" })}`);
   return res.json();
+}
+
+/**
+ * Covers already downloaded are kept as-is: they have been recompressed
+ * locally and re-fetching would both undo that and burn rate limit on
+ * titles that are already done. Set REFETCH_ALL=1 to start over.
+ */
+const existing =
+  process.env.REFETCH_ALL === "1" || !existsSync("posters.json")
+    ? {}
+    : JSON.parse(readFileSync("posters.json", "utf8"));
+
+const TODO = CATALOG.filter((e) => !existing[e.id]);
+console.log(`${TODO.length} por bajar, ${Object.keys(existing).length} ya presentes\n`);
+if (!TODO.length) {
+  writeFileSync("posters.json", JSON.stringify(existing, null, 0));
+  console.log("nada que hacer");
+  process.exit(0);
 }
 
 /**
@@ -65,7 +85,7 @@ const found = new Map();
 
 /* Pass 1 — batched lookups, grouped by the width each entry needs. */
 for (const seen of [false, true]) {
-  const group = CATALOG.filter((e) => e.wiki && !!e.seen === seen);
+  const group = TODO.filter((e) => e.wiki && !!e.seen === seen);
   const pithumbsize = String(seen ? WIDTH_SEEN : WIDTH_PENDING);
 
   for (let i = 0; i < group.length; i += BATCH) {
@@ -134,11 +154,24 @@ async function viaSearch(entry) {
   return page?.thumbnail?.source || null;
 }
 
+/** Cuarto intento: la Wikipedia en español suele tener el póster con otro nombre. */
+async function viaSpanish(entry) {
+  const json = await api({
+    action: "query", generator: "search",
+    gsrsearch: entry.t, gsrlimit: "1",
+    prop: "pageimages", piprop: "thumbnail",
+    pithumbsize: String(widthFor(entry)), pilicense: "any",
+  }, API_ES);
+  const page = Object.values(json.query?.pages || {})[0];
+  return page?.thumbnail?.source || null;
+}
+
 for (const [label, resolver, needsWiki] of [
   ["infobox", viaLeadHtml, true],
   ["búsqueda", viaSearch, false],
+  ["es.wikipedia", viaSpanish, false],
 ]) {
-  for (const entry of CATALOG) {
+  for (const entry of TODO) {
     if (found.has(entry.id) || (needsWiki && !entry.wiki)) continue;
     try {
       const src = await resolver(entry);
@@ -153,15 +186,27 @@ for (const [label, resolver, needsWiki] of [
   }
 }
 
-/* Pass 4 — download and encode. */
-const out = {};
+/**
+ * Pass 4 — download, then normalise to JPEG at the width the entry actually
+ * renders at. Wikimedia serves whatever the article holds, often a PNG far
+ * wider than requested, and unprocessed that pushed the page past its 16 MB
+ * ceiling. Only new downloads pass through here, so nothing already stored
+ * gets re-encoded.
+ */
+const byId = new Map(CATALOG.map((e) => [e.id, e]));
+const out = { ...existing };
 
 for (const [id, url] of found) {
   try {
     const res = await get(url);
-    const type = res.headers.get("content-type") || "image/jpeg";
-    const buf = Buffer.from(await res.arrayBuffer());
-    out[id] = `data:${type};base64,${buf.toString("base64")}`;
+    const raw = Buffer.from(await res.arrayBuffer());
+    const jpeg = await sharp(raw)
+      .resize({ width: widthFor(byId.get(id)), withoutEnlargement: true })
+      .flatten({ background: "#1a1a1a" })
+      .jpeg({ quality: 72, mozjpeg: true })
+      .toBuffer();
+    out[id] = `data:image/jpeg;base64,${jpeg.toString("base64")}`;
+    console.log(`ok ${id}: ${Math.round(jpeg.length / 1024)}kb`);
   } catch (err) {
     console.log(`!  ${id}: ${err.message}`);
   }
