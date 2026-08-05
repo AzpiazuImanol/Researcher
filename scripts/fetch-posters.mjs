@@ -3,93 +3,136 @@
  * posters.json as base64 data URIs.
  *
  * Runs on a GitHub Actions runner because this repo's dev sandbox cannot
- * reach Wikimedia. Uses the keyless MediaWiki API: an exact article lookup
- * first, then a search fallback for titles whose article name we don't know.
+ * reach Wikimedia. Two things this has to get right:
+ *
+ *  - pilicense=any. By default pageimages returns only freely-licensed
+ *    images, and film/TV posters are non-free, so the default silently
+ *    yields nothing for almost every title here.
+ *  - Batching. Actions runners share a heavily rate-limited IP pool, so
+ *    metadata goes out 20 titles per request rather than one at a time.
  */
 
 import { writeFileSync, readFileSync } from "node:fs";
 
 const API = "https://en.wikipedia.org/w/api.php";
 const THUMB_WIDTH = 320;
-const UA = "tv-watchlist-poster-fetcher/1.0 (personal watchlist; contact via repo)";
+const BATCH = 20;
+const UA = "tv-watchlist-poster-fetcher/1.0 (https://github.com/AzpiazuImanol/Researcher)";
 
 const titles = JSON.parse(readFileSync(new URL("./titles.json", import.meta.url), "utf8"));
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/** GET with backoff, because Wikimedia answers 429 to bursts from CI ranges. */
+async function get(url, attempt = 0) {
+  const res = await fetch(url, { headers: { "User-Agent": UA, "Accept-Encoding": "gzip" } });
+  if (res.status === 429 && attempt < 5) {
+    const wait = 2000 * Math.pow(2, attempt);
+    console.log(`   429 — esperando ${wait / 1000}s`);
+    await sleep(wait);
+    return get(url, attempt + 1);
+  }
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res;
+}
+
 async function api(params) {
-  const url = `${API}?${new URLSearchParams({ ...params, format: "json", origin: "*" })}`;
-  const res = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!res.ok) throw new Error(`${res.status} on ${params.titles || params.gsrsearch}`);
+  const res = await get(`${API}?${new URLSearchParams({ ...params, format: "json" })}`);
   return res.json();
 }
 
-/** Pull the pageimage thumbnail out of a query response, if there is one. */
-function thumbFrom(json) {
-  const pages = json?.query?.pages;
-  if (!pages) return null;
-  for (const page of Object.values(pages)) {
-    if (page?.thumbnail?.source) return page.thumbnail.source;
+const IMAGE_PARAMS = {
+  prop: "pageimages",
+  piprop: "thumbnail",
+  pithumbsize: String(THUMB_WIDTH),
+  pilicense: "any",
+};
+
+/**
+ * MediaWiki rewrites requested titles through normalization and redirects,
+ * so follow that chain to know which returned page belongs to which entry.
+ */
+function buildAliasMap(query) {
+  const alias = new Map();
+  for (const list of [query.normalized, query.redirects]) {
+    for (const { from, to } of list || []) alias.set(from, to);
   }
-  return null;
+  return (title) => {
+    let cur = title;
+    for (let i = 0; i < 5 && alias.has(cur); i++) cur = alias.get(cur);
+    return cur;
+  };
 }
 
-async function findThumb(entry) {
-  if (entry.wiki) {
-    const exact = await api({
-      action: "query",
-      titles: entry.wiki,
-      prop: "pageimages",
-      piprop: "thumbnail",
-      pithumbsize: String(THUMB_WIDTH),
-      redirects: "1",
-    });
-    const hit = thumbFrom(exact);
-    if (hit) return hit;
-  }
+const found = new Map();
 
-  const search = await api({
+/* Pass 1 — batched lookups for every entry that names an article. */
+const named = titles.filter((t) => t.wiki);
+
+for (let i = 0; i < named.length; i += BATCH) {
+  const chunk = named.slice(i, i + BATCH);
+  const json = await api({
     action: "query",
-    generator: "search",
-    gsrsearch: entry.search || `${entry.wiki || entry.id} film`,
-    gsrlimit: "1",
-    prop: "pageimages",
-    piprop: "thumbnail",
-    pithumbsize: String(THUMB_WIDTH),
+    titles: chunk.map((c) => c.wiki).join("|"),
+    redirects: "1",
+    ...IMAGE_PARAMS,
   });
-  return thumbFrom(search);
-}
 
-async function toDataUri(url) {
-  const res = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!res.ok) throw new Error(`${res.status} fetching image`);
-  const type = res.headers.get("content-type") || "image/jpeg";
-  const buf = Buffer.from(await res.arrayBuffer());
-  return `data:${type};base64,${buf.toString("base64")}`;
-}
+  const query = json.query || {};
+  const resolve = buildAliasMap(query);
+  const byTitle = new Map(
+    Object.values(query.pages || {}).map((p) => [p.title, p.thumbnail?.source])
+  );
 
-const out = {};
-const missing = [];
-
-for (const entry of titles) {
-  try {
-    const thumb = await findThumb(entry);
-    if (!thumb) {
-      missing.push(entry.id);
-      console.log(`—  ${entry.id}: no image`);
-      continue;
-    }
-    out[entry.id] = await toDataUri(thumb);
-    const kb = Math.round(out[entry.id].length / 1024);
-    console.log(`ok ${entry.id}: ${kb}kb`);
-  } catch (err) {
-    missing.push(entry.id);
-    console.log(`!  ${entry.id}: ${err.message}`);
+  for (const entry of chunk) {
+    const src = byTitle.get(resolve(entry.wiki));
+    if (src) found.set(entry.id, src);
   }
-  // Stay well inside the MediaWiki rate limit.
-  await new Promise((r) => setTimeout(r, 250));
+
+  console.log(`lote ${i / BATCH + 1}: ${found.size} acumuladas`);
+  await sleep(1200);
+}
+
+/* Pass 2 — search fallback for whatever the article lookup missed. */
+for (const entry of titles) {
+  if (found.has(entry.id)) continue;
+  try {
+    const json = await api({
+      action: "query",
+      generator: "search",
+      gsrsearch: entry.search || entry.wiki || entry.id,
+      gsrlimit: "1",
+      ...IMAGE_PARAMS,
+    });
+    const page = Object.values(json.query?.pages || {})[0];
+    if (page?.thumbnail?.source) {
+      found.set(entry.id, page.thumbnail.source);
+      console.log(`   búsqueda resolvió ${entry.id} → ${page.title}`);
+    }
+  } catch (err) {
+    console.log(`   búsqueda falló ${entry.id}: ${err.message}`);
+  }
+  await sleep(1200);
+}
+
+/* Pass 3 — download and encode. */
+const out = {};
+
+for (const [id, url] of found) {
+  try {
+    const res = await get(url);
+    const type = res.headers.get("content-type") || "image/jpeg";
+    const buf = Buffer.from(await res.arrayBuffer());
+    out[id] = `data:${type};base64,${buf.toString("base64")}`;
+    console.log(`ok ${id}: ${Math.round(buf.length / 1024)}kb`);
+  } catch (err) {
+    console.log(`!  ${id}: ${err.message}`);
+  }
+  await sleep(300);
 }
 
 writeFileSync("posters.json", JSON.stringify(out, null, 0));
 
-const totalKb = Math.round(JSON.stringify(out).length / 1024);
-console.log(`\n${Object.keys(out).length}/${titles.length} covers, ${totalKb}kb total`);
-if (missing.length) console.log(`missing: ${missing.join(", ")}`);
+const missing = titles.filter((t) => !out[t.id]).map((t) => t.id);
+console.log(`\n${Object.keys(out).length}/${titles.length} portadas, ${Math.round(JSON.stringify(out).length / 1024)}kb`);
+if (missing.length) console.log(`faltan: ${missing.join(", ")}`);
