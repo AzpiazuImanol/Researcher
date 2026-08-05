@@ -396,7 +396,7 @@ try { overrides = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (
 function isSeen(d) { return d.id in overrides ? overrides[d.id] : !!d.seen; }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(overrides)); } catch (e) {} }
 
-var view = "tier", stateF = "all", typeF = "all", genreF = null, query = "";
+var view = "tier", stateF = "all", typeF = "all", genreF = null, terms = [];
 
 var NOW = DATA.filter(function (d) { return d.now; });
 var REST = DATA.filter(function (d) { return !d.now; });
@@ -413,7 +413,7 @@ function lenClass(t) {
   return "";
 }
 function norm(s) {
-  return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 /* ─── Viendo ahora ─── */
@@ -488,7 +488,14 @@ function render() {
     if (stateF === "seen" && !s) return false;
     if (typeF !== "all" && d.ty !== typeF) return false;
     if (genreF && d.g !== genreF) return false;
-    if (query && norm(d.t).indexOf(query) === -1) return false;
+    if (terms.length) {
+      // Cada palabra tiene que aparecer en algún lado: así "alien romulus"
+      // encuentra "Alien: Romulus" pese a los dos puntos.
+      var hay = norm([d.t, d.g, d.pf, d.saga, d.y].join(" "));
+      for (var i = 0; i < terms.length; i++) {
+        if (hay.indexOf(terms[i]) === -1) return false;
+      }
+    }
     return true;
   });
 
@@ -606,7 +613,7 @@ document.addEventListener("click", function (e) {
 });
 
 document.getElementById("q").addEventListener("input", function (e) {
-  query = norm(e.target.value.trim());
+  terms = norm(e.target.value).split(/\s+/).filter(Boolean);
   render();
 });
 
