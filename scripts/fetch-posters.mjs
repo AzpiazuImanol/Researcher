@@ -115,6 +115,51 @@ for (const entry of titles) {
   await sleep(1200);
 }
 
+/**
+ * Pass 2b — for the stragglers, read the article's image list directly.
+ * pageimages picks nothing on a fair number of TV series articles even with
+ * pilicense=any, but the infobox poster is still the first real file on the
+ * page once the site furniture is filtered out.
+ */
+const FURNITURE = /commons-logo|edit-icon|wiki[a-z]*-?logo|ambox|question_book|folder|symbol|padlock|star_|flag_|_icon|\.svg$|\.ogg$|\.webm$/i;
+
+async function viaImageList(entry) {
+  const list = await api({
+    action: "query",
+    titles: entry.wiki,
+    prop: "images",
+    imlimit: "20",
+    redirects: "1",
+  });
+  const page = Object.values(list.query?.pages || {})[0];
+  const candidate = (page?.images || []).map((i) => i.title).find((t) => !FURNITURE.test(t));
+  if (!candidate) return null;
+
+  const info = await api({
+    action: "query",
+    titles: candidate,
+    prop: "imageinfo",
+    iiprop: "url",
+    iiurlwidth: String(THUMB_WIDTH),
+  });
+  const file = Object.values(info.query?.pages || {})[0];
+  return file?.imageinfo?.[0]?.thumburl || null;
+}
+
+for (const entry of titles) {
+  if (found.has(entry.id) || !entry.wiki) continue;
+  try {
+    const src = await viaImageList(entry);
+    if (src) {
+      found.set(entry.id, src);
+      console.log(`   lista de imágenes resolvió ${entry.id}`);
+    }
+  } catch (err) {
+    console.log(`   lista falló ${entry.id}: ${err.message}`);
+  }
+  await sleep(1200);
+}
+
 /* Pass 3 — download and encode. */
 const out = {};
 
