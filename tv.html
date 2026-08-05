@@ -560,16 +560,18 @@ function updateStats() {
 
 /* ─── Chips de género ─── */
 (function () {
-  var row = document.getElementById("genre-chips");
   var present = Object.keys(GC).filter(function (g) {
     return DATA.some(function (d) { return d.g === g; });
   });
-  row.insertAdjacentHTML("beforeend",
+  // Se asigna el contenido entero, no se agrega: así el build puede
+  // pre-renderizar esta fila y el script no la duplica al cargar.
+  document.getElementById("genre-chips").innerHTML =
+    '<span class="ctl-label">Género</span>' +
     '<button class="chip" data-genre="" aria-pressed="true">Todos</button>' +
     present.map(function (g) {
       return '<button class="chip" data-genre="' + esc(g) + '" aria-pressed="false">' +
         '<span class="dot" style="--g:' + GC[g] + '"></span>' + esc(g) + '</button>';
-    }).join(""));
+    }).join("");
 })();
 
 /* ─── Eventos ─── */
