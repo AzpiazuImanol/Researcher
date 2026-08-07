@@ -208,6 +208,9 @@ for (const [id, url] of found) {
   try {
     const res = await get(url);
     const raw = Buffer.from(await res.arrayBuffer());
+    // Una búsqueda que erra puede devolver un icono o un placeholder. A este
+    // tamaño no hay póster real, así que se descarta en vez de guardarlo.
+    if (raw.length < 3000) throw new Error(`imagen de ${raw.length} bytes, no es un póster`);
     const jpeg = await sharp(raw)
       .resize({ width: widthFor(byId.get(id)), withoutEnlargement: true })
       .flatten({ background: "#1a1a1a" })

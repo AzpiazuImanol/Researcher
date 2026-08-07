@@ -192,8 +192,6 @@ export const CATALOG = [
    v:"Thriller corporativo con Ford y Oldman desperdiciados. Genérica."},
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
-  {id:"frente-a-frente", t:"Frente a frente", y:0, ty:"peli", g:"Crimen", pf:"—", tier:"B", search:"Frente a frente film",
-   v:"Este no lo pude identificar con certeza desde la nota — confirmame cuál es y le pongo veredicto."},
 
   {id:"the-mentalist", t:"The Mentalist", y:2008, ty:"serie", g:"Crimen", pf:"Prime Video", tier:"B", wiki:"The Mentalist",
    v:"No la bingees: son 151 capítulos de procedural y de corrido se nota la fórmula. De a uno por noche, Simon Baker la sostiene entera."},
