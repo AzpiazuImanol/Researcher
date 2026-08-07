@@ -1,11 +1,9 @@
 /**
- * Builds the two publishable copies of the page.
+ * Builds TV-repositorio.html from tv.html, catalog.mjs and posters.json.
+ * Always the same output file — it gets overwritten in place, never
+ * duplicated under a new name.
  *
- *   tv.build.html      bare fragment for the Artifact tool, which supplies
- *                      its own doctype and head
- *   TV-repositorio.html  a complete standalone document
- *
- * Both are pre-rendered. The page draws itself from JavaScript, and some
+ * The page is pre-rendered. It draws itself from JavaScript, and some
  * viewers — iOS Quick Look in particular — show local HTML without running
  * any, which left the file looking empty. So the build loads the page in a
  * real browser and bakes the resulting markup in: without JavaScript you
@@ -104,11 +102,10 @@ const stamp =
   `${CATALOG.filter((e) => posters[e.id]).length} con portada.`;
 page = fillById(page, "build-stamp", `<b>${stamp}</b>`);
 
-writeFileSync("tv.build.html", page);
-
-/* ── Copia autónoma ── */
+/* Documento completo: charset explícito, porque abierto como archivo local
+   no hay cabecera HTTP que lo declare y el navegador adivina mal. */
 const splitAt = page.indexOf("</style>") + "</style>".length;
-const standalone =
+const html =
   '<!doctype html>\n<html lang="es">\n<head>\n' +
   '<meta charset="utf-8">\n' +
   '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
@@ -118,13 +115,10 @@ const standalone =
   page.slice(splitAt) +
   "\n</body>\n</html>\n";
 
-writeFileSync("TV-repositorio.html", standalone);
+writeFileSync("TV-repositorio.html", html);
 
-const withArt = CATALOG.filter((e) => posters[e.id]).length;
-const mb = (n) => (Buffer.byteLength(n) / 1024 / 1024).toFixed(2);
+const mb = (Buffer.byteLength(html) / 1024 / 1024).toFixed(2);
 console.log(
-  `${CATALOG.length} títulos, ${withArt} con portada` +
-  `${prerendered ? ", pre-renderizado" : ", SIN pre-render"}\n` +
-  `  tv.build.html       ${mb(page)} MB  (para el artifact)\n` +
-  `  TV-repositorio.html ${mb(standalone)} MB  (para abrir en cualquier lado)`
+  `TV-repositorio.html — ${stamp.replace("Versión del ", "").replace(".", "")}` +
+  `${prerendered ? "" : " · SIN pre-render"} · ${mb} MB`
 );
