@@ -98,6 +98,12 @@ try {
   console.warn(`sin pre-render (${err.message}) — la página va a necesitar JavaScript.`);
 }
 
+/* Sello de versión, para poder distinguir una descarga vieja de una nueva. */
+const stamp =
+  `Versión del ${new Date().toISOString().slice(0, 10)} · ${CATALOG.length} títulos · ` +
+  `${CATALOG.filter((e) => posters[e.id]).length} con portada.`;
+page = fillById(page, "build-stamp", `<b>${stamp}</b>`);
+
 writeFileSync("tv.build.html", page);
 
 /* ── Copia autónoma ── */
