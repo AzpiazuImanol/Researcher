@@ -313,12 +313,12 @@ export const CATALOG = [
    v:"El Bond flojo entre Skyfall y No Time to Die. Arranque espectacular y después se desinfla."},
   {id:"red-lights", t:"Luces rojas", y:2012, ty:"peli", g:"Thriller", pf:"Prime Video", tier:"C", wiki:"Red Lights (2012 film)",
    v:"Cazadores de fraudes paranormales con De Niro. Buena premisa, resolución tramposa."},
-  {id:"goat", t:"Goat", y:0, ty:"peli", g:"Drama", pf:"—", tier:"B", search:"Goat film",
-   v:"No pude saber cuál es: hay una de 2016 sobre novatadas y una animada de 2025 sobre básquet. Decime y le pongo ficha."},
-  {id:"the-invite", t:"The Invite", y:0, ty:"peli", g:"Terror", pf:"—", tier:"B", search:"The Invitation film",
-   v:"Tampoco lo pude identificar: puede ser The Invitation de 2015 o la de 2022. Confirmame cuál."},
-  {id:"swapped", t:"Swapped", y:0, ty:"peli", g:"Comedia", pf:"—", tier:"B", search:"Swapped film",
-   v:"Este no lo encontré con certeza. Pasame el año o el elenco y lo completo."},
+  {id:"goat", t:"GOAT", y:2026, ty:"peli", g:"Animación", pf:"Cine", tier:"B", wiki:"Goat (2026 film)",
+   v:"Una cabra que quiere ser la mejor de la liga de básquet. Producida por Stephen Curry; recaudó 165 millones."},
+  {id:"the-invite", t:"The Invite", y:2026, ty:"peli", g:"Comedia", pf:"Cine", tier:"A", wiki:"The Invite",
+   v:"Olivia Wilde dirige a Seth Rogen, Penélope Cruz y Edward Norton en una cena que se descontrola. Buenas críticas en Sundance."},
+  {id:"swapped", t:"Swapped", y:2026, ty:"peli", g:"Animación", pf:"Netflix", tier:"C", wiki:"Swapped (film)", search:"Swapped 2026 Netflix animated film",
+   v:"Un bicho del bosque y un pájaro intercambian cuerpos. La crítica la destrozó; el público la banca bastante más."},
 
   /* ─────────── Ya vistas: de la nota, tildadas ─────────── */
   {id:"warfare", t:"Warfare", y:2025, ty:"peli", g:"Bélico", pf:"Prime Video", seen:true, wiki:"Warfare (film)"},
