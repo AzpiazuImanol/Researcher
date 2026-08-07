@@ -121,21 +121,28 @@ for (const seen of [false, true]) {
  * selects nothing on a fair number of TV series articles even with
  * pilicense=any, and the rendered HTML sidesteps that heuristic entirely.
  */
-async function viaLeadHtml(entry) {
+async function viaLeadHtml(entry, base = API, title = null) {
   const json = await api({
     action: "parse",
-    page: entry.wiki,
+    page: title || entry.wiki,
     prop: "text",
     section: "0",
     redirects: "1",
     formatversion: "2",
-  });
+  }, base);
   const html = json.parse?.text || "";
   const match = html.match(/<img[^>]+src="([^"]*upload\.wikimedia\.org[^"]+)"/i);
   if (!match) return null;
-  const src = match[1].startsWith("//") ? "https:" + match[1] : match[1];
-  // Rewrite the rendered thumbnail to the width we actually want.
-  return src.replace(/\/(\d+)px-/, `/${widthFor(entry)}px-`);
+  // Se toma la miniatura tal cual la sirve el artículo. Reescribir el ancho
+  // en la URL devuelve 400: los pósters no libres se suben en baja
+  // resolución, así que el tamaño pedido a menudo no existe. sharp la
+  // redimensiona después, que además es donde se decide el tamaño final.
+  return match[1].startsWith("//") ? "https:" + match[1] : match[1];
+}
+
+/** El mismo truco contra es.wikipedia, para lo que no tiene artículo en inglés. */
+function viaSpanishInfobox(entry) {
+  return viaLeadHtml(entry, API_ES, entry.wikiEs || entry.t);
 }
 
 /** Pass 3 — last resort: full-text search for whatever is still missing. */
@@ -168,6 +175,7 @@ async function viaSpanish(entry) {
 
 for (const [label, resolver, needsWiki] of [
   ["infobox", viaLeadHtml, true],
+  ["infobox es", viaSpanishInfobox, false],
   ["búsqueda", viaSearch, false],
   ["es.wikipedia", viaSpanish, false],
 ]) {
@@ -208,7 +216,7 @@ for (const [id, url] of found) {
     out[id] = `data:image/jpeg;base64,${jpeg.toString("base64")}`;
     console.log(`ok ${id}: ${Math.round(jpeg.length / 1024)}kb`);
   } catch (err) {
-    console.log(`!  ${id}: ${err.message}`);
+    console.log(`!  ${id}: ${err.message} — ${url}`);
   }
   await sleep(200);
 }

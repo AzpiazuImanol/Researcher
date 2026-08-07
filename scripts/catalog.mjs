@@ -26,7 +26,7 @@ export const CATALOG = [
   {id:"for-all-mankind", t:"For All Mankind", y:2019, ty:"serie", g:"Sci-fi", pf:"Apple TV+", now:true, wiki:"For All Mankind (TV series)",
    v:"Historia alternativa de la carrera espacial. Después de Severance, lo mejor del género en TV."},
   {id:"the-last-of-us", t:"The Last of Us", y:2023, ty:"serie", g:"Drama", pf:"Max", now:true, wiki:"The Last of Us (TV series)",
-   v:"La mejor adaptación de videojuego que existe. T1 impecable, T2 divisiva pero vale."},
+   v:"T1 completa, T2 a mitad de camino. La T2 arranca durísima y después se dispersa; vale terminarla."},
   {id:"welcome-to-wrexham", t:"Welcome to Wrexham", y:2022, ty:"serie", g:"Deporte", pf:"Disney+", now:true, wiki:"Welcome to Wrexham",
    v:"Fútbol galés comprado por dos actores. Mucho más emotiva de lo que suena."},
   {id:"rick-and-morty", t:"Rick and Morty", y:2013, ty:"serie", g:"Animación", pf:"Max", now:true, wiki:"Rick and Morty",
@@ -83,8 +83,7 @@ export const CATALOG = [
    v:"El Mundial contado por él. Si sos de la camiseta, se disfruta."},
 
   /* ─────────── Bloque grande de películas sueltas ─────────── */
-  {id:"nightcrawler", t:"Primicia mortal", y:2014, ty:"peli", g:"Thriller", pf:"Netflix", tier:"S", wiki:"Nightcrawler (film)",
-   v:"Gyllenhaal en el mejor papel de su carrera. Tensa de principio a fin y sin grasa."},
+  {id:"nightcrawler", t:"Primicia mortal", y:2014, ty:"peli", g:"Thriller", pf:"Netflix", seen:true, wiki:"Nightcrawler (film)"},
   {id:"prisoners", t:"La sospecha", y:2013, ty:"peli", g:"Thriller", pf:"Netflix", tier:"S", wiki:"Prisoners (2013 film)",
    v:"Villeneuve antes de Dune, con Jackman y Gyllenhaal. Dos horas y media que no pesan."},
   {id:"incendies", t:"La mujer que cantaba", y:2010, ty:"peli", g:"Drama", pf:"Alquiler", tier:"S", wiki:"Incendies",
@@ -195,6 +194,9 @@ export const CATALOG = [
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
   {id:"frente-a-frente", t:"Frente a frente", y:0, ty:"peli", g:"Crimen", pf:"—", tier:"B", search:"Frente a frente film",
    v:"Este no lo pude identificar con certeza desde la nota — confirmame cuál es y le pongo veredicto."},
+
+  {id:"the-mentalist", t:"The Mentalist", y:2008, ty:"serie", g:"Crimen", pf:"Prime Video", tier:"B", wiki:"The Mentalist",
+   v:"No la bingees: son 151 capítulos de procedural y de corrido se nota la fórmula. De a uno por noche, Simon Baker la sostiene entera."},
 
   /* ─────────── Ya vistas: de la nota, tildadas ─────────── */
   {id:"warfare", t:"Warfare", y:2025, ty:"peli", g:"Bélico", pf:"Prime Video", seen:true, wiki:"Warfare (film)"},
