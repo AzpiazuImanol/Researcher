@@ -193,6 +193,8 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
+  {id:"ex-machina", t:"Ex Machina", y:2014, ty:"peli", g:"Sci-fi", pf:"Prime Video", tier:"S", wiki:"Ex Machina (film)",
+   v:"Tres personajes, una casa y un test de Turing que se da vuelta. La mejor película sobre IA que existe, y envejeció mejor que ninguna."},
   {id:"limitless-hemsworth", t:"Limitless con Chris Hemsworth", y:2022, ty:"serie", g:"Documental", pf:"Disney+", tier:"B", wiki:"Limitless with Chris Hemsworth",
    v:"Hemsworth sometiéndose a desafíos brutales para envejecer mejor. La ciencia es liviana, la producción es enorme, y el capítulo del gen del Alzheimer es genuino."},
   {id:"the-mentalist", t:"The Mentalist", y:2008, ty:"serie", g:"Crimen", pf:"Prime Video", tier:"B", wiki:"The Mentalist",
