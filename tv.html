@@ -130,6 +130,9 @@ header.top { border-bottom: 1px solid var(--line); background: var(--panel); }
 .now .chip-art img { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; object-fit: cover; display: block; }
 .now-body { min-width: 0; }
 .now-body h3 { margin: 1px 0 3px; font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+.now-body h3 a, .now .chip-art { text-decoration: none; color: inherit; }
+.now-body h3 a:hover { text-decoration: underline; text-underline-offset: 2px; }
+.now-body h3 a:focus-visible, .now .chip-art:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .now-body .row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
 .now-body p { margin: 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
 
@@ -188,13 +191,33 @@ input.search::placeholder { color: var(--ink-3); }
 .grid.dense { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
 
 .card {
-  background: var(--panel); border: 1px solid var(--line-soft); border-radius: 3px;
-  overflow: hidden; cursor: pointer; display: flex; flex-direction: column;
+  position: relative; background: var(--panel);
+  border: 1px solid var(--line-soft); border-radius: 3px;
+  overflow: hidden; display: flex; flex-direction: column;
   transition: transform .14s ease, box-shadow .14s ease, opacity .14s;
-  box-shadow: var(--shadow); text-align: left; font: inherit; color: inherit; padding: 0;
+  box-shadow: var(--shadow);
 }
 .card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,.1), 0 14px 28px -16px rgba(0,0,0,.45); }
-.card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* El póster busca el título en Google, para ver dónde está disponible. */
+.poster-link { display: block; text-decoration: none; color: inherit; }
+.poster-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* Marcar como vista vive aparte, porque el póster ya es un enlace. */
+.mark {
+  position: absolute; top: 7px; right: 7px; z-index: 5;
+  width: 30px; height: 30px; border-radius: 50%; padding: 0;
+  border: 1.5px solid rgba(255,255,255,.5);
+  background: rgba(0,0,0,.4); color: rgba(255,255,255,.9);
+  font-size: 15px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  transition: background .12s, border-color .12s, color .12s;
+}
+.mark:hover { background: rgba(0,0,0,.72); border-color: #fff; color: #fff; }
+.mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mark[aria-pressed="true"] { background: var(--seen); border-color: var(--seen); color: #fff; }
+.dense .mark { width: 25px; height: 25px; font-size: 13px; top: 5px; right: 5px; }
 
 .poster {
   position: relative; aspect-ratio: 2 / 3; background: var(--g);
@@ -295,7 +318,7 @@ footer b { color: var(--ink-2); font-weight: 600; }
   <div class="top-in">
     <div class="brand">
       <h1>📺 TV — Repositorio</h1>
-      <p>Tu nota de Apple, las listas de Netflix y lo que fuimos hablando, en un solo lugar. Tocá cualquier ficha para marcarla como vista.</p>
+      <p>Tu nota de Apple, las listas de Netflix y lo que fuimos hablando, en un solo lugar. Tocá una portada para buscarla en Google y ver dónde está.</p>
     </div>
     <div class="stats">
       <div class="stat"><b id="s-total">0</b><span>Títulos</span></div>
@@ -311,6 +334,7 @@ footer b { color: var(--ink-2); font-weight: 600; }
 
   <div class="notice">
     <p><strong>Los tildes vienen de tu nota.</strong> Todo lo que tenías marcado en verde arranca tildado acá, incluido el MCU completo y las diez de X-Men. Lo que estaba sin marcar arranca pendiente y lleva tier y veredicto.</p>
+    <p><strong>Tocá cualquier portada</strong> y se abre una búsqueda de Google del título, que es donde vas a ver en qué plataforma está. Para marcar algo como visto, usá el círculo con el tilde arriba a la derecha de la portada.</p>
     <p>Si cambiás un tilde, se guarda en este navegador y pisa el valor de la nota. Un título nuevo que agregue después va a entrar con el estado de la nota sin tocar lo que hayas cambiado vos.</p>
   </div>
 
@@ -421,11 +445,14 @@ function norm(s) {
 function renderNow() {
   document.getElementById("now-grid").innerHTML = NOW.map(function (n) {
     var art = POSTERS[n.id];
+    var url = searchUrl(n);
     return '<div class="now" data-id="' + n.id + '">' +
-      '<div class="chip-art" style="--g:' + (GC[n.g] || "#555") + '"><b>' + esc(n.t.charAt(0)) + '</b>' +
-        (art ? '<img src="' + art + '" alt="" loading="lazy">' : '') + '</div>' +
+      '<a class="chip-art" style="--g:' + (GC[n.g] || "#555") + '" href="' + url + '" ' +
+        'target="_blank" rel="noopener noreferrer" aria-label="Buscar ' + esc(n.t) + ' en Google">' +
+        '<b>' + esc(n.t.charAt(0)) + '</b>' +
+        (art ? '<img src="' + art + '" alt="" loading="lazy">' : '') + '</a>' +
       '<div class="now-body">' +
-        '<h3>' + esc(n.t) + '</h3>' +
+        '<h3><a href="' + url + '" target="_blank" rel="noopener noreferrer">' + esc(n.t) + '</a></h3>' +
         '<div class="row">' +
           '<span class="tag">' + esc(n.g) + '</span>' +
           '<span class="tag' + (n.flag ? " warn" : "") + '">' + esc(n.pf) + '</span>' +
@@ -437,6 +464,12 @@ function renderNow() {
 }
 
 /* ─── Ficha ─── */
+/** Búsqueda en Google del título exacto: Google muestra ahí dónde verlo. */
+function searchUrl(d) {
+  return "https://www.google.com/search?q=" +
+    encodeURIComponent(d.t + (d.y ? " " + d.y : "") + (d.ty === "serie" ? " serie" : " película"));
+}
+
 function badgeFor(d) {
   if (d.saga === "X-Men" && d.rank) return "#" + d.rank;
   if (d.saga === "MCU" && d.n) return String(d.n);
@@ -466,13 +499,16 @@ function posterHtml(d) {
 
 function card(d) {
   var s = isSeen(d);
-  return '<button class="card' + (s ? " seen" : "") + '" data-id="' + d.id + '" aria-pressed="' + s + '" ' +
-    'aria-label="' + esc(d.t) + ' — marcar como vista">' +
-    posterHtml(d) +
+  return '<article class="card' + (s ? " seen" : "") + '" data-id="' + d.id + '">' +
+    '<a class="poster-link" href="' + searchUrl(d) + '" target="_blank" rel="noopener noreferrer" ' +
+      'aria-label="Buscar ' + esc(d.t) + ' en Google">' + posterHtml(d) + '</a>' +
+    '<button class="mark" data-mark="' + d.id + '" aria-pressed="' + s + '" ' +
+      'title="' + (s ? "Marcar como no vista" : "Marcar como vista") + '" ' +
+      'aria-label="' + esc(d.t) + ': marcar como vista">✓</button>' +
     '<div class="c-meta">' +
       '<p class="c-gen">' + esc(d.g) + (d.ty === "serie" ? " · Serie" : "") + '</p>' +
       (d.v ? '<p class="c-verdict">' + esc(d.v) + '</p>' : '') +
-    '</div></button>';
+    '</div></article>';
 }
 
 function block(badge, color, title, desc, items, dense) {
@@ -577,16 +613,18 @@ function updateStats() {
 
 /* ─── Eventos ─── */
 document.body.addEventListener("click", function (e) {
-  var c = e.target.closest(".card");
-  if (c) {
-    var d = DATA.find(function (x) { return x.id === c.dataset.id; });
+  var m = e.target.closest("[data-mark]");
+  if (m) {
+    var d = DATA.find(function (x) { return x.id === m.dataset.mark; });
     if (!d) return;
     overrides[d.id] = !isSeen(d);
     save();
     if (stateF !== "all") { render(); }
     else {
-      c.classList.toggle("seen", isSeen(d));
-      c.setAttribute("aria-pressed", String(isSeen(d)));
+      var s = isSeen(d);
+      m.closest(".card").classList.toggle("seen", s);
+      m.setAttribute("aria-pressed", String(s));
+      m.title = s ? "Marcar como no vista" : "Marcar como vista";
       updateStats();
     }
     return;
