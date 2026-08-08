@@ -61,8 +61,7 @@ export const CATALOG = [
   /* ─────────── Sci Fi ─────────── */
   {id:"eternal-sunshine", t:"Eternal Sunshine of the Spotless Mind", y:2004, ty:"peli", g:"Drama", pf:"Alquiler", tier:"S", wiki:"Eternal Sunshine of the Spotless Mind",
    v:"Obra maestra. No es sci-fi de acción, pero es de las mejores películas que vas a ver en tu vida."},
-  {id:"upgrade", t:"Upgrade", y:2018, ty:"peli", g:"Sci-fi", pf:"Alquiler", tier:"A", wiki:"Upgrade (film)",
-   v:"Sci-fi de acción de bajo presupuesto y ejecución impecable. Exactamente tu género."},
+  {id:"upgrade", t:"Upgrade", y:2018, ty:"peli", g:"Sci-fi", pf:"Alquiler", seen:true, wiki:"Upgrade (film)"},
   {id:"moon", t:"Moon", y:2009, ty:"peli", g:"Sci-fi", pf:"Alquiler", tier:"A", wiki:"Moon (film)",
    v:"Sam Rockwell solo en la Luna. Íntima, corta y con un giro que se gana."},
   {id:"looper", t:"Looper", y:2012, ty:"peli", g:"Sci-fi", pf:"Netflix", tier:"A", wiki:"Looper (film)",
@@ -193,8 +192,7 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
-  {id:"ex-machina", t:"Ex Machina", y:2014, ty:"peli", g:"Sci-fi", pf:"Prime Video", tier:"S", wiki:"Ex Machina (film)",
-   v:"Tres personajes, una casa y un test de Turing que se da vuelta. La mejor película sobre IA que existe, y envejeció mejor que ninguna."},
+  {id:"ex-machina", t:"Ex Machina", y:2014, ty:"peli", g:"Sci-fi", pf:"Prime Video", seen:true, wiki:"Ex Machina (film)"},
   {id:"limitless-hemsworth", t:"Limitless con Chris Hemsworth", y:2022, ty:"serie", g:"Documental", pf:"Disney+", tier:"B", wiki:"Limitless with Chris Hemsworth",
    v:"Hemsworth sometiéndose a desafíos brutales para envejecer mejor. La ciencia es liviana, la producción es enorme, y el capítulo del gen del Alzheimer es genuino."},
   {id:"the-mentalist", t:"The Mentalist", y:2008, ty:"serie", g:"Crimen", pf:"Prime Video", tier:"B", wiki:"The Mentalist",
