@@ -193,6 +193,8 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
+  {id:"limitless-hemsworth", t:"Limitless con Chris Hemsworth", y:2022, ty:"serie", g:"Documental", pf:"Disney+", tier:"B", wiki:"Limitless with Chris Hemsworth",
+   v:"Hemsworth sometiéndose a desafíos brutales para envejecer mejor. La ciencia es liviana, la producción es enorme, y el capítulo del gen del Alzheimer es genuino."},
   {id:"the-mentalist", t:"The Mentalist", y:2008, ty:"serie", g:"Crimen", pf:"Prime Video", tier:"B", wiki:"The Mentalist",
    v:"No la bingees: son 151 capítulos de procedural y de corrido se nota la fórmula. De a uno por noche, Simon Baker la sostiene entera."},
 
