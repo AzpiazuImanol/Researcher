@@ -15,14 +15,18 @@ dispositivos, y sólo entran los mails habilitados en Cloudflare Access.
 | `public/TV-repositorio.html` | La página final, generada |
 | `worker/index.js` | Sirve la página y guarda qué está visto |
 
+No hay nada que correr a mano. Al pushear un cambio, GitHub Actions baja las
+portadas que falten, arma la página y la publica en Cloudflare.
+
+Para hacerlo local igual se puede:
+
 ```
 node scripts/build.mjs      # arma la página
 npx wrangler deploy         # la publica
 ```
 
-Las portadas las baja un workflow de GitHub Actions desde Wikipedia, porque
-sale de una IP con acceso a Wikimedia. Se dispara solo al tocar `catalog.mjs`,
-y sólo busca las que faltan.
+Las portadas salen de Wikipedia y se bajan en Actions, porque hace falta una
+IP con acceso a Wikimedia. Sólo se buscan las que faltan.
 
 Se trabaja siempre sobre estos mismos archivos: se sobrescriben, no se duplican.
 
@@ -40,7 +44,13 @@ Una sola vez:
    Domains & Routes → Enable Cloudflare Access**, y cargar los mails que pueden
    entrar. Cualquier otro no ve ni la página.
 
-Después de eso, cada cambio es `node scripts/build.mjs && npx wrangler deploy`.
+Y para que publique solo, dos secretos en el repo
+(**Settings → Secrets and variables → Actions**):
+
+| Secreto | De dónde sale |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Cloudflare → My Profile → API Tokens → Create Token → plantilla *Edit Cloudflare Workers* |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare → Workers & Pages → Account Details |
 
 ## Cómo guarda el estado
 

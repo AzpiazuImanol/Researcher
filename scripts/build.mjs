@@ -15,7 +15,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { CATALOG } from "./catalog.mjs";
 
-const CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+/* El sandbox trae Chromium en una ruta fija; en CI lo instala Playwright
+   y hay que dejar que lo resuelva solo. */
+const CHROME_FIJO = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 
 const template = readFileSync("tv.html", "utf8");
 const posters = existsSync("posters.json")
@@ -55,7 +57,9 @@ try {
   const scratch = join(dir, "page.html");
   writeFileSync(scratch, page);
 
-  const browser = await chromium.launch({ executablePath: CHROME });
+  const browser = await chromium.launch(
+    existsSync(CHROME_FIJO) ? { executablePath: CHROME_FIJO } : {}
+  );
   const tab = await browser.newPage();
   const errors = [];
   tab.on("pageerror", (e) => errors.push(String(e)));
