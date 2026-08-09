@@ -73,6 +73,17 @@ header.top { border-bottom: 1px solid var(--line); background: var(--panel); }
   font-weight: 400; letter-spacing: -.015em; margin: 0; text-wrap: balance;
 }
 .brand p { margin: 6px 0 0; color: var(--ink-2); font-size: 13.5px; max-width: 60ch; }
+.sync {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em;
+  color: var(--ink-3); display: flex; align-items: center; gap: 6px;
+}
+.sync::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--ink-3); flex: 0 0 auto;
+}
+.sync.ok::before { background: var(--seen); }
+.sync.err::before { background: #b0543e; }
+.sync:empty { display: none; }
 
 .stats { display: flex; gap: 10px; flex-wrap: wrap; }
 .stat {
@@ -319,6 +330,7 @@ footer b { color: var(--ink-2); font-weight: 600; }
     <div class="brand">
       <h1>📺 TV — Repositorio</h1>
       <p>Tu nota de Apple, las listas de Netflix y lo que fuimos hablando, en un solo lugar. Tocá una portada para buscarla en Google y ver dónde está.</p>
+      <p id="sync-state" class="sync"></p>
     </div>
     <div class="stats">
       <div class="stat"><b id="s-total">0</b><span>Títulos</span></div>
@@ -422,6 +434,69 @@ function isSeen(d) { return d.id in overrides ? overrides[d.id] : !!d.seen; }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(overrides)); } catch (e) {} }
 
 var view = "tier", stateF = "all", typeF = "all", genreF = null, terms = [];
+
+/**
+ * Sincronización. El estado compartido vive en el servidor; localStorage
+ * queda como caché, para que la página siga siendo usable sin conexión y
+ * como único almacén cuando se abre el archivo suelto.
+ */
+var API = "/api/estado";
+var sync = { activa: false, quien: null };
+var marcadoPor = {};
+
+function etiquetaSync() {
+  return "Sincronizado · " + (sync.quien && sync.quien !== "local" ? sync.quien : "sin identificar");
+}
+
+function setSyncUI(clase, texto) {
+  var el = document.getElementById("sync-state");
+  if (!el) return;
+  el.className = "sync" + (clase ? " " + clase : "");
+  el.textContent = texto;
+}
+
+function fusionar(items) {
+  var cambio = false;
+  Object.keys(items).forEach(function (id) {
+    var v = !!items[id].visto;
+    if (overrides[id] !== v) { overrides[id] = v; cambio = true; }
+    marcadoPor[id] = items[id].por;
+  });
+  if (cambio) save();
+  return cambio;
+}
+
+function traerEstado(primeraVez) {
+  return fetch(API, { headers: { accept: "application/json" }, cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      sync.activa = true;
+      sync.quien = data.quien;
+      var cambio = fusionar(data.items || {});
+      setSyncUI("ok", etiquetaSync());
+      if (cambio || primeraVez) { renderNow(); render(); }
+    })
+    .catch(function () {
+      if (sync.activa) setSyncUI("err", "Sin conexión · los cambios quedan en este dispositivo");
+    });
+}
+
+function empujar(id, visto) {
+  if (!sync.activa) return;
+  fetch(API, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ id: id, visto: visto }),
+  })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (data) {
+      if (data.item) marcadoPor[id] = data.item.por;
+      setSyncUI("ok", etiquetaSync());
+    })
+    .catch(function () {
+      setSyncUI("err", "No se pudo guardar en el servidor · queda en este dispositivo");
+    });
+}
 
 var NOW = DATA.filter(function (d) { return d.now; });
 var REST = DATA.filter(function (d) { return !d.now; });
@@ -619,6 +694,7 @@ document.body.addEventListener("click", function (e) {
     if (!d) return;
     overrides[d.id] = !isSeen(d);
     save();
+    empujar(d.id, isSeen(d));
     if (stateF !== "all") { render(); }
     else {
       var s = isSeen(d);
@@ -677,4 +753,14 @@ document.getElementById("now-count").textContent =
 
 renderNow();
 render();
+
+/* Servida por HTTP hay servidor detrás; como archivo suelto, no. */
+if (location.protocol === "http:" || location.protocol === "https:") {
+  traerEstado(true);
+  // Son dos personas marcando cosas: revisar cada 25 segundos sobra.
+  setInterval(function () { if (!document.hidden) traerEstado(false); }, 25000);
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) traerEstado(false);
+  });
+}
 </script>

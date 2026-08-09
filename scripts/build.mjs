@@ -1,5 +1,5 @@
 /**
- * Builds TV-repositorio.html from tv.html, catalog.mjs and posters.json.
+ * Builds public/TV-repositorio.html from tv.html, catalog.mjs and posters.json.
  * Always the same output file — it gets overwritten in place, never
  * duplicated under a new name.
  *
@@ -115,10 +115,10 @@ const html =
   page.slice(splitAt) +
   "\n</body>\n</html>\n";
 
-writeFileSync("TV-repositorio.html", html);
+writeFileSync("public/TV-repositorio.html", html);
 
 const mb = (Buffer.byteLength(html) / 1024 / 1024).toFixed(2);
 console.log(
-  `TV-repositorio.html — ${stamp.replace("Versión del ", "").replace(".", "")}` +
+  `public/TV-repositorio.html — ${stamp.replace("Versión del ", "").replace(".", "")}` +
   `${prerendered ? "" : " · SIN pre-render"} · ${mb} MB`
 );

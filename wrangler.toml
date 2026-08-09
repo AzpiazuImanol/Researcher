@@ -1,0 +1,13 @@
+name = "tv-repositorio"
+main = "worker/index.js"
+compatibility_date = "2026-01-01"
+
+# La página se sirve como asset estático: pesa varios MB y no entraría
+# en el límite de tamaño del script del Worker.
+assets = { directory = "./public", binding = "ASSETS" }
+
+# Completá "id" con el que devuelve:
+#   npx wrangler kv namespace create ESTADO
+[[kv_namespaces]]
+binding = "ESTADO"
+id = "COMPLETAR"
