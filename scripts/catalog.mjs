@@ -35,8 +35,8 @@ export const CATALOG = [
    v:"Animación adulta sobre un hongo que cura todo. La rareza mejor recibida de 2025."},
   {id:"the-day-of-the-jackal", t:"The Day of the Jackal", y:2024, ty:"serie", g:"Thriller", pf:"Prime Video", now:true, wiki:"The Day of the Jackal (TV series)",
    v:"Redmayne como francotirador. Thriller de persecución muy entretenido, sin pretensiones."},
-  {id:"cape-fear-2026", t:"Cape Fear", y:2026, ty:"serie", g:"Thriller", pf:"Apple TV+", tier:"B", wiki:"Cape Fear (miniseries)", search:"Cape Fear 2026 television series Bardem",
-   v:"Bardem está enorme, pero estiran la venganza a 10 capítulos y se desinfla. Vale por él."},
+  {id:"cape-fear-2026", t:"Cape Fear", y:2026, ty:"serie", g:"Thriller", pf:"Apple TV+", now:true, wiki:"Cape Fear (miniseries)", search:"Cape Fear 2026 television series Bardem",
+   v:"Arrancada con Lu. Bardem está enorme; la crítica dice que estiran la venganza a 10 capítulos y se desinfla en el medio."},
   {id:"the-night-manager", t:"The Night Manager", y:2016, ty:"serie", g:"Thriller", pf:"Prime Video", tier:"A", wiki:"The Night Manager (TV series)",
    v:"La T1 es espionaje de primera con Hiddleston y Laurie. La T2 de 2026 no le llega."},
 
