@@ -192,6 +192,8 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
+  {id:"mickey-17", t:"Mickey 17", y:2025, ty:"peli", g:"Sci-fi", pf:"Max", tier:"B", wiki:"Mickey 17",
+   v:"Bong Joon-ho después de Parásitos, con Pattinson por duplicado. La primera mitad es buenísima; la segunda se convierte en caricatura política y se desinfla."},
   {id:"the-social-network", t:"La red social", y:2010, ty:"peli", g:"Drama", pf:"Netflix", seen:true, wiki:"The Social Network"},
   {id:"moneyball", t:"Moneyball", y:2011, ty:"peli", g:"Deporte", pf:"Netflix", seen:true, wiki:"Moneyball (film)"},
   {id:"ford-v-ferrari", t:"Contra lo imposible", y:2019, ty:"peli", g:"Deporte", pf:"Disney+", seen:true, wiki:"Ford v Ferrari"},
