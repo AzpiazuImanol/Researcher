@@ -192,6 +192,8 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
+  {id:"war-machine-2026", t:"War Machine", y:2026, ty:"peli", g:"Acción", pf:"Netflix", tier:"B", wiki:"War Machine (2026 film)",
+   v:"Sci-fi de acción con Alan Ritchson, el de Reacher. 106 minutos, sin pretensiones. Ojo: no confundir con la de Brad Pitt de 2017."},
   {id:"mickey-17", t:"Mickey 17", y:2025, ty:"peli", g:"Sci-fi", pf:"Max", tier:"B", wiki:"Mickey 17",
    v:"Bong Joon-ho después de Parásitos, con Pattinson por duplicado. La primera mitad es buenísima; la segunda se convierte en caricatura política y se desinfla."},
   {id:"the-social-network", t:"La red social", y:2010, ty:"peli", g:"Drama", pf:"Netflix", seen:true, wiki:"The Social Network"},
