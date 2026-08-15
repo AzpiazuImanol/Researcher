@@ -192,6 +192,8 @@ export const CATALOG = [
   {id:"papa-se-volvio-loco", t:"Papá se volvió loco", y:2005, ty:"peli", g:"Comedia", pf:"Netflix", tier:"C", search:"Papá se volvió loco 2005 film",
    v:"Comedia familiar de relleno. Sólo si no queda nada más."},
 
+  {id:"shooter-2007", t:"Shooter: el tirador", y:2007, ty:"peli", g:"Acción", pf:"Netflix", tier:"B", wiki:"Shooter (2007 film)",
+   v:"Fuqua y Wahlberg. El oficio del francotirador está tomado en serio; la conspiración de fondo es pulpa pura. La serie de 2016 no vale la pena."},
   {id:"war-machine-2026", t:"War Machine", y:2026, ty:"peli", g:"Acción", pf:"Netflix", tier:"B", wiki:"War Machine (2026 film)",
    v:"Sci-fi de acción con Alan Ritchson, el de Reacher. 106 minutos, sin pretensiones. Ojo: no confundir con la de Brad Pitt de 2017."},
   {id:"mickey-17", t:"Mickey 17", y:2025, ty:"peli", g:"Sci-fi", pf:"Max", tier:"B", wiki:"Mickey 17",
