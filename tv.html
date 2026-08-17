@@ -100,6 +100,41 @@ header.top { border-bottom: 1px solid var(--line); background: var(--panel); }
 }
 .stat.is-seen b { color: var(--seen); }
 
+/* Buscador destacado: es lo primero que se ve al abrir. */
+.hero-search-wrap {
+  max-width: var(--maxw); margin: 0 auto; padding: 0 20px 22px;
+}
+.hero-search {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 4px; padding: 0 12px;
+  transition: border-color .12s, box-shadow .12s;
+}
+.hero-search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.hero-search .lupa {
+  width: 18px; height: 18px; flex: 0 0 auto;
+  fill: none; stroke: var(--ink-3); stroke-width: 2; stroke-linecap: round;
+}
+.hero-search:focus-within .lupa { stroke: var(--accent); }
+.hero-search input {
+  flex: 1; min-width: 0; border: 0; background: none; color: var(--ink);
+  font-family: var(--sans); font-size: 15px; padding: 12px 0;
+  -webkit-appearance: none; appearance: none;
+}
+.hero-search input:focus { outline: none; }
+.hero-search input::placeholder { color: var(--ink-3); }
+.hero-search input::-webkit-search-cancel-button { display: none; }
+.q-clear {
+  flex: 0 0 auto; border: 0; background: none; cursor: pointer;
+  color: var(--ink-3); font-size: 15px; line-height: 1; padding: 6px;
+  border-radius: 3px;
+}
+.q-clear:hover { color: var(--ink); }
+.q-clear:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
 /* progreso */
 .bar { margin-top: 12px; height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; flex-basis: 100%; }
 .bar i { display: block; height: 100%; background: var(--seen); transition: width .3s ease; }
@@ -338,6 +373,18 @@ footer b { color: var(--ink-2); font-weight: 600; }
       <div class="stat"><b id="s-left">0</b><span>Pendientes</span></div>
       <div class="stat"><b id="s-now">0</b><span>En curso</span></div>
       <div class="bar"><i id="s-bar" style="width:0%"></i></div>
+    </div>
+  </div>
+  <div class="hero-search-wrap">
+    <div class="hero-search">
+      <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="10.5" cy="10.5" r="6.5"></circle>
+        <line x1="15.4" y1="15.4" x2="21" y2="21"></line>
+      </svg>
+      <input id="q-top" type="search" autocomplete="off"
+             placeholder="Buscar título, género o plataforma…"
+             aria-label="Buscar en el catálogo">
+      <button type="button" id="q-clear" class="q-clear" hidden aria-label="Limpiar la búsqueda">✕</button>
     </div>
   </div>
 </header>
@@ -729,10 +776,32 @@ document.body.addEventListener("click", function (e) {
   }
 });
 
-document.getElementById("q").addEventListener("input", function (e) {
-  terms = norm(e.target.value).split(/\s+/).filter(Boolean);
+/* Hay dos campos de búsqueda: el destacado del encabezado y el de la barra
+   pegajosa, que sigue a mano cuando estás scrolleado. Comparten estado. */
+var buscadores = [document.getElementById("q-top"), document.getElementById("q")];
+var btnLimpiar = document.getElementById("q-clear");
+
+function buscar(valor, origen) {
+  terms = norm(valor).split(/\s+/).filter(Boolean);
+  buscadores.forEach(function (el) { if (el && el !== origen) el.value = valor; });
+  if (btnLimpiar) btnLimpiar.hidden = !valor;
   render();
+}
+
+buscadores.forEach(function (el) {
+  if (!el) return;
+  el.addEventListener("input", function (e) { buscar(e.target.value, e.target); });
+  el.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { buscar("", null); e.target.blur(); }
+  });
 });
+
+if (btnLimpiar) {
+  btnLimpiar.addEventListener("click", function () {
+    buscar("", null);
+    if (buscadores[0]) buscadores[0].focus();
+  });
+}
 
 /**
  * La página se publica pre-renderizada, así que las portadas ya viajan en el
