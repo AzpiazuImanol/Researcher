@@ -74,8 +74,6 @@ export const CATALOG = [
   /* ─────────── Documentales y TV ─────────── */
   {id:"prehistoric-planet", t:"Prehistoric Planet", y:2022, ty:"serie", g:"Naturaleza", pf:"Apple TV+", tier:"A", wiki:"Prehistoric Planet",
    v:"Attenborough y dinosaurios con la mejor CGI que existe."},
-  {id:"jack-reacher-t2", t:"Reacher (T2)", y:2023, ty:"serie", g:"Acción", pf:"Prime Video", tier:"B", wiki:"Reacher (TV series)",
-   v:"Más de lo mismo que la T1, y lo mismo funciona. Acción sin culpa."},
   {id:"mourinho-doc", t:"Mourinho", y:2025, ty:"serie", g:"Deporte", pf:"Prime Video", tier:"B", search:"Mourinho documentary series",
    v:"Docuserie del personaje más televisivo del fútbol. Entretenida, poco crítica."},
   {id:"documental-messi", t:"Documental Messi", y:2023, ty:"serie", g:"Deporte", pf:"Apple TV+", tier:"B", wiki:"Messi's World Cup: The Rise of a Legend",
@@ -392,7 +390,8 @@ export const CATALOG = [
   {id:"silence-of-the-lambs", t:"El silencio de los inocentes", y:1991, ty:"peli", g:"Thriller", pf:"Netflix", seen:true, wiki:"The Silence of the Lambs (film)"},
   {id:"unbearable-weight", t:"El peso del talento", y:2022, ty:"peli", g:"Comedia", pf:"Netflix", seen:true, wiki:"The Unbearable Weight of Massive Talent"},
   {id:"death-at-a-funeral", t:"Muerte en un funeral", y:2007, ty:"peli", g:"Comedia", pf:"Netflix", seen:true, wiki:"Death at a Funeral (2007 film)"},
-  {id:"reacher", t:"Reacher", y:2022, ty:"serie", g:"Acción", pf:"Prime Video", seen:true, wiki:"Reacher (TV series)"},
+  {id:"reacher", t:"Reacher", y:2022, ty:"serie", g:"Acción", pf:"Prime Video", tier:"A", wiki:"Reacher (TV series)",
+   v:"Viste T1 y T2. La T4 adapta Gone Tomorrow y salió con 100% en RT: la más oscura y exigente de todas. Cada temporada es una novela distinta, así que podés saltear la T3."},
   {id:"lord-of-war", t:"El señor de la guerra", y:2005, ty:"peli", g:"Crimen", pf:"Netflix", seen:true, wiki:"Lord of War"},
   {id:"equalizer-1", t:"El justiciero", y:2014, ty:"peli", g:"Acción", pf:"Netflix", seen:true, wiki:"The Equalizer (film)"},
   {id:"equalizer-2", t:"El justiciero 2", y:2018, ty:"peli", g:"Acción", pf:"Netflix", seen:true, wiki:"The Equalizer 2"},
