@@ -135,6 +135,10 @@ header.top { border-bottom: 1px solid var(--line); background: var(--panel); }
 .q-clear:hover { color: var(--ink); }
 .q-clear:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
+/* Buscando, lo que va entre el buscador y los resultados sobra. */
+body.buscando #sec-ahora, body.buscando .notice { display: none; }
+body.buscando .sec { margin-top: 26px; }
+
 /* progreso */
 .bar { margin-top: 12px; height: 4px; background: var(--panel-2); border-radius: 2px; overflow: hidden; flex-basis: 100%; }
 .bar i { display: block; height: 100%; background: var(--seen); transition: width .3s ease; }
@@ -397,7 +401,7 @@ footer b { color: var(--ink-2); font-weight: 600; }
     <p>Si cambiás un tilde, se guarda en este navegador y pisa el valor de la nota. Un título nuevo que agregue después va a entrar con el estado de la nota sin tocar lo que hayas cambiado vos.</p>
   </div>
 
-  <section class="sec">
+  <section class="sec" id="sec-ahora">
     <div class="sec-head">
       <span class="kicker">En curso</span>
       <h2>Lo que estás viendo</h2>
@@ -409,7 +413,7 @@ footer b { color: var(--ink-2); font-weight: 600; }
   <section class="sec">
     <div class="sec-head">
       <span class="kicker">Catálogo</span>
-      <h2>Todo lo demás</h2>
+      <h2 id="titulo-catalogo">Todo lo demás</h2>
       <span class="note" id="filter-count"></span>
     </div>
 
@@ -593,6 +597,7 @@ function searchUrl(d) {
 }
 
 function badgeFor(d) {
+  if (d.now) return "▶";
   if (d.saga === "X-Men" && d.rank) return "#" + d.rank;
   if (d.saga === "MCU" && d.n) return String(d.n);
   return d.tier || (isSeen(d) ? "✓" : "");
@@ -628,7 +633,8 @@ function card(d) {
       'title="' + (s ? "Marcar como no vista" : "Marcar como vista") + '" ' +
       'aria-label="' + esc(d.t) + ': marcar como vista">✓</button>' +
     '<div class="c-meta">' +
-      '<p class="c-gen">' + esc(d.g) + (d.ty === "serie" ? " · Serie" : "") + '</p>' +
+      '<p class="c-gen">' + esc(d.g) + (d.ty === "serie" ? " · Serie" : "") +
+        (d.now ? " · En curso" : "") + '</p>' +
       (d.v ? '<p class="c-verdict">' + esc(d.v) + '</p>' : '') +
     '</div></article>';
 }
@@ -641,7 +647,16 @@ function block(badge, color, title, desc, items, dense) {
 
 /* ─── Render ─── */
 function render() {
-  var list = REST.filter(function (d) {
+  // Al buscar entran también las que están en curso: si no, buscar algo que
+  // estás viendo no devolvía nada.
+  var buscando = terms.length > 0;
+  document.body.classList.toggle("buscando", buscando);
+  var fuente = buscando ? DATA : REST;
+
+  var tituloCat = document.getElementById("titulo-catalogo");
+  if (tituloCat) tituloCat.textContent = buscando ? "Resultados" : "Todo lo demás";
+
+  var list = fuente.filter(function (d) {
     var s = isSeen(d);
     if (stateF === "pend" && s) return false;
     if (stateF === "seen" && !s) return false;
@@ -704,7 +719,9 @@ function render() {
   }
 
   document.getElementById("board").innerHTML = html;
-  document.getElementById("filter-count").textContent = list.length + " de " + REST.length + " en pantalla";
+  document.getElementById("filter-count").textContent =
+    buscando ? list.length + (list.length === 1 ? " resultado" : " resultados")
+             : list.length + " de " + REST.length + " en pantalla";
   updateStats();
 }
 
