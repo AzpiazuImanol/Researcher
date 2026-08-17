@@ -6,8 +6,8 @@ compatibility_date = "2026-01-01"
 # en el límite de tamaño del script del Worker.
 assets = { directory = "./public", binding = "ASSETS" }
 
-# Completá "id" con el que devuelve:
-#   npx wrangler kv namespace create ESTADO
+# Identificador del almacén donde viven los tildes. No es un secreto: sin el
+# token de la cuenta no da acceso a nada.
 [[kv_namespaces]]
 binding = "ESTADO"
-id = "COMPLETAR"
+id = "7ad25bd3829b467099a465d5cac5e2d4"
