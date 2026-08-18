@@ -217,6 +217,8 @@ export const CATALOG = [
    v:"Gary Oldman al frente del depósito de descartes del MI5. Espionaje sucio, gracioso y humano. Cinco temporadas de seis capítulos, la sexta llega en septiembre y ya hay séptima confirmada."},
   {id:"obsession-2023", t:"Obsession", y:2023, ty:"serie", g:"Thriller", pf:"Netflix", tier:"D", wiki:"Obsession (2023 TV series)",
    v:"Cuatro capítulos y se ve en una noche, pero 40% de crítica y 14% de público. La agrego porque me la pediste, no porque la recomiende."},
+  {id:"harold-kumar-guantanamo", t:"Harold & Kumar Escape from Guantanamo Bay", y:2008, ty:"peli", g:"Comedia", pf:"Prime Video", tier:"C", wiki:"Harold & Kumar Escape from Guantanamo Bay",
+   v:"Comedia de porro de manual, con la escena del unicornio de Neil Patrick Harris como su gran momento. Vale por esa secuencia más que por la película."},
   {id:"the-boys", t:"The Boys", y:2019, ty:"serie", g:"Acción", pf:"Prime Video", now:true, wiki:"The Boys (TV series)",
    v:"Superhéroes como celebridades corporativas y podridas. Violenta, satírica y con Antony Starr haciendo de uno de los mejores villanos de la TV."},
   {id:"the-drama", t:"The Drama", y:2026, ty:"peli", g:"Drama", pf:"Cine", seen:true, wiki:"The Drama (film)"},
