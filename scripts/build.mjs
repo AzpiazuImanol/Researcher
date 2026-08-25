@@ -10,7 +10,7 @@
  * still get the whole catalog, and with it the filters take over as usual.
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdtempSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { CATALOG } from "./catalog.mjs";
@@ -20,9 +20,25 @@ import { CATALOG } from "./catalog.mjs";
 const CHROME_FIJO = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 
 const template = readFileSync("tv.html", "utf8");
-const posters = existsSync("posters.json")
+const guardadas = existsSync("posters.json")
   ? JSON.parse(readFileSync("posters.json", "utf8"))
   : {};
+
+/**
+ * Las portadas se escriben como archivos sueltos, no incrustadas en la
+ * página. Inlinearlas dejaba un HTML de casi 5 MB, y encima el script hacía
+ * una segunda copia en memoria al cargar: suficiente para que Safari en
+ * iPhone descartara la pestaña y quedara en negro. Como archivos, el
+ * navegador baja sólo las que entran en pantalla.
+ */
+rmSync("public/img", { recursive: true, force: true });
+mkdirSync("public/img", { recursive: true });
+
+const posters = {};
+for (const [id, uri] of Object.entries(guardadas)) {
+  writeFileSync(`public/img/${id}.jpg`, Buffer.from(uri.slice(uri.indexOf(",") + 1), "base64"));
+  posters[id] = `/img/${id}.jpg`;
+}
 
 if (!Object.keys(posters).length) {
   console.warn("posters.json vacío o ausente — la página sale con pósters tipográficos.");
@@ -91,10 +107,6 @@ try {
   page = fillById(page, "s-now", snap.nowN);
   page = page.replace('id="s-bar" style="width:0%"', `id="s-bar" style="width:${snap.bar}"`);
 
-  // Las portadas ya viajan en el HTML pre-renderizado, así que se saca la
-  // segunda copia del script: el archivo pesa la mitad y la página la
-  // reconstruye leyendo el DOM al cargar.
-  page = inject(page, "POSTERS", {});
   prerendered = true;
 } catch (err) {
   console.warn(`sin pre-render (${err.message}) — la página va a necesitar JavaScript.`);
@@ -121,8 +133,8 @@ const html =
 
 writeFileSync("public/TV-repositorio.html", html);
 
-const mb = (Buffer.byteLength(html) / 1024 / 1024).toFixed(2);
+const kb = Math.round(Buffer.byteLength(html) / 1024);
 console.log(
   `public/TV-repositorio.html — ${stamp.replace("Versión del ", "").replace(".", "")}` +
-  `${prerendered ? "" : " · SIN pre-render"} · ${mb} MB`
+  `${prerendered ? "" : " · SIN pre-render"} · ${kb} kB + ${Object.keys(posters).length} imágenes`
 );

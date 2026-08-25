@@ -820,20 +820,6 @@ if (btnLimpiar) {
   });
 }
 
-/**
- * La página se publica pre-renderizada, así que las portadas ya viajan en el
- * HTML. En ese caso el build deja POSTERS vacío y las recuperamos del DOM:
- * llevar una segunda copia en base64 duplicaba el peso del archivo, y en iOS
- * eso alcanza para que Safari descarte la pestaña por memoria.
- */
-(function () {
-  if (Object.keys(POSTERS).length) return;
-  document.querySelectorAll("[data-id]").forEach(function (el) {
-    var img = el.querySelector(".p-img, .chip-art img");
-    if (img) POSTERS[el.getAttribute("data-id")] = img.getAttribute("src");
-  });
-})();
-
 document.getElementById("now-count").textContent =
   NOW.length + " en paralelo";
 
