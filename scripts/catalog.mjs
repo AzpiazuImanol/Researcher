@@ -105,8 +105,7 @@ export const CATALOG = [
    v:"El Mundial desde la tribuna. Emotiva y hecha para llorar, sin disimularlo."},
 
   /* ─────────── Argentinas: Darín y Francella ─────────── */
-  {id:"el-secreto-de-sus-ojos", t:"El secreto de sus ojos", y:2009, ty:"peli", g:"Thriller", pf:"Netflix", tier:"S", wiki:"The Secret in Their Eyes",
-   v:"Oscar a mejor película extranjera. El plano secuencia de la cancha es historia del cine."},
+  {id:"el-secreto-de-sus-ojos", t:"El secreto de sus ojos", y:2009, ty:"peli", g:"Thriller", pf:"Netflix", seen:true, wiki:"The Secret in Their Eyes"},
   {id:"nueve-reinas", t:"Nueve reinas", y:2000, ty:"peli", g:"Crimen", pf:"Netflix", tier:"S", wiki:"Nine Queens",
    v:"La estafa argentina perfecta. Darín en el papel que lo definió."},
   {id:"esperando-la-carroza", t:"Esperando la carroza", y:1985, ty:"peli", g:"Comedia", pf:"Netflix", tier:"S", wiki:"Esperando la carroza",
@@ -219,6 +218,8 @@ export const CATALOG = [
    v:"Cuatro capítulos y se ve en una noche, pero 40% de crítica y 14% de público. La agrego porque me la pediste, no porque la recomiende."},
   {id:"harold-kumar-guantanamo", t:"Harold & Kumar Escape from Guantanamo Bay", y:2008, ty:"peli", g:"Comedia", pf:"Prime Video", tier:"C", wiki:"Harold & Kumar Escape from Guantanamo Bay",
    v:"Comedia de porro de manual, con la escena del unicornio de Neil Patrick Harris como su gran momento. Vale por esa secuencia más que por la película."},
+  {id:"the-dog-stars", t:"The Dog Stars", y:2026, ty:"peli", g:"Sci-fi", pf:"Cine", tier:"B", wiki:"The Dog Stars",
+   v:"Ridley Scott post-apocalíptico con Jacob Elordi. Lo mejor de él desde The Martian, pero deliberadamente apagada: mucho clima y pocos personajes a los que agarrarse."},
   {id:"the-boys", t:"The Boys", y:2019, ty:"serie", g:"Acción", pf:"Prime Video", now:true, wiki:"The Boys (TV series)",
    v:"Superhéroes como celebridades corporativas y podridas. Violenta, satírica y con Antony Starr haciendo de uno de los mejores villanos de la TV."},
   {id:"the-drama", t:"The Drama", y:2026, ty:"peli", g:"Drama", pf:"Cine", seen:true, wiki:"The Drama (film)"},
