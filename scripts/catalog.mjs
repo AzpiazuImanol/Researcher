@@ -212,6 +212,8 @@ export const CATALOG = [
   {id:"ex-machina", t:"Ex Machina", y:2014, ty:"peli", g:"Sci-fi", pf:"Prime Video", seen:true, wiki:"Ex Machina (film)"},
   {id:"limitless-hemsworth", t:"Limitless con Chris Hemsworth", y:2022, ty:"serie", g:"Documental", pf:"Disney+", tier:"B", wiki:"Limitless with Chris Hemsworth",
    v:"Hemsworth sometiéndose a desafíos brutales para envejecer mejor. La ciencia es liviana, la producción es enorme, y el capítulo del gen del Alzheimer es genuino."},
+  {id:"foundation", t:"Foundation", y:2021, ty:"serie", g:"Sci-fi", pf:"Apple TV+", tier:"A", wiki:"Foundation (TV series)",
+   v:"Asimov en space opera. La T1 es fuego lento y te va a costar, pero T2 y T3 pasan el 90% en RT y Lee Pace como el Imperio clonado vale solo. T4 confirmada para 2027."},
   {id:"slow-horses", t:"Slow Horses", y:2022, ty:"serie", g:"Thriller", pf:"Apple TV+", tier:"S", wiki:"Slow Horses",
    v:"Gary Oldman al frente del depósito de descartes del MI5. Espionaje sucio, gracioso y humano. Cinco temporadas de seis capítulos, la sexta llega en septiembre y ya hay séptima confirmada."},
   {id:"obsession-2023", t:"Obsession", y:2023, ty:"serie", g:"Thriller", pf:"Netflix", tier:"D", wiki:"Obsession (2023 TV series)",
