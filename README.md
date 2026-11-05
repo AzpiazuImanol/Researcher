@@ -2,8 +2,11 @@
 
 Listado de series y películas: qué está visto, qué falta, y qué vale la pena.
 
-Se usa desde la URL del Worker. Los tildes se comparten entre todos los
-dispositivos, y sólo entran los mails habilitados en Cloudflare Access.
+**https://tv-repositorio.imanolazpiazu.workers.dev**
+
+Se usa siempre desde esa URL, nunca desde un HTML descargado: una descarga
+queda congelada en la versión del día que se bajó. Los tildes se comparten
+entre todos los dispositivos.
 
 ## Cómo se arma
 
