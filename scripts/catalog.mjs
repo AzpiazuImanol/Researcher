@@ -205,7 +205,7 @@ export const CATALOG = [
    v:"Empieza como un experimento casero con dopaje y termina destapando el fraude de Estado ruso. Ganó el Oscar."},
   {id:"beckham", t:"Beckham", y:2023, ty:"serie", g:"Deporte", pf:"Netflix", tier:"A", wiki:"Beckham (miniseries)",
    v:"Cuatro capítulos, del penal del 98 al Madrid. Mucho más honesta de lo que se esperaría de un documental autorizado."},
-  {id:"sunderland-til-i-die", t:"Sunderland hasta la muerte", y:2018, ty:"serie", g:"Deporte", pf:"Netflix", tier:"A", wiki:"Sunderland 'Til I Die",
+  {id:"sunderland-til-i-die", t:"Sunderland hasta la muerte", y:2018, ty:"serie", g:"Deporte", pf:"Netflix", now:true, tier:"A", wiki:"Sunderland 'Til I Die",
    v:"El reverso de Wrexham: un club que se hunde y una ciudad que lo sufre. Durísima y honesta."},
   {id:"dumb-money", t:"Dumb Money", y:2023, ty:"peli", g:"Drama", pf:"Netflix", tier:"B", wiki:"Dumb Money",
    v:"El caso GameStop contra los fondos de Wall Street. Liviana y entretenida, sin la profundidad de La gran apuesta."},
