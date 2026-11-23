@@ -30,7 +30,7 @@ export const CATALOG = [
   {id:"welcome-to-wrexham", t:"Welcome to Wrexham", y:2022, ty:"serie", g:"Deporte", pf:"Disney+", now:true, wiki:"Welcome to Wrexham",
    v:"Fútbol galés comprado por dos actores. Mucho más emotiva de lo que suena."},
   {id:"rick-and-morty", t:"Rick and Morty", y:2013, ty:"serie", g:"Animación", pf:"Max", now:true, wiki:"Rick and Morty",
-   v:"Sci-fi animada, brillante y agotadora en dosis grandes. Las primeras tres temporadas son las buenas."},
+   v:"Sci-fi animada, brillante y agotadora en dosis grandes. Las primeras tres son las canonicas, pero la 4 y la 6 tienen varios capitulazos que quedaron tapados."},
   {id:"common-side-effects", t:"Common Side Effects", y:2025, ty:"serie", g:"Animación", pf:"Max", now:true, wiki:"Common Side Effects",
    v:"Animación adulta sobre un hongo que cura todo. La rareza mejor recibida de 2025."},
   {id:"the-day-of-the-jackal", t:"The Day of the Jackal", y:2024, ty:"serie", g:"Thriller", pf:"Prime Video", now:true, wiki:"The Day of the Jackal (TV series)",
